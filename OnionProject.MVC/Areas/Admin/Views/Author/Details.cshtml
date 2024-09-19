@@ -1,0 +1,74 @@
+﻿@* @model IEnumerable<OnionProject.Application.Models.VMs.AuthorDetailVm> *@
+
+@model OnionProject.Application.Models.VMs.AuthorDetailVm
+
+@{
+    ViewData["Title"] = "Author Details";
+}
+
+<div class="container mt-3">
+    <h1>@Model.FullName</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.ImagePath))
+            {
+                <img src="@Model.ImagePath" alt="Author Image" class="img-fluid" />
+            }
+        </div>
+        <div class="col-md-8">
+            <table class="table table-striped">
+                <tr>
+                    <th>First Name</th>
+                    <td>@Model.FirstName</td>
+                </tr>
+                <tr>
+                    <th>Last Name</th>
+                    <td>@Model.LastName</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>@Model.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <th>Biography</th>
+                    <td>@Model.Biography</td>
+                </tr>
+                <tr>
+                    <th>Created Date</th>
+                    <td>@Model.CreatedDate.ToString("d")</td>
+                </tr>
+                @if (Model.UpdatedDate.HasValue)
+                {
+                    <tr>
+                        <th>Updated Date</th>
+                        <td>@Model.UpdatedDate.Value.ToString("d")</td>
+                    </tr>
+                }
+                @if (Model.DeletedDate.HasValue)
+                {
+                    <tr>
+                        <th>Deleted Date</th>
+                        <td>@Model.DeletedDate.Value.ToString("d")</td>
+                    </tr>
+                }
+                <tr>
+                    <th>Status</th>
+                    <td>@Model.Status</td>
+                </tr>
+                <tr>
+                    <th>Number of Posts</th>
+                    <td>@Model.NumberOfPosts</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <div class="mt-3">
+        <a href="@Url.Action("Index", "Author", new { area = "Admin" })" class="btn btn-primary">Back to List</a>
+    </div>
+</div>
