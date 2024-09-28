@@ -1,0 +1,35 @@
+﻿@model UpdateAuthorDTO
+
+<h2>Yazar Güncelleme</h2>
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" />
+        <span asp-validation-for="FirstName"></span>
+    </div>
+
+    <div>
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" />
+        <span asp-validation-for="LastName"></span>
+    </div>
+
+    <div>
+        <label asp-for="Image"></label>
+        <input type="file" asp-for="Image" />
+        <span asp-validation-for="Image"></span>
+    </div>
+
+    <div>
+        <label asp-for="Status"></label>
+        <select asp-for="Status">
+            <option value="0">Pasif</option>
+            <option value="1">Aktif</option>
+        </select>
+    </div>
+
+    <button type="submit">Güncelle</button>
+</form>

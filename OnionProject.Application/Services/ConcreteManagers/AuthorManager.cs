@@ -6,18 +6,13 @@ using OnionProject.Domain.AbstractRepositories;
 using OnionProject.Domain.Entities;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnionProject.Application.Services.ConcreteManagers
 {
     public class AuthorManager : IAuthorService
     {
-        private readonly IMapper _mapper; // AutoMapper'ı enjekte etmek için
-        private readonly IAuthorRepo _authorRepo; // Author repo'yu enjekte etmek için
+        private readonly IMapper _mapper;
+        private readonly IAuthorRepo _authorRepo;
 
         public AuthorManager(IMapper mapper, IAuthorRepo authorRepo)
         {
@@ -31,10 +26,10 @@ namespace OnionProject.Application.Services.ConcreteManagers
             // DTO'dan Author entity'sine dönüştürme
             var author = _mapper.Map<Author>(model);
 
-            if (author.UploadPath is not null) // Yazar fotoğrafı varsa
+            if (model.Image is not null) // Yazar fotoğrafı varsa
             {
                 // Fotoğrafı yükleme ve işleme
-                using var image = Image.Load(model.UploadPath.OpenReadStream());
+                using var image = Image.Load(model.Image.OpenReadStream());
                 image.Mutate(x => x.Resize(600, 500));
                 Guid guid = Guid.NewGuid(); // Yeni isim için GUID oluşturma
                 image.Save($"wwwroot/images/{guid}.jpg"); // Resmi kaydetme
@@ -99,18 +94,28 @@ namespace OnionProject.Application.Services.ConcreteManagers
         // Yazar bilgilerini günceller
         public async Task Update(UpdateAuthorDTO model)
         {
-            var author = _mapper.Map<Author>(model); // DTO'dan Author entity'sine dönüştürme
-
-            if (model.UploadPath is not null) // Fotoğraf varsa
+            var existingAuthor = await _authorRepo.GetById(model.Id);
+            if (existingAuthor == null)
             {
-                using var image = Image.Load(model.UploadPath.OpenReadStream()); // Fotoğrafı yükle
-                image.Mutate(x => x.Resize(600, 500)); // Resmi boyutlandır
-                Guid guid = Guid.NewGuid(); // Yeni isim için GUID oluşturma
-                image.Save($"wwwroot/images/{guid}.jpg"); // Resmi kaydet
-                author.ImagePath = $"/images/{guid}.jpg"; // Yazarın fotoğraf yolunu ayarla
+                throw new Exception("Yazar bulunamadı.");
             }
 
-            await _authorRepo.Update(author); // Güncellenmiş yazarı repo'ya kaydet
+            existingAuthor.FirstName = model.FirstName;
+            existingAuthor.LastName = model.LastName;
+
+            if (model.Image is not null)
+            {
+                using var image = Image.Load(model.Image.OpenReadStream());
+                image.Mutate(x => x.Resize(600, 500));
+                Guid guid = Guid.NewGuid();
+                image.Save($"wwwroot/images/{guid}.jpg");
+                existingAuthor.ImagePath = $"/images/{guid}.jpg";
+            }
+
+            await _authorRepo.Update(existingAuthor);
+
         }
+
+
     }
 }

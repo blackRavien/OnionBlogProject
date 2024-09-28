@@ -24,7 +24,7 @@ namespace OnionProject.Application.Models.DTOs
         public string LastName { get; set; }
 
         // Yazarın yeni profil fotoğrafını güncellemek için dosya yükleme özelliği.
-        public IFormFile UploadPath { get; set; }
+        public IFormFile Image { get; set; }
 
         // Yazarın mevcut profil fotoğrafı (opsiyonel).
         public string? ImagePath { get; set; }

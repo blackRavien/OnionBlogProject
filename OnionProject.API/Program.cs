@@ -33,6 +33,15 @@ namespace OnionProject.API
                 builder.RegisterModule(new DependencyResolver());
             }); //IoC klasöründeki DependencyResolver sýnýfý burada configuration olarak algýlansýn istediðimiz için.
 
+            // API Program.cs dosyasýnda CORS ayarlarý
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader());
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,8 +53,9 @@ namespace OnionProject.API
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors("AllowAllOrigins"); // CORS'u kullanýn
 
+            app.UseAuthorization();
 
             app.MapControllers();
 

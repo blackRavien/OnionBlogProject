@@ -12,9 +12,9 @@ namespace OnionProject.Application.Models.DTOs
 {
     public class CreateAuthorDTO
     {
-        [Required(ErrorMessage ="İsmin girilmesi zorunludur.")]
-        [MinLength(3, ErrorMessage ="Adınızın en az 3 harfli olması gereklidir.")]
-        [Display(Name ="İsim")]
+        [Required(ErrorMessage = "İsmin girilmesi zorunludur.")]
+        [MinLength(3, ErrorMessage = "Adınızın en az 3 harfli olması gereklidir.")]
+        [Display(Name = "İsim")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Soyismin girilmesi zorunludur.")]
@@ -22,13 +22,17 @@ namespace OnionProject.Application.Models.DTOs
         [Display(Name = "Soyisim")]
         public string LastName { get; set; }
 
-        [PictureFileExtension] //Kendi yazdığımız Extension sınıfını kullanarak doğru formatta resim almayı kontrol edebiliriz.
-        public IFormFile UploadPath { get; set; }
-        public string? ImagePath { get; set; }
-        public DateTime CreatedDate => DateTime.Now;
-        public Status Status => Status.Active;
+        // PictureFileExtension Attribute, dosya formatını kontrol eder.
+        [PictureFileExtension(ErrorMessage = "Lütfen geçerli bir resim formatı yükleyin.")]
+        public IFormFile Image { get; set; } // Resim dosyasını tutan alan
 
+        public string? ImagePath { get; set; } // Resmin kaydedildiği dosya yolu
 
+        // Eğer CreatedDate ve Status backend'de atanıyorsa DTO'dan kaldırabilirsiniz.
+        // Aksi takdirde bu alanları bırakabilirsiniz.
 
+        public DateTime CreatedDate => DateTime.Now; // Oluşturulma tarihi
+        public Status Status => Status.Active; // Varsayılan olarak aktif
     }
+
 }

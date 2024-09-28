@@ -49,9 +49,11 @@ namespace OnionProject.MVC
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
 
             app.UseRouting();
+
+            app.UseStaticFiles();
 
             app.UseAuthentication(); //ekledik
 
