@@ -1,0 +1,12 @@
+﻿@model OnionProject.Application.Models.VMs.GenreVm
+
+<div class="container">
+    <h2>Türü Sil</h2>
+    <h4>@Model.Name</h4>
+    <p>Bu türü silmek istediğinizden emin misiniz?</p>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Evet, Sil</button>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">Hayır, Geri Dön</a>
+    </form>
+</div>

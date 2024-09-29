@@ -14,6 +14,12 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
     {
         public GenreRepo(AppDbContext context) : base(context)
         {
+            
+        }
+
+        public async Task<List<Genre>> GetAll()
+        {
+            return await _context.Genres.ToListAsync();
         }
 
         public async Task<Genre> GetById(int id)
@@ -55,5 +61,13 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
                 .Where(p => p.GenreId == genreId)
                 .ToListAsync();
         }
+
+        public async Task Add(Genre genre)
+        {
+            await _context.Genres.AddAsync(genre);
+            await _context.SaveChangesAsync();
+        }
+
+
     }
 }

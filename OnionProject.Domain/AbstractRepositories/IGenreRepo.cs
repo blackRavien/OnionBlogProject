@@ -13,5 +13,9 @@ namespace OnionProject.Domain.AbstractRepositories
         Task<List<Post>> GetPostsByGenre(int genreId);
 
         Task<Genre> GetById(int id);
+        Task<List<Genre>> GetAll();
+
+        Task Add(Genre genre);
+
     }
 }

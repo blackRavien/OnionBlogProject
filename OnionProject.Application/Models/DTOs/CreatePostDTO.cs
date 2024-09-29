@@ -28,6 +28,7 @@ namespace OnionProject.Application.Models.DTOs
         public int AuthorId { get; set; }  // Post'un yazarının ID'si (foreign key)
 
         [Display(Name = "Kategori")]
+        [Required(ErrorMessage = "Kategori Türü girmek zorunludur.")]
         public int GenreId { get; set; }  // Post'un türü veya kategorisi (foreign key)
 
         public DateTime CreatedDate => DateTime.Now;  // Oluşturulma tarihi, varsayılan olarak şu anki zaman

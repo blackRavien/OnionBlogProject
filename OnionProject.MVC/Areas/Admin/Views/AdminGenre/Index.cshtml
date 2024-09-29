@@ -1,0 +1,28 @@
+﻿@model IEnumerable<OnionProject.Application.Models.VMs.GenreVm>
+
+<div class="container">
+    <h2>Türler</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tür İsmi</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var genre in Model)
+            {
+                <tr>
+                    <td>@genre.Id</td>
+                    <td>@genre.Name</td>
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = genre.Id })" class="btn btn-primary">Düzenle</a>
+                        <a href="@Url.Action("Delete", new { id = genre.Id })" class="btn btn-danger">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a href="@Url.Action("Create")" class="btn btn-success">Yeni Tür Ekle</a>
+</div>

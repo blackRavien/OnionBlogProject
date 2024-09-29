@@ -1,0 +1,15 @@
+﻿@model OnionProject.Application.Models.DTOs.UpdateGenreDTO
+
+<div class="container">
+    <h2>Türü Düzenle</h2>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Güncelle</button>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">Geri</a>
+    </form>
+</div>

@@ -1,0 +1,25 @@
+﻿@model PostDetailsVm
+@{
+    ViewBag.Title = "Gönderiyi Sil";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-danger mb-4">Gönderiyi Sil</h2>
+    <div class="alert alert-danger" role="alert">
+        Bu gönderiyi silmek istediğinizden emin misiniz?
+    </div>
+    <div class="card mb-4">
+        <img src="@Model.ImagePath" class="card-img-top" alt="Post Image" />
+        <div class="card-body">
+            <h4 class="card-title">@Model.Title</h4>
+            <p class="card-text">@Model.Content</p>
+            <p class="card-text"><strong>Yazar: </strong>@Model.AuthorFullName</p>
+            <p class="card-text"><strong>Kategori: </strong>@Model.GenreName</p>
+        </div>
+    </div>
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Sil</button>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">İptal</a>
+    </form>
+</div>

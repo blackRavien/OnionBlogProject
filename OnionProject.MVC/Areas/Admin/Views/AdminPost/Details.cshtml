@@ -1,0 +1,19 @@
+﻿@model PostDetailsVm
+@{
+    ViewBag.Title = "Gönderi Detayları";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Gönderi Detayları</h2>
+    <div class="card mb-4">
+        <img src="@Model.ImagePath" class="card-img-top" alt="Post Image" />
+        <div class="card-body">
+            <h4 class="card-title">@Model.Title</h4>
+            <p class="card-text">@Model.Content</p>
+            <p class="card-text"><strong>Yazar: </strong>@Model.AuthorFullName</p>
+            <p class="card-text"><strong>Kategori: </strong>@Model.GenreName</p>
+            <p class="card-text"><strong>Oluşturulma Tarihi: </strong>@Model.CreatedDate.ToString("dd MMM yyyy")</p>
+        </div>
+    </div>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Geri Dön</a>
+</div>

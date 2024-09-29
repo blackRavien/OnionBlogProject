@@ -16,6 +16,7 @@ namespace OnionProject.Application.Models.VMs
         public string AuthorFirstName { get; set; }
         public string AuthorLastName { get; set; }
         public string AuthorFullName => $"{AuthorFirstName} {AuthorLastName}";
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         public int GenreId { get; set; }
         public int AuthorId { get; set; }

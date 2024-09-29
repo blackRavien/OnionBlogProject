@@ -17,7 +17,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             this._authorService = authorService;
         }
 
-        //string uri = "http://localhost:5065";
+        
         public async Task<IActionResult> Index()
         {
             //var authorList = await _authorService.GetAuthors();
@@ -38,8 +38,10 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateAuthorDTO author)
