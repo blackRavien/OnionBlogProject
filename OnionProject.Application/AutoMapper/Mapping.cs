@@ -18,13 +18,15 @@ namespace OnionProject.Application.AutoMapper
             CreateMap<Author, CreateAuthorDTO>().ReverseMap();
             CreateMap<Post, CreatePostDTO>().ReverseMap();
             CreateMap<Genre, CreateGenreDTO>().ReverseMap();
-            
+            CreateMap<Comment, CreateCommentDTO>().ReverseMap();
+
 
             //Update Mapping
             CreateMap<AppUser, UpdateAppUserDTO>().ReverseMap();
             CreateMap<Author, UpdateAuthorDTO>().ReverseMap();
             CreateMap<Genre, UpdateGenreDTO>().ReverseMap();
             CreateMap<Post, UpdatePostDTO>().ReverseMap();
+            
 
             //Register and Login Mapping
             CreateMap<AppUser, RegisterAppUserDTO>().ReverseMap();
@@ -40,8 +42,12 @@ namespace OnionProject.Application.AutoMapper
             CreateMap<Post, PostVm>().ReverseMap();
             CreateMap<AppUser, RegisterVm>().ReverseMap();
             CreateMap<AppUser, LoginVm>().ReverseMap();
+            CreateMap<Comment, CommentVm>().ReverseMap();   
+
+    
+
 
         }
-        
+
     }
 }

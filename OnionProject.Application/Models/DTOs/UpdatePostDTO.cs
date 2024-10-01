@@ -41,5 +41,7 @@ namespace OnionProject.Application.Models.DTOs
         // Gönderinin türünü güncellemek için gerekli olan tür id'si.
         [Required]
         public int GenreId { get; set; }
+
+        public DateTime CreatedDate {  get; set; }
     }
 }

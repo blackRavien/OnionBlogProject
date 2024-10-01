@@ -56,7 +56,7 @@ namespace OnionProject.API.Controllers
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(author.Image.FileName);
 
                 // Dosya kaydetme yolu
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "../OnionProject.MVC/wwwroot/images", fileName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
 
 
                 // Dosyayı kaydet

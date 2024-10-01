@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnionProject.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using OnionProject.Infrastructure.Context;
 namespace OnionProject.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241001095255_MakeCommentIdsNullable")]
+    partial class MakeCommentIdsNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace OnionProject.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4b36de38-b32d-44f8-a7a8-3ce478c8240a",
+                            Id = "b4afbe45-273b-4916-8add-dfa6cc843399",
                             ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "56f08e22-35e6-4c79-b270-d7d21c03e513",
+                            Id = "865b536a-dd85-40a4-b37a-4025db85f91e",
                             ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
                             Name = "Member",
                             NormalizedName = "MEMBER"

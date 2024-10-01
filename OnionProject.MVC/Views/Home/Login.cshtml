@@ -1,0 +1,19 @@
+﻿@model OnionProject.Application.Models.DTOs.LoginDTO
+
+<form asp-action="Login" method="post">
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <button type="submit">Giriş Yap</button>
+</form>
+
+<partial name="_ValidationScriptsPartial" />

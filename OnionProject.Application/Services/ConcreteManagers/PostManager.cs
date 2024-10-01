@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
 using OnionProject.Application.Services.AbstractServices;
@@ -115,5 +116,8 @@ namespace OnionProject.Application.Services.ConcreteManagers
             var posts = await _postRepo.GetPostsWithAuthorAndGenre();
             return _mapper.Map<List<PostVm>>(posts);
         }
+
+        
+
     }
 }

@@ -67,11 +67,21 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
                 .ToListAsync();
         }
 
-        // Belirli bir ID'ye sahip postu getirir
+        //Belirli bir ID'ye sahip postu getirir
+        //public async Task<Post> GetById(int id)
+        //{
+        //    return await _context.Posts
+        //        .FindAsync(id);
+        //}
+
         public async Task<Post> GetById(int id)
         {
             return await _context.Posts
-                .FindAsync(id);
+                .Include(p => p.Author)  // Yazar ilişkisini dahil et
+                .Include(p => p.Genre)   // Tür ilişkisini dahil et
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
+
+
     }
 }

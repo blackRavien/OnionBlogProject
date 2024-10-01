@@ -1,0 +1,33 @@
+﻿@model List<GetPostsVm>
+@{
+    ViewBag.Title = "Postlar";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Tüm Postlar</h2>
+    
+    @if (ViewBag.Username != null)
+    {
+        <div class="text-right">
+            <h5>Hoşgeldin, @ViewBag.Username !</h5>
+        </div>
+    }
+
+    <div class="row">
+        @foreach (var post in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="@Url.Content("~/images/" + post.ImagePath)" class="card-img-top" alt="Post Image">
+                    <div class="card-body">
+                        <h5 class="card-title">@post.Title</h5>
+                        @* <p class="card-text">@post.Content.Substring(0, 100) ...</p> *@
+                        <a href="@Url.Action("Details", "UserPost", new { id = post.Id })" class="btn btn-primary">Detayları Gör</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+

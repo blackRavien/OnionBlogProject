@@ -53,7 +53,7 @@ namespace OnionProject.API
 
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowAllOrigins"); // CORS'u kullanýn
+            app.UseCors("AllowAllOrigins"); // CORS'u kullanýyorum
 
             app.UseAuthorization();
 

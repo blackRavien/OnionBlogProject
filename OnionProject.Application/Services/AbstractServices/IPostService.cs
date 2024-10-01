@@ -19,5 +19,6 @@ namespace OnionProject.Application.Services.AbstractServices
         Task<List<PostVm>> GetPostsByGenre(int genreId);
         Task<List<PostVm>> GetPostsByDateRange(DateTime startDate, DateTime endDate);
         Task<List<PostVm>> GetPostsWithAuthorAndGenre();
+        
     }
 }

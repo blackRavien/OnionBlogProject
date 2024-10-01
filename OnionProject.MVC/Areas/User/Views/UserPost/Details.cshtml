@@ -1,14 +1,12 @@
 ﻿@model PostDetailsVm
 @{
-    ViewBag.Title = "Gönderi Detayları";
+    ViewBag.Title = "Post Detayları";
 }
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Gönderi Detayları</h2>
+    <h2 class="text-center mb-4">Post Detayları</h2>
     <div class="card mb-4">
-        <img src="@Url.Content("~/images/" + Model.ImagePath)" alt="Post Image" class="img-fluid" />
-
-
+        <img src="@Url.Content("~/images/" + Model.ImagePath)" alt="Post Image" class="img-fluid">
         <div class="card-body">
             <h4 class="card-title">@Model.Title</h4>
             <p class="card-text">@Model.Content</p>
@@ -18,6 +16,14 @@
         </div>
     </div>
 
+    <h3>Yorumlar</h3>
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="border p-3 mb-2">
+            <p><strong>@comment.UserId:</strong> @comment.Content</p>
+            <p><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
+        </div>
+    }
 
     <!-- Yorum ekleme formu -->
     <h3>Yorum Ekle</h3>
@@ -30,5 +36,5 @@
         <button type="submit" class="btn btn-primary mt-2">Yorum Ekle</button>
     </form>
 
-    <a href="@Url.Action("Index")" class="btn btn-secondary">Geri Dön</a>
+    <a href="@Url.Action("Index", "UserPost")" class="btn btn-secondary mt-3">Geri Dön</a>
 </div>

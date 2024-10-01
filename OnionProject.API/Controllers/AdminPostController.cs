@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Services.AbstractServices;
+using OnionProject.Domain.AbstractRepositories;
+using OnionProject.Domain.Entities;
 
 namespace OnionProject.API.Controllers
 {
@@ -10,11 +13,13 @@ namespace OnionProject.API.Controllers
     {
         private readonly IPostService _postService;
         private readonly IAuthorService _authorService;
+        private readonly ICommentRepo _commentRepo;
 
-        public AdminPostController(IPostService postService, IAuthorService authorService)
+        public AdminPostController(IPostService postService, IAuthorService authorService, ICommentRepo commentRepo)
         {
             _postService = postService;
             _authorService = authorService;
+            _commentRepo = commentRepo;
         }
 
         // Tüm postları listelemek için
@@ -59,6 +64,9 @@ namespace OnionProject.API.Controllers
             return Ok();
         }
 
+        
+
+
         // Postu güncellemek için
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
@@ -95,5 +103,28 @@ namespace OnionProject.API.Controllers
             await _postService.Delete(id);
             return NoContent(); // 204 No Content, silme başarılı
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateComment(CreateCommentDTO createCommentDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var comment = new Comment
+            {
+                Content = createCommentDto.Content,
+                PostId = createCommentDto.PostId,
+                AuthorId = createCommentDto.AuthorId,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _commentRepo.AddAsync(comment);
+
+            return Ok();
+        }
+
+
     }
 }

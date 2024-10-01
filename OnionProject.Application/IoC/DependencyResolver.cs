@@ -23,12 +23,13 @@ namespace OnionProject.Application.IoC
             builder.RegisterType<GenreRepo>().As<IGenreRepo>().InstancePerLifetimeScope();
             builder.RegisterType<AppUserRepo>().As<IAppUserRepo>().InstancePerLifetimeScope();
             builder.RegisterType<PostRepo>().As<IPostRepo>().InstancePerLifetimeScope();
-            
+            builder.RegisterType<CommentRepo>().As<ICommentRepo>().InstancePerLifetimeScope();
 
             builder.RegisterType<AuthorManager>().As<IAuthorService>().InstancePerLifetimeScope();
             builder.RegisterType<PostManager>().As<IPostService>().InstancePerLifetimeScope();
             builder.RegisterType<GenreManager>().As<IGenreService>().InstancePerLifetimeScope();
-
+            builder.RegisterType<CommentManager>().As<ICommentService>().InstancePerLifetimeScope();
+            
             //diğer servisler ve managerlar buraya eklenecek...
             //builder.RegisterType<AppUserManager>().As<IAppUserService>().InstancePerLifetimeScope();
             //varsa başka......

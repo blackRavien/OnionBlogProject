@@ -27,7 +27,8 @@ namespace OnionProject.Infrastructure.Context
         public DbSet<Author> Authors { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Post> Posts { get; set; }
-        
+        public DbSet<Comment> Comments { get; set; }
+
 
         // DbContext'in yapılandırılması (örneğin, bağlantı dizesi ayarları)
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -43,6 +44,7 @@ namespace OnionProject.Infrastructure.Context
             builder.ApplyConfiguration(new AuthorConfig());
             builder.ApplyConfiguration(new GenreConfig());
             builder.ApplyConfiguration(new PostConfig());
+            builder.ApplyConfiguration(new CommentConfig());
 
             // Seed data olarak rol ekleme (örneğin, Admin ve Member rolleri)
             builder.Entity<IdentityRole>().HasData(

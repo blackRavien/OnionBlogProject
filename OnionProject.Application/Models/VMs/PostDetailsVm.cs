@@ -13,6 +13,8 @@ namespace OnionProject.Application.Models.VMs
         public string AuthorLastName { get; set; } // Yazarın soyadı
         public string AuthorFullName => $"{AuthorFirstName} {AuthorLastName}"; // Yazarın tam adı
 
+        public List<CommentVm> Comments { get; set; } // Yorumlar
+
         public DateTime CreatedDate { get; set; } // Gönderinin oluşturulma tarihi
     }
 }

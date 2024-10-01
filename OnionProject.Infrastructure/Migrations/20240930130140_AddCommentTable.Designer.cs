@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnionProject.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using OnionProject.Infrastructure.Context;
 namespace OnionProject.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240930130140_AddCommentTable")]
+    partial class AddCommentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace OnionProject.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4b36de38-b32d-44f8-a7a8-3ce478c8240a",
+                            Id = "b6d76777-a089-4907-8b06-14e41bccf4d9",
                             ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "56f08e22-35e6-4c79-b270-d7d21c03e513",
+                            Id = "66f1e377-d7ff-4e86-ba90-38831241a614",
                             ConcurrencyStamp = "00000000-0000-0000-0000-000000000000",
                             Name = "Member",
                             NormalizedName = "MEMBER"
@@ -307,9 +310,6 @@ namespace OnionProject.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AuthorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -336,11 +336,10 @@ namespace OnionProject.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
 
                     b.HasIndex("PostId");
 
@@ -478,10 +477,6 @@ namespace OnionProject.Infrastructure.Migrations
 
             modelBuilder.Entity("OnionProject.Domain.Entities.Comment", b =>
                 {
-                    b.HasOne("OnionProject.Domain.Entities.Author", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-
                     b.HasOne("OnionProject.Domain.Entities.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
@@ -491,9 +486,8 @@ namespace OnionProject.Infrastructure.Migrations
                     b.HasOne("OnionProject.Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Author");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Post");
 
