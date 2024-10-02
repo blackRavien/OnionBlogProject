@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <BaseOutputPath>C:\Users\merts\source\repos\13-OnionProject\OnionProject.MVC\bin\Debug\Debug\net8.0</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

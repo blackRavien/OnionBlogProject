@@ -1,6 +1,8 @@
+//using AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnionProject.Application.Models.DTOs;
+using OnionProject.Application.Models.VMs;
 using OnionProject.Domain.Entities;
 
 namespace OnionProject.MVC.Controllers
@@ -67,39 +69,80 @@ namespace OnionProject.MVC.Controllers
             return View();
         }
 
-        [HttpPost]
+
+        //
         public async Task<IActionResult> Login(LoginDTO model)
         {
             if (ModelState.IsValid)
             {
+                // Kullanýcýyý email ile bul
                 var user = await _userManager.FindByEmailAsync(model.Email);
 
                 if (user != null)
                 {
+                    // Giriþ yap
                     var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, false, false);
 
                     if (result.Succeeded)
                     {
-                        if (await _userManager.IsInRoleAsync(user, "Member"))
+                        // Kullanýcýnýn rolünü kontrol et
+                        if (await _userManager.IsInRoleAsync(user, "admin"))
                         {
-                            return RedirectToAction("Index", "UserPost", new { area = "User" }); // Member ise UserPost sayfasýna yönlendir
+                            // Adminse admin sayfasýna yönlendir
+                            return Redirect("/Admin/AdminMain/Index");
                         }
 
-                        return RedirectToAction("Index", "AdminPost", new { area = "Admin" }); // Admin ise admin sayfasýna yönlendir
+                        // Standart kullanýcýysa UserPost sayfasýna yönlendir
+                        return RedirectToAction("Index", "UserPost", new { area = "User" });
                     }
-
                 }
 
+                // Giriþ baþarýsýzsa hata mesajý ekle
                 ModelState.AddModelError("", "Geçersiz giriþ denemesi.");
             }
-            
 
+            // Model hatalýysa ya da kullanýcý bulunamazsa, giriþ sayfasýný tekrar göster
             return View(model);
         }
 
 
 
+        //[HttpPost]
+        //public async Task<IActionResult> Login(LoginDTO model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = await _userManager.FindByEmailAsync(model.Email);
+
+        //        if (user != null)
+        //        {
+        //            var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, false, false);
+
+        //            if (result.Succeeded)
+        //            {
+        //                if (await _userManager.IsInRoleAsync(user, "Member"))
+        //                {
+        //                    return RedirectToAction("Index", "UserPost", new { area = "User" }); // Member ise UserPost sayfasýna yönlendir
+        //                }
+
+        //                return RedirectToAction("Index", "AdminPost", new { area = "Admin" }); // Admin ise admin sayfasýna yönlendir
+        //            }
+
+        //        }
+
+        //        ModelState.AddModelError("", "Geçersiz giriþ denemesi.");
+        //    }
+
+
+        //    return View(model);
+        //}
+
+
+
         // Logout (Çýkýþ)
+
+
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
