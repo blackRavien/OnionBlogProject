@@ -1,4 +1,48 @@
-﻿@model PostDetailsVm
+﻿@model PostDetailsWithCommentVm
+@using System.Security.Claims
+
+<h2>@Model.PostDetails.Title</h2>
+<p>@Model.PostDetails.Content</p>
+
+<h4>Yorum Ekle</h4>
+<form asp-action="CreateComment" method="post">
+    <input type="hidden" asp-for="PostDetails.Id" />
+    <div class="form-group">
+        <textarea asp-for="NewComment.Content" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Yorum Ekle</button>
+</form>
+
+
+<h3>Yorumlar</h3>
+@if (Model.Comments != null && Model.Comments.Any())
+{
+    foreach (var comment in Model.Comments)
+    {
+        <div class="border p-3 mb-2">
+            <p><strong>@comment.UserName:</strong> @comment.Content</p>
+            <p><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
+
+            @if (comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                <form asp-action="DeleteComment" method="post">
+                    <input type="hidden" name="commentId" value="@comment.Id" />
+                    <input type="hidden" name="postId" value="@Model.PostDetails.Id" />
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            }
+        </div>
+    }
+}
+else
+{
+    <p>Bu post için henüz bir yorum bulunmamaktadır.</p>
+}
+
+
+
+
+@* @model PostDetailsVm
 @{
     ViewBag.Title = "Post Detayları";
 }
@@ -17,13 +61,21 @@
     </div>
 
     <h3>Yorumlar</h3>
-    @foreach (var comment in Model.Comments)
+    @if (Model.Comments != null && Model.Comments.Any())
     {
-        <div class="border p-3 mb-2">
-            <p><strong>@comment.UserId:</strong> @comment.Content</p>
-            <p><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
-        </div>
+        foreach (var comment in Model.Comments)
+        {
+            <div class="border p-3 mb-2">
+                <p><strong>@comment.UserId:</strong> @comment.Content</p>
+                <p><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
+            </div>
+        }
     }
+    else
+    {
+        <p>Bu post için henüz bir yorum bulunmamaktadır.</p>
+    }
+
 
     <!-- Yorum ekleme formu -->
     <h3>Yorum Ekle</h3>
@@ -38,3 +90,4 @@
 
     <a href="@Url.Action("Index", "UserPost")" class="btn btn-secondary mt-3">Geri Dön</a>
 </div>
+ *@

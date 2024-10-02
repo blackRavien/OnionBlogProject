@@ -4,6 +4,7 @@ using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
 using OnionProject.Application.Services.AbstractServices;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace OnionProject.API.Controllers
@@ -51,6 +52,25 @@ namespace OnionProject.API.Controllers
 
             await _commentService.AddCommentAsync(createCommentDto);
             return Ok("Yorum başarıyla eklendi!");
+        }
+
+
+        [HttpDelete("DeleteComment/{commentId}")]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var comment = await _commentService.GetCommentsByPostIdAsync(commentId); // Yorumu bul
+
+            if (comment == null)
+            {
+                return NotFound(new { message = "Yorum bulunamadı." });
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Mevcut kullanıcının ID'sini al
+
+            // Yorumu sil
+            await _commentService.DeleteCommentAsync(commentId);
+
+            return Ok(new { message = "Yorum başarıyla silindi." });
         }
 
 

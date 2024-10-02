@@ -42,9 +42,10 @@ namespace OnionProject.Application.AutoMapper
             CreateMap<Post, PostVm>().ReverseMap();
             CreateMap<AppUser, RegisterVm>().ReverseMap();
             CreateMap<AppUser, LoginVm>().ReverseMap();
-            CreateMap<Comment, CommentVm>().ReverseMap();   
+            CreateMap<Comment, CommentVm>().ReverseMap();
+            CreateMap<UpdatePostDTO, PostDetailsVm>().ReverseMap();
 
-    
+
 
 
         }

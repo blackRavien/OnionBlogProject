@@ -11,5 +11,7 @@ namespace OnionProject.Application.Models.VMs
     {
         public PostDetailsVm PostDetails { get; set; }
         public CreateCommentDTO NewComment { get; set; }
+        public List<GetCommentDTO>? Comments { get; set; }  // Yorumları listeleme için ekledik.
+        //public string UserName { get; set; } // Kullanıcı adını taşıyacak yeni bir özellik
     }
 }

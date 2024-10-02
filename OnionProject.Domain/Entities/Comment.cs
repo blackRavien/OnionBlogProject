@@ -14,6 +14,7 @@ namespace OnionProject.Domain.Entities
         public int PostId { get; set; } // Hangi post'a ait olduğunu belirlemek için
         public int? AuthorId { get; set; } // Yorum yapabilen Admin kullanıcısı
         public string? UserId { get; set; } // Yorum yapan standart kullanıcı (ileride dahil edilecek)
+        //public string UserName { get; set; } //kullanıcı adı sonradan eklendi
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         public virtual Post Post { get; set; } // İlişkilendirme

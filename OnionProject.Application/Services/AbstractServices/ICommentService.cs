@@ -10,6 +10,7 @@ namespace OnionProject.Application.Services.AbstractServices
     public interface ICommentService
     {
         Task AddCommentAsync(CreateCommentDTO commentDto);
+        Task DeleteCommentAsync(int commentId);
         Task<List<GetCommentDTO>> GetCommentsByPostIdAsync(int postId);
     }
 
