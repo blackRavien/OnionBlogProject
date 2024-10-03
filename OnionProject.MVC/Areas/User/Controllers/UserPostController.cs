@@ -11,7 +11,7 @@ using System.Security.Claims;
 namespace OnionProject.MVC.Controllers
 {
     [Area("User")] // Eğer Area kullanıyorsanız
-    [Route("UserPost")]
+    [Route("UserPostApi")]
     public class UserPostController : Controller
     {
         private readonly string uri = "https://localhost:7296"; // API URL
@@ -37,7 +37,7 @@ namespace OnionProject.MVC.Controllers
             List<GetPostsVm> posts = new List<GetPostsVm>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{uri}/api/UserPost/Index"))
+                using (var response = await httpClient.GetAsync($"{uri}/api/UserPostApi/Index"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
@@ -87,7 +87,7 @@ namespace OnionProject.MVC.Controllers
                 {
                     var json = JsonConvert.SerializeObject(createCommentDto);
                     var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-                    var response = await httpClient.PostAsync($"{uri}/api/UserPost/CreateComment", content);
+                    var response = await httpClient.PostAsync($"{uri}/api/UserPostApi/CreateComment", content);
 
                     if (!response.IsSuccessStatusCode)
                     {
@@ -149,6 +149,7 @@ namespace OnionProject.MVC.Controllers
 
         // DeleteComment metodu
         //https://localhost:7296/api/UserPost/DeleteComment/DeleteComment/7
+
         [HttpPost("DeleteComment")]
         public async Task<IActionResult> DeleteComment(int commentId, int postId)
         {
@@ -157,7 +158,7 @@ namespace OnionProject.MVC.Controllers
             // API'den yorum silme isteği gönder
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.DeleteAsync($"{uri}/api/UserPost/DeleteComment/DeleteComment/{commentId}");
+                var response = await httpClient.DeleteAsync($"{uri}/api/UserPostApi/DeleteComment/DeleteComment/{commentId}");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Details", new { id = postId });

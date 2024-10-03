@@ -9,11 +9,11 @@ using OnionProject.Domain.Enum;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AdminGenreController : ControllerBase
+public class AdminGenreApiController : ControllerBase
 {
     private readonly IGenreRepo _genreRepo;
     
-    public AdminGenreController(IGenreRepo genreRepo)
+    public AdminGenreApiController(IGenreRepo genreRepo)
     {
         _genreRepo = genreRepo;
     }

@@ -61,47 +61,6 @@ public class AdminCommentController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    //// Yorum düzenleme sayfası
-    //[HttpGet]
-    //public async Task<IActionResult> Edit(int id)
-    //{
-    //    var comment = await _commentRepo.GetCommentByIdAsync(id); // API'den yorum içeriğini al
-    //    if (comment == null)
-    //    {
-    //        return NotFound(); // Yorum bulunamazsa 404 döner
-    //    }
-
-    //    var updateCommentDto = new UpdateCommentDTO
-    //    {
-    //        Id = id, // ID'yi burada set ediyoruz
-    //        Content = comment.Content // İçeriği al
-    //    };
-
-    //    return View(updateCommentDto);
-    //}
-
-    //// Yorum güncelleme işlemi
-    //[HttpPost]
-    //public async Task<IActionResult> Edit(UpdateCommentDTO updateCommentDto)
-    //{
-    //    if (!ModelState.IsValid)
-    //    {
-    //        TempData["Error"] = "Girdiğiniz verileri kontrol ediniz!";
-    //        return View(updateCommentDto); // Hata varsa, formu tekrar göster
-    //    }
-
-    //    var comment = new Comment
-    //    {
-    //        Id = updateCommentDto.Id,
-    //        Content = updateCommentDto.Content,
-    //        UpdatedDate = DateTime.UtcNow // Güncellenme tarihi ekleyin
-    //    };
-
-    //    await _commentRepo.UpdateAsync(comment); // API'ye güncelleme isteği
-    //    TempData["Success"] = "Yorum başarıyla güncellendi!";
-    //    return RedirectToAction(nameof(Index));
-    //}
-
     // Yorum silme işlemi
     [HttpPost]
     public async Task<IActionResult> Delete(int id)

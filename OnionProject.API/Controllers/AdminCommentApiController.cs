@@ -8,11 +8,11 @@ namespace OnionProject.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AdminCommentController : ControllerBase
+    public class AdminCommentApiController : ControllerBase
     {
         private readonly ICommentRepo _commentRepo;
 
-        public AdminCommentController(ICommentRepo commentRepo)
+        public AdminCommentApiController(ICommentRepo commentRepo)
         {
             _commentRepo = commentRepo;
         }

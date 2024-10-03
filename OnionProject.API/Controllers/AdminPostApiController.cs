@@ -9,13 +9,13 @@ namespace OnionProject.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AdminPostController : ControllerBase
+    public class AdminPostApiController : ControllerBase
     {
         private readonly IPostService _postService;
         private readonly IAuthorService _authorService;
         private readonly ICommentRepo _commentRepo;
 
-        public AdminPostController(IPostService postService, IAuthorService authorService, ICommentRepo commentRepo)
+        public AdminPostApiController(IPostService postService, IAuthorService authorService, ICommentRepo commentRepo)
         {
             _postService = postService;
             _authorService = authorService;
@@ -86,6 +86,19 @@ namespace OnionProject.API.Controllers
                 // Hata detaylarını logla
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+
+        // ID ile belirli bir postu almak için
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPost(int id)
+        {
+            var post = await _postService.GetById(id);
+            if (post == null)
+            {
+                return NotFound(new { message = "Post bulunamadı" });
+            }
+
+            return Ok(post); // UpdatePostDTO veya PostVm dönebilirsiniz
         }
 
 

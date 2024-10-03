@@ -25,7 +25,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             List<AuthorVm> authors = new List<AuthorVm>();
             using (var httpClient = new HttpClient())
             {
-                using (var cevap = await httpClient.GetAsync($"{uri}/api/Author/Index"))
+                using (var cevap = await httpClient.GetAsync($"{uri}/api/AuthorApi/Index"))
                 {
                     string apiCevap = await cevap.Content.ReadAsStringAsync();
                     authors = JsonConvert.DeserializeObject<List<AuthorVm>>(apiCevap);
@@ -65,7 +65,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                     form.Add(fileStreamContent, "Image", author.Image.FileName); // UploadPath yerine Image kullanılıyor
                 }
 
-                var response = await httpClient.PostAsync($"{uri}/api/Author/Create", form);
+                var response = await httpClient.PostAsync($"{uri}/api/AuthorApi/Create", form);
                 string errorContent = await response.Content.ReadAsStringAsync();  // API'den dönen hata mesajını alıyoruz
                 if (response.IsSuccessStatusCode)
                 {
@@ -81,7 +81,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            return Redirect("https://localhost:7225/Admin/Author/Index");
         }
 
 
@@ -90,7 +90,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             AuthorDetailVm authorDetail = null;
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"{uri}/api/Author/Details/{id}");
+                var response = await httpClient.GetAsync($"{uri}/api/AuthorApi/Details/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     string apiCevap = await response.Content.ReadAsStringAsync();
@@ -147,7 +147,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                     form.Add(fileStreamContent, "Image", author.Image.FileName);
                 }
                 
-                var response = await httpClient.PostAsync($"{uri}/api/Author/Update", form);
+                var response = await httpClient.PostAsync($"{uri}/api/AuthorApi/Update", form);
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["Success"] = $"{author.FirstName} {author.LastName} kişisinin kaydı başarıyla güncellendi!";
@@ -159,7 +159,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index)); // Güncelleme başarılıysa Index sayfasına yönlendir.
+            return Redirect("https://localhost:7225/Admin/Author/Index"); // Güncelleme başarılıysa Index sayfasına yönlendir.
         }
 
         [HttpPost]
@@ -167,7 +167,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.DeleteAsync($"{uri}/api/Author/Delete/{id}");
+                var response = await httpClient.DeleteAsync($"{uri}/api/AuthorApi/Delete/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["Success"] = "Yazar başarıyla silindi!";
@@ -178,7 +178,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index)); // İşlem tamamlandığında liste sayfasına yönlendir
+            return Redirect("https://localhost:7225/Admin/Author/Index"); // İşlem tamamlandığında liste sayfasına yönlendir
         }
 
 

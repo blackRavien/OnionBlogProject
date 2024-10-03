@@ -11,12 +11,12 @@ namespace OnionProject.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class UserPostController : ControllerBase
+    public class UserPostApiController : ControllerBase
     {
         private readonly IPostService _postService;
         private readonly ICommentService _commentService;
 
-        public UserPostController(IPostService postService, ICommentService commentService)
+        public UserPostApiController(IPostService postService, ICommentService commentService)
         {
             _postService = postService;
             _commentService = commentService;

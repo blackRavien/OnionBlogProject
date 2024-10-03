@@ -1,1 +1,50 @@
-﻿<h1>Hoşgeldin Admin!</h1>
+﻿<h1 class="text-center">Hoşgeldin Admin!</h1>
+@{
+    ViewData["Title"] = "Admin Ana Sayfa";
+}
+
+<h4 class="text-center mt-4">Yönetim Paneli</h4>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Postları Yönet -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Postları Yönet</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p>Post ekleme, güncelleme veya silme işlemleri için buraya tıklayın.</p>
+                    <a href="https://localhost:7225/Admin/AdminPost/Index" class="btn btn-primary">Postları Yönet</a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Yazarları Yönet -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white text-center">
+                    <h4>Yazarları Yönet</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p>Yazar ekleme, güncelleme veya silme işlemleri için buraya tıklayın.</p>
+                    <a href="https://localhost:7225/Admin/Author/Index" class="btn btn-success">Yazarları Yönet</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Genre'leri Yönet -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white text-center">
+                    <h4>Genre'leri Yönet</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p>Genre ekleme, güncelleme veya silme işlemleri için buraya tıklayın.</p>
+                    <a href="https://localhost:7225/Admin/AdminGenre/Index" class="btn btn-info">Genre'leri Yönet</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

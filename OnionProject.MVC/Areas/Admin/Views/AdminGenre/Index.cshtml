@@ -17,12 +17,16 @@
                     <td>@genre.Id</td>
                     <td>@genre.Name</td>
                     <td>
-                        <a href="@Url.Action("Edit", new { id = genre.Id })" class="btn btn-primary">Düzenle</a>
-                        <a href="@Url.Action("Delete", new { id = genre.Id })" class="btn btn-danger">Sil</a>
+                        
+                        <a href="https://localhost:7225/Admin/AdminGenre/Edit/@genre.Id" class="btn btn-primary">Düzenle</a>
+
+                        <a href="https://localhost:7225/Admin/AdminGenre/Delete/@genre.Id" class="btn btn-danger" onclick="return confirm('Silmek istediğinize emin misiniz?');">Sil</a>
+
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <a href="@Url.Action("Create")" class="btn btn-success">Yeni Tür Ekle</a>
+    @* <a href="@Url.Action("Create", "AdminGenre", new { area = "Admin" })" class="btn btn-success">Yeni Tür Ekle</a> *@
+    <a href="https://localhost:7225/Admin/AdminGenre/Create" class="btn btn-success">Yeni Tür Ekle</a>
 </div>

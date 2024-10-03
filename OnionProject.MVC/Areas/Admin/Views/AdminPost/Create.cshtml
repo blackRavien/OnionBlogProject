@@ -5,7 +5,7 @@
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Yeni Gönderi Oluştur</h2>
-    <form asp-action="Create" method="post" enctype="multipart/form-data">
+    <form action="https://localhost:7225/Admin/AdminPost/Create" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="Title">Başlık</label>
             <input asp-for="Title" class="form-control" placeholder="Başlık giriniz" />
@@ -46,17 +46,6 @@
                 {
                 <option value="@genre.Id">@genre.Name</option>
                 }
-                @* @if (ViewBag.Genres != null)
-                {
-                    foreach (var genre in ViewBag.Genres)
-                    {
-                        <option value="@genre.Id">@genre.Name</option>
-                    }
-                }
-                else
-                {
-                    <option disabled>Tür bulunamadı</option>
-                } *@
             </select>
         </div>
 

@@ -7,11 +7,11 @@ namespace OnionProject.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AuthorController : ControllerBase
+    public class AuthorApiController : ControllerBase
     {
         private readonly IAuthorService _authorService;
 
-        public AuthorController(IAuthorService authorService)
+        public AuthorApiController(IAuthorService authorService)
         {
             _authorService = authorService;
         }

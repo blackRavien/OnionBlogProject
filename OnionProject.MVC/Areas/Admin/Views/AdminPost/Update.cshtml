@@ -5,22 +5,27 @@
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Gönderiyi Düzenle</h2>
-    <form asp-action="Update" method="post" enctype="multipart/form-data">
+    <form action="https://localhost:7225/Admin/AdminPost/Update" method="post" enctype="multipart/form-data">
+         <input type="hidden" asp-for="Id" />  <!--GÜNCELLEME: ID'yi form ile gönderiyoruz -->
+
         <div class="form-group">
             <label for="Title">Başlık</label>
             <input asp-for="Title" class="form-control" placeholder="Başlığı güncelle" />
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label for="Content">İçerik</label>
             <textarea asp-for="Content" class="form-control" placeholder="İçeriği güncelle"></textarea>
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label for="UploadPath">Resmi Güncelle</label>
             <input asp-for="UploadPath" type="file" class="form-control-file" />
             <span asp-validation-for="UploadPath" class="text-danger"></span>
         </div>
+
         <div class="form-group">
             <label for="AuthorId">Yazar Seçin</label>
             <select asp-for="AuthorId" class="form-control">
@@ -38,6 +43,7 @@
                 }
             </select>
         </div>
+
         <div class="form-group">
             <label for="GenreId">Kategori Seçin</label>
             <select asp-for="GenreId" class="form-control">
@@ -55,6 +61,7 @@
                 }
             </select>
         </div>
+
         <button type="submit" class="btn btn-primary btn-block">Gönderiyi Güncelle</button>
     </form>
 </div>

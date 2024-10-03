@@ -27,7 +27,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             List<GetPostsVm> posts = new List<GetPostsVm>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{uri}/api/AdminPost/Index"))
+                using (var response = await httpClient.GetAsync($"{uri}/api/AdminPostApi/Index"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
@@ -44,7 +44,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             List<GenreVm> genres = new List<GenreVm>();
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"{uri}/api/AdminGenre");
+                var response = await httpClient.GetAsync($"{uri}/api/AdminGenreApi");
                 if (response.IsSuccessStatusCode)
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -57,7 +57,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             List<AuthorVm> authors = new List<AuthorVm>();
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"{uri}/api/Author/Index");
+                var response = await httpClient.GetAsync($"{uri}/api/AuthorApi/Index");
                 if (response.IsSuccessStatusCode)
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -93,15 +93,15 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                     form.Add(fileStreamContent, "UploadPath", post.UploadPath.FileName);
                 }
 
-                var response = await httpClient.PostAsync($"{uri}/api/AdminPost/Create", form);
+                var response = await httpClient.PostAsync($"{uri}/api/AdminPostApi/Create", form);
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["Success"] = "Post başarıyla oluşturuldu!";
-                    return RedirectToAction(nameof(Index));
+                    return Redirect("https://localhost:7225/Admin/AdminPost/Index");
                 }
                 TempData["Error"] = "Post oluşturulurken hata meydana geldi!";
             }
-            return View(post);
+            return Redirect("https://localhost:7225/Admin/AdminPost/Index");
         }
 
 
@@ -110,7 +110,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             PostDetailsVm postDetail = null;
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"{uri}/api/AdminPost/Details/{id}");
+                var response = await httpClient.GetAsync($"{uri}/api/AdminPostApi/Details/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -161,7 +161,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             List<GenreVm> genres = new List<GenreVm>();
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"{uri}/api/AdminGenre");
+                var response = await httpClient.GetAsync($"{uri}/api/AdminGenreApi");
                 if (response.IsSuccessStatusCode)
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -174,7 +174,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             List<AuthorVm> authors = new List<AuthorVm>();
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"{uri}/api/Author/Index");
+                var response = await httpClient.GetAsync($"{uri}/api/AuthorApi/Index");
                 if (response.IsSuccessStatusCode)
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -187,7 +187,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             UpdatePostDTO post = null;
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"{uri}/api/AdminPost/GetPost/{id}");
+                var response = await httpClient.GetAsync($"{uri}/api/AdminPostApi/GetPost/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -195,10 +195,14 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                 }
             }
 
+            //GÜNCELLEME bura eklendi
+            if (post == null)
+            {
+                return NotFound(); // Eğer post bulunamazsa hata döner
+            }
 
 
-
-            return View();
+            return View(post); //GÜNCELLEME içine post yazdık
 
         }
 
@@ -223,15 +227,15 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                     form.Add(fileStreamContent, "UploadPath", post.UploadPath.FileName);
                 }
 
-                var response = await httpClient.PutAsync($"{uri}/api/AdminPost/Update", form);
+                var response = await httpClient.PutAsync($"{uri}/api/AdminPostApi/Update", form);
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["Success"] = "Post başarıyla güncellendi!";
-                    return RedirectToAction(nameof(Index));
+                    return Redirect("https://localhost:7225/Admin/AdminPost/Index");
                 }
                 TempData["Error"] = "Post güncellenirken hata meydana geldi!";
             }
-            return View(post);
+            return Redirect("https://localhost:7225/Admin/AdminPost/Index");
         }
 
 
@@ -242,7 +246,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.DeleteAsync($"{uri}/api/AdminPost/Delete/{id}");
+                var response = await httpClient.DeleteAsync($"{uri}/api/AdminPostApi/Delete/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["Success"] = "Post başarıyla silindi!";
@@ -252,7 +256,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                     TempData["Error"] = "Post silinirken hata meydana geldi!";
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return Redirect("https://localhost:7225/Admin/AdminPost/Index");
         }
 
         private async Task<UpdatePostDTO> GetPostById(int id)
@@ -260,7 +264,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             UpdatePostDTO post = null;
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync($"{uri}/api/AdminPost/Details/{id}");
+                var response = await httpClient.GetAsync($"{uri}/api/AdminPostApi/Details/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -282,7 +286,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             using (var httpClient = new HttpClient())
             {
                 // API'ye yorum eklemek için POST isteği oluştur
-                var response = await httpClient.PostAsJsonAsync("{uri}/api/AdminComment/CreateComment", createCommentDto);
+                var response = await httpClient.PostAsJsonAsync("{uri}/api/AdminCommentApi/CreateComment", createCommentDto);
 
                 if (response.IsSuccessStatusCode)
                 {

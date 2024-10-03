@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 [Area("Admin")]
+
 public class AdminGenreController : Controller
 {
     private readonly IGenreRepo _genreRepo;
@@ -32,7 +33,7 @@ public class AdminGenreController : Controller
         List<GenreVm> genres = new List<GenreVm>();
         using (var httpClient = new HttpClient())
         {
-            var response = await httpClient.GetAsync($"{uri}/api/AdminGenre");
+            var response = await httpClient.GetAsync($"{uri}/api/AdminGenreApi");
             if (response.IsSuccessStatusCode)
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
@@ -62,9 +63,10 @@ public class AdminGenreController : Controller
 
         await _genreRepo.Add(genre);
         TempData["Success"] = "Tür başarıyla oluşturuldu!";
-        return RedirectToAction(nameof(Index));
+        return Redirect("https://localhost:7225/Admin/AdminGenre/Index");
     }
 
+    [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
         var genre = await _genreRepo.GetById(id);
@@ -97,7 +99,7 @@ public class AdminGenreController : Controller
 
         await _genreRepo.Update(genre);
         TempData["Success"] = "Tür başarıyla güncellendi!";
-        return RedirectToAction(nameof(Index));
+        return Redirect("https://localhost:7225/Admin/AdminGenre/Index");
     }
 
     public async Task<IActionResult> Delete(int id)
@@ -107,6 +109,6 @@ public class AdminGenreController : Controller
 
         await _genreRepo.Delete(genre);
         TempData["Success"] = "Tür başarıyla silindi!";
-        return RedirectToAction(nameof(Index));
+        return Redirect("https://localhost:7225/Admin/AdminGenre/Index");
     }
 }

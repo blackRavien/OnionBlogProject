@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-center">Gönderiler Listesi</h2>
-        <a href="@Url.Action("Create")" class="btn btn-primary">Yeni Gönderi Oluştur</a>
+        <a href="https://localhost:7225/Admin/AdminPost/Create" class="btn btn-primary">Yeni Gönderi Oluştur</a>
     </div>
 
     <table class="table table-hover">
@@ -28,9 +28,9 @@
                     <td>@post.GenreName</td>
                     <td>@post.CreatedDate.ToString("dd MMM yyyy")</td>
                     <td>
-                        <a href="@Url.Action("Details", new { id = post.Id })" class="btn btn-info btn-sm mr-1">Detaylar</a>
-                        <a href="@Url.Action("Update", new { id = post.Id })" class="btn btn-warning btn-sm mr-1">Düzenle</a>
-                        <form asp-action="Delete" asp-route-id="@post.Id" method="post" style="display:inline;" onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
+                        <a href="https://localhost:7225/Admin/AdminPost/Details/@post.Id" class="btn btn-info btn-sm mr-1">Detaylar</a>
+                        <a href="https://localhost:7225/Admin/AdminPost/Update/@post.Id" class="btn btn-warning btn-sm mr-1">Düzenle</a>
+                        <form action="https://localhost:7225/Admin/AdminPost/Delete/@post.Id" method="post" style="display:inline;" onsubmit="return confirm('Silmek istediğinize emin misiniz?');">
                             <button type="submit" class="btn btn-danger btn-sm">Sil</button>
                         </form>
                     </td>
