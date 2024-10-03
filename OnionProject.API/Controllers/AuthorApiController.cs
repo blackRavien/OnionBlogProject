@@ -10,6 +10,7 @@ namespace OnionProject.API.Controllers
     public class AuthorApiController : ControllerBase
     {
         private readonly IAuthorService _authorService;
+        private readonly IPostService _postService;
 
         public AuthorApiController(IAuthorService authorService)
         {
@@ -73,20 +74,54 @@ namespace OnionProject.API.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update([FromForm] UpdateAuthorDTO model)
+        //[HttpPost]
+        //public async Task<IActionResult> Update([FromForm] UpdateAuthorDTO model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+
+        //    // Güncelleme işlemi sadece yapılacak, sonuç kontrol edilmeyecek.
+        //    await _authorService.Update(model);
+
+        //    return Ok(); // Başarıyla sonuçlanmış kabul edilecek.
+        //}
+        [HttpPut]
+        public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Mevcut postu al
+                var post = await _postService.GetById(model.Id);
+                if (post == null)
+                {
+                    return NotFound(new { message = "Post bulunamadı" });
+                }
+
+                // Diğer alanları güncelle, ancak CreatedDate'i değiştirme
+                post.Title = model.Title;
+                post.Content = model.Content;
+                post.AuthorId = model.AuthorId;
+                post.GenreId = model.GenreId;
+                post.UpdatedDate = DateTime.Now;  // Güncelleme tarihini güncelle, oluşturulma tarihini koru.
+                // post.CreatedDate = model.CreatedDate;  // Bu alanı güncellemiyoruz!
+
+                await _postService.Update(post);
+                return Ok();
             }
-
-
-            // Güncelleme işlemi sadece yapılacak, sonuç kontrol edilmeyecek.
-            await _authorService.Update(model);
-
-            return Ok(); // Başarıyla sonuçlanmış kabul edilecek.
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

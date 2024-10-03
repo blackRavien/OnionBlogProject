@@ -1,9 +1,16 @@
-﻿@model PostDetailsVm
+﻿@using System.Security.Claims
+@* @model PostDetailsVm *@
+@model PostDetailsWithCommentVm
 @{
     ViewBag.Title = "Gönderi Detayları";
 }
 
-<div class="container mt-5">
+
+<h2>@Model.PostDetails.Title</h2>
+<p>@Model.PostDetails.Content</p>
+
+
+@* <div class="container mt-5">
     <h2 class="text-center mb-4">Gönderi Detayları</h2>
     <div class="card mb-4">
         <img src="@Url.Content("~/images/" + Model.ImagePath)" alt="Post Image" class="img-fluid" />
@@ -17,11 +24,25 @@
             <p class="card-text"><strong>Oluşturulma Tarihi: </strong>@Model.CreatedDate.ToString("dd MMM yyyy")</p>
         </div>
     </div>
+ *@
 
 
-    <!-- Yorum ekleme formu -->
+
+
+
+
+<h4>Yorum Ekle</h4>
+<form action="https://localhost:7225/Admin/AdminPost/CreateComment" method="post">
+    <input type="hidden" asp-for="PostDetails.Id" />
+    <div class="form-group">
+        <textarea asp-for="NewComment.Content" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Yorum Ekle</button>
+</form>
+
+@*     <!-- Yorum ekleme formu -->
     <h3>Yorum Ekle</h3>
-    <form asp-action="CreateComment" method="post">
+    <form action="https://localhost:7225/Admin/AdminPost/CreateComment" method="post">
         <input type="hidden" name="PostId" value="@Model.Id" />
         <div class="form-group">
             <label for="Content">Yorum:</label>
@@ -31,4 +52,34 @@
     </form>
 
     <a href="@Url.Action("Index")" class="btn btn-secondary">Geri Dön</a>
-</div>
+</div> *@
+
+
+
+
+
+
+<h3>Yorumlar</h3>
+@if (Model.Comments != null && Model.Comments.Any())
+{
+    foreach (var comment in Model.Comments)
+    {
+        <div class="border p-3 mb-2">
+            <p><strong>@comment.UserName:</strong> @comment.Content</p>
+            <p><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
+
+            @if (comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                <form action="https://localhost:7225/Admin/AdminPost/DeleteComment/@comment.Id" method="post">
+                    <input type="hidden" name="commentId" value="@comment.Id" />
+                    <input type="hidden" name="postId" value="@Model.PostDetails.Id" />
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </form>
+            }
+        </div>
+    }
+}
+else
+{
+    <p>Bu post için henüz bir yorum bulunmamaktadır.</p>
+}

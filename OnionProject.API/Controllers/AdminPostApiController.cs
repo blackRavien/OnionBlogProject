@@ -4,6 +4,7 @@ using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Services.AbstractServices;
 using OnionProject.Domain.AbstractRepositories;
 using OnionProject.Domain.Entities;
+using System.Security.Claims;
 
 namespace OnionProject.API.Controllers
 {
@@ -13,13 +14,15 @@ namespace OnionProject.API.Controllers
     {
         private readonly IPostService _postService;
         private readonly IAuthorService _authorService;
+        private readonly ICommentService _commentService;
         private readonly ICommentRepo _commentRepo;
 
-        public AdminPostApiController(IPostService postService, IAuthorService authorService, ICommentRepo commentRepo)
+        public AdminPostApiController(IPostService postService, IAuthorService authorService, ICommentRepo commentRepo, ICommentService commentService)
         {
             _postService = postService;
             _authorService = authorService;
             _commentRepo = commentRepo;
+            _commentService = commentService;
         }
 
         // Tüm postları listelemek için
@@ -117,26 +120,59 @@ namespace OnionProject.API.Controllers
             return NoContent(); // 204 No Content, silme başarılı
         }
 
+
+
         [HttpPost]
-        public async Task<IActionResult> CreateComment(CreateCommentDTO createCommentDto)
+        public async Task<IActionResult> CreateComment([FromBody] CreateCommentDTO createCommentDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var comment = new Comment
-            {
-                Content = createCommentDto.Content,
-                PostId = createCommentDto.PostId,
-                AuthorId = createCommentDto.AuthorId,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            await _commentRepo.AddAsync(comment);
-
-            return Ok();
+            await _commentService.AddCommentAsync(createCommentDto);
+            return Ok("Yorum başarıyla eklendi!");
         }
+
+
+        [HttpDelete("DeleteComment/{commentId}")]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var comment = await _commentService.GetCommentsByPostIdAsync(commentId); // Yorumu bul
+
+            if (comment == null)
+            {
+                return NotFound(new { message = "Yorum bulunamadı." });
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Mevcut kullanıcının ID'sini al
+
+            // Yorumu sil
+            await _commentService.DeleteCommentAsync(commentId);
+
+            return Ok(new { message = "Yorum başarıyla silindi." });
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> CreateComment(CreateCommentDTO createCommentDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var comment = new Comment
+        //    {
+        //        Content = createCommentDto.Content,
+        //        PostId = createCommentDto.PostId,
+        //        AuthorId = createCommentDto.AuthorId,
+        //        CreatedAt = DateTime.UtcNow
+        //    };
+
+        //    await _commentRepo.AddAsync(comment);
+
+        //    return Ok();
+        //}
 
 
     }

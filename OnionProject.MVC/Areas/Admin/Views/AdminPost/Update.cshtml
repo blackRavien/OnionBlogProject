@@ -7,6 +7,8 @@
     <h2 class="text-center mb-4">Gönderiyi Düzenle</h2>
     <form action="https://localhost:7225/Admin/AdminPost/Update" method="post" enctype="multipart/form-data">
          <input type="hidden" asp-for="Id" />  <!--GÜNCELLEME: ID'yi form ile gönderiyoruz -->
+        <!-- Oluşturulma tarihini saklı input alanı olarak ekleyelim -->
+        <input type="hidden" asp-for="CreatedDate" />
 
         <div class="form-group">
             <label for="Title">Başlık</label>

@@ -32,7 +32,7 @@ namespace OnionProject.Application.Models.DTOs
         public Status Status { get; set; }
 
         // Gönderinin güncelleme tarihini tutan alan. Güncelleme işleminde tarih otomatik olarak atanır.
-        public DateTime UpdatedDate => DateTime.Now;
+        public DateTime UpdatedDate {  get; set; }
 
         // Gönderinin yazarını güncellemek için gerekli olan yazar id'si.
         [Required]
