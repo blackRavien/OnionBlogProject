@@ -27,7 +27,22 @@ namespace OnionProject.API.Controllers
         public async Task<IActionResult> Index()
         {
             var posts = await _postService.GetPosts();
-            return Ok(posts);
+
+            var postVms = posts.Select(post => new
+            {
+                post.Id,
+                post.Title,
+                post.Content,
+                post.GenreName,
+                post.AuthorFirstName,
+                post.AuthorLastName,
+                post.CreatedDate,
+                ImagePath = $"https://localhost:7296/{post.ImagePath.TrimStart('/')}"
+
+            }).ToList();
+
+
+            return Ok(postVms);
         }
 
         // Belirli bir gönderinin detaylarını almak için
@@ -39,7 +54,23 @@ namespace OnionProject.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(postDetail);
+
+            // PostDetailsVm oluşturma
+            var postDetailsVm = new PostDetailsVm
+            {
+                Id = postDetail.Id,
+                Title = postDetail.Title,
+                Content = postDetail.Content,
+                GenreName = postDetail.GenreName,
+                AuthorFirstName = postDetail.AuthorFirstName,
+                AuthorLastName = postDetail.AuthorLastName,
+                CreatedDate = postDetail.CreatedDate,
+                Comments = postDetail.Comments,
+                // ImagePath'i tam URL olarak ayarla
+                ImagePath = $"https://localhost:7296/{postDetail.ImagePath.TrimStart('/')}" // Tam URL'yi oluştur
+            };
+
+            return Ok(postDetailsVm);
         }
 
         [HttpPost]

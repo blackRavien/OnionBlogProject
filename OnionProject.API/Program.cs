@@ -53,6 +53,8 @@ namespace OnionProject.API
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles(); // Statik dosyalar için middleware DENEME
+
             app.UseCors("AllowAllOrigins"); // CORS'u kullanýyorum
 
             app.UseAuthorization();

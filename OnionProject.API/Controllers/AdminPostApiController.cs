@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnionProject.Application.Models.DTOs;
+using OnionProject.Application.Models.VMs;
 using OnionProject.Application.Services.AbstractServices;
 using OnionProject.Domain.AbstractRepositories;
 using OnionProject.Domain.Entities;
@@ -25,12 +26,27 @@ namespace OnionProject.API.Controllers
             _commentService = commentService;
         }
 
+
         // Tüm postları listelemek için
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var postList = await _postService.GetPosts();
-            return Ok(postList); // PostVm listesi döner
+
+            // Her post için tam URL'yi oluştur
+            var postVms = postList.Select(post => new
+            {
+                post.Id,
+                post.Title,
+                post.Content,
+                post.GenreName,
+                post.AuthorFirstName,
+                post.AuthorLastName,
+                post.CreatedDate,
+                ImagePath = $"https://localhost:7296/{post.ImagePath.TrimStart('/')}" // Tam URL'yi oluştur
+            }).ToList();
+
+            return Ok(postVms); // PostVm listesi döner
         }
 
         // Detayları görmek için
@@ -42,7 +58,23 @@ namespace OnionProject.API.Controllers
             {
                 return NotFound();
             }
-            return Ok(postDetail); // PostDetailsVm döner
+
+            // PostDetailsVm oluşturma
+            var postDetailsVm = new PostDetailsVm
+            {
+                Id = postDetail.Id,
+                Title = postDetail.Title,
+                Content = postDetail.Content,
+                GenreName = postDetail.GenreName,
+                AuthorFirstName = postDetail.AuthorFirstName,
+                AuthorLastName = postDetail.AuthorLastName,
+                CreatedDate = postDetail.CreatedDate,
+                Comments = postDetail.Comments,
+                // ImagePath'i tam URL olarak ayarla
+                ImagePath = $"https://localhost:7296/{postDetail.ImagePath.TrimStart('/')}" // Tam URL'yi oluştur
+            };
+
+            return Ok(postDetailsVm); // PostDetailsVm döner
         }
 
         [HttpGet]
@@ -66,8 +98,6 @@ namespace OnionProject.API.Controllers
             await _postService.Create(post);
             return Ok();
         }
-
-        
 
 
         // Postu güncellemek için
@@ -103,7 +133,6 @@ namespace OnionProject.API.Controllers
 
             return Ok(post); // UpdatePostDTO veya PostVm dönebilirsiniz
         }
-
 
 
         // Postu silmek için
@@ -152,28 +181,6 @@ namespace OnionProject.API.Controllers
 
             return Ok(new { message = "Yorum başarıyla silindi." });
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> CreateComment(CreateCommentDTO createCommentDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var comment = new Comment
-        //    {
-        //        Content = createCommentDto.Content,
-        //        PostId = createCommentDto.PostId,
-        //        AuthorId = createCommentDto.AuthorId,
-        //        CreatedAt = DateTime.UtcNow
-        //    };
-
-        //    await _commentRepo.AddAsync(comment);
-
-        //    return Ok();
-        //}
-
 
     }
 }

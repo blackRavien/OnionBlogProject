@@ -75,6 +75,7 @@ namespace OnionProject.Application.Services.ConcreteManagers
             return _mapper.Map<List<PostVm>>(posts);
         }
 
+        //post detayları?
         public async Task<PostDetailsVm> GetDetail(int id)
         {
             var post = await _postRepo.GetById(id);

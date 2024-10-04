@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OnionProject.Application.Models.DTOs;
@@ -9,10 +10,14 @@ using OnionProject.Domain.Entities;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
+
 
 namespace OnionProject.MVC.Areas.Admin.Controllers
 {
+    //todo: Resim yükleme işlerine de bak.
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminPostController : Controller
     {
         private readonly ICommentService _commentService;
@@ -28,7 +33,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             _mapper = mapper;
             _commentService = commentService;
             _postService = postService;
-
+            
         }
 
         public async Task<IActionResult> Index()
@@ -113,16 +118,37 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             return Redirect("https://localhost:7225/Admin/AdminPost/Index");
         }
 
+
         public async Task<IActionResult> Details(int id)
         {
-            var postDetailsDTO = await _postService.GetById(id); // Post detaylarını al
-            var postDetailsVm = _mapper.Map<PostDetailsVm>(postDetailsDTO); // DTO'yu ViewModel'e map et
+            PostDetailsVm postDetailsVm = new PostDetailsVm();
+            using (var httpClient = new HttpClient())
+            {
+                // API isteği oluştur ve yanıtı al
+                using (var response = await httpClient.GetAsync($"https://localhost:7296/api/AdminPostApi/Details/{id}"))
+                {
+                    if (response.IsSuccessStatusCode) // İstek başarılı olduysa
+                    {
+                        // API'den gelen JSON'u string olarak oku
+                        string apiResponse = await response.Content.ReadAsStringAsync();
 
-            var comments = await _commentService.GetCommentsByPostIdAsync(id); // Posta ait yorumları al
+                        // JSON'u PostDetailsVm nesnesine deserialize et
+                        postDetailsVm = JsonConvert.DeserializeObject<PostDetailsVm>(apiResponse);
+                    }
+                    else
+                    {
+                        return NotFound(); // Eğer istek başarısızsa NotFound döndür
+                    }
+                }
+            }
 
+            // Yorumları al
+            var comments = await _commentService.GetCommentsByPostIdAsync(id);
+
+            // View'e göndermek için bir model oluştur
             var model = new PostDetailsWithCommentVm
             {
-                PostDetails = postDetailsVm, // Post detayları
+                PostDetails = postDetailsVm, // Post detayları (API'den gelen tam resim URL'si ile)
                 Comments = comments, // Yorumlar
                 NewComment = new CreateCommentDTO() // Yeni yorum için boş bir DTO
             };
@@ -130,53 +156,6 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             return View(model); // Modeli View'e gönder
         }
 
-        //public async Task<IActionResult> Details(int id)
-        //{
-        //    PostDetailsVm postDetail = null;
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        var response = await httpClient.GetAsync($"{uri}/api/AdminPostApi/Details/{id}");
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //            postDetail = JsonConvert.DeserializeObject<PostDetailsVm>(apiResponse);
-        //        }
-        //    }
-
-
-        //    if (postDetail == null)
-        //    {
-        //        return NotFound(); // API'den boş dönüyorsa 404 döndür
-        //    }
-
-        //    if (_commentRepo == null)
-        //    {
-        //        throw new InvalidOperationException("Comment repository is not initialized.");
-        //    }
-
-        //    // postDetail.Comments'i null olma ihtimaline karşı boş bir liste ile başlatın
-        //    postDetail.Comments = new List<CommentVm>();
-
-        //    // Yorumları API'den ya da repository'den çekin
-        //    var comments = await _commentRepo.GetByPostIdAsync(id);
-
-        //    // Eğer comments null veya boş ise, boş bir liste oluşturun
-        //    if (comments == null || !comments.Any())
-        //    {
-        //        comments = new List<Comment>();
-        //    }
-
-
-        //    postDetail.Comments = comments.Select(c => new CommentVm
-        //    {
-        //        Content = c.Content,
-        //        CreatedAt = c.CreatedAt,
-        //        UserId = c.UserId
-        //    }).ToList();
-
-
-        //    return postDetail == null ? NotFound() : View(postDetail);
-        //}
 
         [HttpGet]
         public async Task<IActionResult> Update(int id)
@@ -263,8 +242,6 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             }
             return Redirect("https://localhost:7225/Admin/AdminPost/Index");
         }
-
-
 
 
         [HttpPost]
@@ -354,34 +331,6 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             //return RedirectToAction("Details", new { id = postId }); // Hata olsa bile detaya geri dön
             return Redirect($"https://localhost:7225/Admin/AdminPost/Details/{postId}"); // Hata olsa bile detaya geri dön
         }
-
-        //public async Task<IActionResult> CreateComment(CreateCommentDTO createCommentDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        TempData["Error"] = "Geçersiz yorum!";
-        //        return RedirectToAction(nameof(Details), new { id = createCommentDto.PostId });
-        //    }
-
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        // API'ye yorum eklemek için POST isteği oluştur
-        //        var response = await httpClient.PostAsJsonAsync("https://localhost:7296/api/AdminPostApi/CreateComment", createCommentDto);
-        //        //https://localhost:7296/api/AdminPostApi/CreateComment api Request URL.
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            TempData["Success"] = "Yorum başarıyla eklendi!";
-        //        }
-        //        else
-        //        {
-        //            TempData["Error"] = "Yorum eklenirken bir hata oluştu.";
-        //        }
-        //    }
-
-        //    return Redirect($"https://localhost:7225/Admin/AdminPost/Details/{createCommentDto.PostId}");
-        //    //return RedirectToAction(nameof(Details), new { id = createCommentDto.PostId });
-        //}
-
 
     }
 }

@@ -1,5 +1,73 @@
 ﻿@using System.Security.Claims
-@* @model PostDetailsVm *@
+@model PostDetailsWithCommentVm
+
+<div class="container my-5">
+    <!-- Post Header -->
+    <div class="card mb-4 shadow-sm border-primary">
+        <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 400px; object-fit: cover;">
+        <div class="card-body bg-light">
+            <h2 class="card-title text-center text-primary">@Model.PostDetails.Title</h2>
+            <p class="card-text">@Model.PostDetails.Content</p>
+            <hr>
+            <p class="text-muted">Yazar: <strong class="text-dark">@Model.PostDetails.AuthorFullName</strong></p>
+            <p class="text-muted">Tarih: <strong class="text-dark">@Model.PostDetails.CreatedDate.ToString("dd MMM yyyy")</strong></p>
+            <p class="text-muted">Tür: <strong class="text-dark">@Model.PostDetails.GenreName</strong></p>
+        </div>
+    </div>
+
+    <!-- Yorum Ekle -->
+    <div class="card mb-4 shadow-sm border-success">
+        <div class="card-body bg-light">
+            <h4 class="card-title text-success">Yorum Ekle</h4>
+            <form action="https://localhost:7225/Admin/AdminPost/CreateComment" method="post">
+                <input type="hidden" name="PostDetails.Id" value="@Model.PostDetails.Id" />
+                <div class="form-group">
+                    <textarea name="NewComment.Content" class="form-control" rows="3" placeholder="Yorumunuzu buraya yazın..." style="border: 1px solid #28a745;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success mt-2">Yorum Ekle</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Yorumlar -->
+    <div class="card mb-4 shadow-sm border-info">
+        <div class="card-body bg-light">
+            <h3 class="card-title text-info">Yorumlar</h3>
+            @if (Model.Comments != null && Model.Comments.Any())
+            {
+                foreach (var comment in Model.Comments)
+                {
+                    <div class="border border-info p-3 mb-2">
+                        <p><strong class="text-info">@comment.UserName:</strong> @comment.Content</p>
+                        <p class="text-muted"><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
+
+                        @if (User.IsInRole("Admin") || comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                        {
+                            <form action="https://localhost:7225/Admin/AdminPost/DeleteComment/@comment.Id" method="post" class="d-inline">
+                                <input type="hidden" name="commentId" value="@comment.Id" />
+                                <input type="hidden" name="postId" value="@Model.PostDetails.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                            </form>
+                        }
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">Bu post için henüz bir yorum bulunmamaktadır.</p>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+@* @using System.Security.Claims
+
 @model PostDetailsWithCommentVm
 @{
     ViewBag.Title = "Gönderi Detayları";
@@ -8,26 +76,6 @@
 
 <h2>@Model.PostDetails.Title</h2>
 <p>@Model.PostDetails.Content</p>
-
-
-@* <div class="container mt-5">
-    <h2 class="text-center mb-4">Gönderi Detayları</h2>
-    <div class="card mb-4">
-        <img src="@Url.Content("~/images/" + Model.ImagePath)" alt="Post Image" class="img-fluid" />
-
-
-        <div class="card-body">
-            <h4 class="card-title">@Model.Title</h4>
-            <p class="card-text">@Model.Content</p>
-            <p class="card-text"><strong>Yazar: </strong>@Model.AuthorFullName</p>
-            <p class="card-text"><strong>Kategori: </strong>@Model.GenreName</p>
-            <p class="card-text"><strong>Oluşturulma Tarihi: </strong>@Model.CreatedDate.ToString("dd MMM yyyy")</p>
-        </div>
-    </div>
- *@
-
-
-
 
 
 
@@ -40,26 +88,8 @@
     <button type="submit" class="btn btn-primary">Yorum Ekle</button>
 </form>
 
-@*     <!-- Yorum ekleme formu -->
-    <h3>Yorum Ekle</h3>
-    <form action="https://localhost:7225/Admin/AdminPost/CreateComment" method="post">
-        <input type="hidden" name="PostId" value="@Model.Id" />
-        <div class="form-group">
-            <label for="Content">Yorum:</label>
-            <textarea class="form-control" name="Content" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary mt-2">Yorum Ekle</button>
-    </form>
-
-    <a href="@Url.Action("Index")" class="btn btn-secondary">Geri Dön</a>
-</div> *@
 
 
-
-
-
-
-<h3>Yorumlar</h3>
 @if (Model.Comments != null && Model.Comments.Any())
 {
     foreach (var comment in Model.Comments)
@@ -68,7 +98,7 @@
             <p><strong>@comment.UserName:</strong> @comment.Content</p>
             <p><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
 
-            @if (comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            @if (User.IsInRole("Admin") || comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
             {
                 <form action="https://localhost:7225/Admin/AdminPost/DeleteComment/@comment.Id" method="post">
                     <input type="hidden" name="commentId" value="@comment.Id" />
@@ -83,3 +113,6 @@ else
 {
     <p>Bu post için henüz bir yorum bulunmamaktadır.</p>
 }
+
+
+ *@

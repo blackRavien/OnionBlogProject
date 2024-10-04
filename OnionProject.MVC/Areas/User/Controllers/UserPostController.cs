@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace OnionProject.MVC.Controllers
 {
-    [Area("User")] // Eğer Area kullanıyorsanız
+    [Area("User")] // Area Kullanıyorsak
     [Route("UserPostApi")]
     public class UserPostController : Controller
     {
@@ -37,35 +37,69 @@ namespace OnionProject.MVC.Controllers
             List<GetPostsVm> posts = new List<GetPostsVm>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync($"{uri}/api/UserPostApi/Index"))
+                using (var response = await httpClient.GetAsync($"https://localhost:7296/api/UserPostApi/Index"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
                 }
             }
+
+            // Her post için ImagePath'i kontrol et ve gerekirse düzelt
+            foreach (var post in posts)
+            {
+                if (!string.IsNullOrEmpty(post.ImagePath) && !post.ImagePath.StartsWith("http"))
+                {
+                    // Eğer ImagePath zaten tam bir URL değilse, tam URL'yi ekleyin
+                    post.ImagePath = $"https://localhost:7296/{post.ImagePath.TrimStart('/')}";
+                }
+            }
+
             return View(posts);
         }
+
+
+        
 
         // GET: UserPost/Details/5
         [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
-            var postDetailsDTO = await _postService.GetById(id); // Bu kısım UpdatePostDTO olabilir
-            var postDetailsVm = _mapper.Map<PostDetailsVm>(postDetailsDTO); // Mapping işlemi
+            PostDetailsVm postDetailsVm = new PostDetailsVm();
+            using (var httpClient = new HttpClient())
+            {
+                // API isteği oluştur ve yanıtı al
+                using (var response = await httpClient.GetAsync($"https://localhost:7296/api/AdminPostApi/Details/{id}"))
+                {
+                    if (response.IsSuccessStatusCode) // İstek başarılı olduysa
+                    {
+                        // API'den gelen JSON'u string olarak oku
+                        string apiResponse = await response.Content.ReadAsStringAsync();
 
+                        // JSON'u PostDetailsVm nesnesine deserialize et
+                        postDetailsVm = JsonConvert.DeserializeObject<PostDetailsVm>(apiResponse);
+                    }
+                    else
+                    {
+                        return NotFound(); // Eğer istek başarısızsa NotFound döndür
+                    }
+                }
+            }
+
+            // Yorumları al
             var comments = await _commentService.GetCommentsByPostIdAsync(id);
 
+            // View'e göndermek için bir model oluştur
             var model = new PostDetailsWithCommentVm
             {
-                PostDetails = postDetailsVm, // Dönüştürülmüş VM
-                Comments = comments,
-                NewComment = new CreateCommentDTO()
+                PostDetails = postDetailsVm, // Post detayları (API'den gelen tam resim URL'si ile)
+                Comments = comments, // Yorumlar
+                NewComment = new CreateCommentDTO() // Yeni yorum için boş bir DTO
             };
 
-            return View(model);
+            return View(model); // Modeli View'e gönder
         }
+        
 
-        //bu yapıyı kaybetma
         // CreateComment metodu için özel route ekliyoruz
         [HttpPost("CreateComment")]
         public async Task<IActionResult> CreateComment(PostDetailsWithCommentVm model)
@@ -104,52 +138,6 @@ namespace OnionProject.MVC.Controllers
 
 
 
-        //[HttpPost("CreateComment")]
-        //public async Task<IActionResult> CreateComment(PostDetailsWithCommentVm model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcının ID'sini alın.
-        //        var username = User.FindFirstValue(ClaimTypes.Name); // Kullanıcının adını alın.
-
-        //        var createCommentDto = new CreateCommentDTO
-        //        {
-        //            Content = model.NewComment.Content,
-        //            PostId = model.PostDetails.Id,
-        //            UserId = userId
-        //        };
-
-        //        // API üzerinden yorum oluştur
-        //        using (var httpClient = new HttpClient())
-        //        {
-        //            var json = JsonConvert.SerializeObject(createCommentDto);
-        //            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-        //            var response = await httpClient.PostAsync($"{uri}/api/UserPost/CreateComment", content);
-
-        //            if (!response.IsSuccessStatusCode)
-        //            {
-        //                ModelState.AddModelError("", "Yorum eklenirken bir hata oluştu.");
-        //                return View("Details", model);
-        //            }
-        //        }
-
-        //        // Kullanıcı adı ve yorum içeriği ile birlikte kullanıcı arayüzüne yönlendirin
-        //        // Burada, yönlendirme yerine direkt olarak yorumları içeren bir model oluşturabilirsiniz.
-        //        // Detay sayfasına yönlendirirken kullanıcı adını modelde taşıyabilirsiniz.
-
-        //        // Örnek: Kullanıcı adını modelinize ekleyin (eğer modeliniz buna izin veriyorsa)
-        //        model.NewComment.UserName = username; // Kullanıcı adını DTO'ya ekleyin (CreateCommentDTO'ya UserName eklemeniz gerekebilir)
-
-        //        return RedirectToAction("Details", new { id = model.PostDetails.Id });
-        //    }
-
-        //    return View("Details", model);
-        //}
-
-
-        // DeleteComment metodu
-        //https://localhost:7296/api/UserPost/DeleteComment/DeleteComment/7
-
         [HttpPost("DeleteComment")]
         public async Task<IActionResult> DeleteComment(int commentId, int postId)
         {
@@ -168,45 +156,8 @@ namespace OnionProject.MVC.Controllers
             return RedirectToAction("Details", new { id = postId }); // Hata olsa bile detaya geri dön
         }
 
-        //// DeleteComment metodu için özel route ekliyoruz
-        //[HttpPost("DeleteComment")]
-        //public async Task<IActionResult> DeleteComment(int commentId, int postId)
-        //{
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        //    var comment = (await _commentService.GetCommentsByPostIdAsync(postId))
-        //        .FirstOrDefault(c => c.Id == commentId); // commentId ile eşleşen yorumu buluyoruz.
-
-        //    if (comment != null && comment.UserId == userId)
-        //    {
-        //        await _commentService.DeleteCommentAsync(commentId);
-        //    }
-
-
-        //    return RedirectToAction("Details", new { id = postId });
-        //}
+        
 
 
     }
 }
-
-//public async Task<IActionResult> Details(int id)
-        //{
-        //    PostDetailsVm postDetail = null;
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        var response = await httpClient.GetAsync($"{uri}/api/UserPost/Details/{id}");
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //            postDetail = JsonConvert.DeserializeObject<PostDetailsVm>(apiResponse);
-        //        }
-        //    }
-
-        //    if (postDetail == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(postDetail);
-        //}

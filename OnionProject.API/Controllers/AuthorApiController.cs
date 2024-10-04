@@ -21,7 +21,21 @@ namespace OnionProject.API.Controllers
         public async Task<IActionResult> Index()
         {
             var authorList = await _authorService.GetAuthors();
-            return Ok(authorList); // Burada AuthorVm kullanılıyor.
+
+            // Her yazar için tam URL'yi oluştur
+            var authorVms = authorList.Select(author => new
+            {
+                author.Id,
+                author.FirstName,
+                author.LastName,
+                author.CreatedDate,
+                author.UpdatedDate,
+                author.DeletedDate,
+                author.Status,
+                ImagePath = $"https://localhost:7296/{author.ImagePath.TrimStart('/')}", // Tam URL'yi oluştur
+            }).ToList();
+
+            return Ok(authorVms);
         }
 
         [HttpGet("{id}")]
@@ -32,8 +46,36 @@ namespace OnionProject.API.Controllers
             {
                 return NotFound();
             }
+
+            // Detayları döndürmeden önce ImagePath'ı tam URL olarak ayarlayın
+            authorDetail.ImagePath = $"https://localhost:7296/{authorDetail.ImagePath.TrimStart('/')}"; // Tam URL'yi oluştur
+
             return Ok(authorDetail);
         }
+
+
+
+        
+
+        //[HttpGet]
+        //public async Task<IActionResult> Index()
+        //{
+        //    var authorList = await _authorService.GetAuthors();
+        //    return Ok(authorList); // Burada AuthorVm kullanılıyor.
+        //}
+
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    var authorDetail = await _authorService.GetDetail(id);
+        //    if (authorDetail == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(authorDetail);
+        //}
+
+
 
 
         [HttpPost]
@@ -74,20 +116,6 @@ namespace OnionProject.API.Controllers
             return Ok();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Update([FromForm] UpdateAuthorDTO model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-
-        //    // Güncelleme işlemi sadece yapılacak, sonuç kontrol edilmeyecek.
-        //    await _authorService.Update(model);
-
-        //    return Ok(); // Başarıyla sonuçlanmış kabul edilecek.
-        //}
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
         {

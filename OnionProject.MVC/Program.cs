@@ -27,6 +27,14 @@ namespace OnionProject.MVC
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Cookie ayarlarý - eriþim yetkisi olmayan sayfalarda yönlendirme
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/Login"; // Giriþ sayfasý
+                options.AccessDeniedPath = "/Account/AccessDenied"; // Yetkisiz eriþim sayfasý
+            });
+
+
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()); // Autofac için
 
             builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
@@ -68,12 +76,7 @@ namespace OnionProject.MVC
                 name: "areas",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllerRoute(
-            //        name: "areas",
-            //        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-            //});
+            
 
 
             app.Run();

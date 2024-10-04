@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
@@ -8,6 +9,7 @@ using System.Text;
 namespace OnionProject.MVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AuthorController : Controller
     {
         private readonly IAuthorService _authorService;
