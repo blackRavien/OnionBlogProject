@@ -1,9 +1,34 @@
-﻿@{
-    Layout = "_Layout";
-}
+﻿@model OnionProject.Application.Models.DTOs.LoginDTO
 
-<div class="text-center">
-    <h1>Blog sayfamıza hoş geldiniz!</h1>
-    <a href="@Url.Action("Login", "Home")" class="btn btn-primary">Giriş Yap</a>
-    <p>Kayıt olmadınız mı? <a href="@Url.Action("Register", "Home")">Kayıt olun</a></p>
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <div class="card p-5 shadow-lg" style="max-width: 400px; width: 100%;">
+        <div class="text-center mb-4">
+            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Logo">
+            <h2 class="fw-bold">Hoş Geldiniz!</h2>
+            <p class="text-muted">Lütfen giriş yapın</p>
+        </div>
+
+        <form asp-action="Login" method="post">
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" asp-for="Email" placeholder="Email" />
+                <label for="email">Email Adresiniz</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" asp-for="Password" placeholder="Şifreniz" />
+                <label for="password">Şifreniz</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Giriş Yap</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Hesabınız yok mu? <a href="@Url.Action("Register", "Home")" class="text-decoration-none">Kayıt olun</a></p>
+        </div>
+    </div>
 </div>
+
+<partial name="_ValidationScriptsPartial" />
+

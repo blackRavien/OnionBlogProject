@@ -1,5 +1,57 @@
 ﻿@model OnionProject.Application.Models.DTOs.RegisterAppUserDTO
 
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <div class="card p-5 shadow-lg" style="max-width: 400px; width: 100%;">
+        <div class="text-center mb-4">
+            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Logo">
+            <h2 class="fw-bold">Kayıt Ol</h2>
+            <p class="text-muted">Lütfen bilgilerinizi girin</p>
+        </div>
+
+        <form asp-action="Register" method="post">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="username" asp-for="UserName" placeholder="Kullanıcı Adınız" />
+                <label for="username">Kullanıcı Adınız</label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" asp-for="Email" placeholder="Email" />
+                <label for="email">Email Adresiniz</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="firstName" asp-for="FirstName" placeholder="Adınız" />
+                <label for="firstName">Adınız</label>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="lastName" asp-for="LastName" placeholder="Soyadınız" />
+                <label for="lastName">Soyadınız</label>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" asp-for="Password" placeholder="Şifre" />
+                <label for="password">Şifre</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Kayıt Ol</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Hesabınız var mı? <a href="@Url.Action("Login", "Home")" class="text-decoration-none">Giriş Yap</a></p>
+        </div>
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />
+
+
+
+@* @model OnionProject.Application.Models.DTOs.RegisterAppUserDTO
+
 <form asp-action="Register" method="post">
     <div>
         <label asp-for="UserName"></label>
@@ -35,3 +87,4 @@
 </form>
 
 <partial name="_ValidationScriptsPartial" />
+ *@

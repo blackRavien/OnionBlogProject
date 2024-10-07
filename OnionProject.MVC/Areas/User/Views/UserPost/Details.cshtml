@@ -60,53 +60,6 @@
     </div>
 </div>
 
-
-@* @model PostDetailsVm
-@{
-    ViewBag.Title = "Post Detayları";
-}
-
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Post Detayları</h2>
-    <div class="card mb-4">
-        <img src="@Url.Content("~/images/" + Model.ImagePath)" alt="Post Image" class="img-fluid">
-        <div class="card-body">
-            <h4 class="card-title">@Model.Title</h4>
-            <p class="card-text">@Model.Content</p>
-            <p class="card-text"><strong>Yazar: </strong>@Model.AuthorFullName</p>
-            <p class="card-text"><strong>Kategori: </strong>@Model.GenreName</p>
-            <p class="card-text"><strong>Oluşturulma Tarihi: </strong>@Model.CreatedDate.ToString("dd MMM yyyy")</p>
-        </div>
-    </div>
-
-    <h3>Yorumlar</h3>
-    @if (Model.Comments != null && Model.Comments.Any())
-    {
-        foreach (var comment in Model.Comments)
-        {
-            <div class="border p-3 mb-2">
-                <p><strong>@comment.UserId:</strong> @comment.Content</p>
-                <p><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
-            </div>
-        }
-    }
-    else
-    {
-        <p>Bu post için henüz bir yorum bulunmamaktadır.</p>
-    }
+<button class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
 
 
-    <!-- Yorum ekleme formu -->
-    <h3>Yorum Ekle</h3>
-    <form asp-action="CreateComment" method="post">
-        <input type="hidden" name="PostId" value="@Model.Id" />
-        <div class="form-group">
-            <label for="Content">Yorum:</label>
-            <textarea class="form-control" name="Content" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary mt-2">Yorum Ekle</button>
-    </form>
-
-    <a href="@Url.Action("Index", "UserPost")" class="btn btn-secondary mt-3">Geri Dön</a>
-</div>
- *@

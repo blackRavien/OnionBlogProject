@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -28,6 +29,7 @@ namespace OnionProject.MVC.Controllers
         }
 
         // GET: UserPost
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -58,9 +60,10 @@ namespace OnionProject.MVC.Controllers
         }
 
 
-        
+
 
         // GET: UserPost/Details/5
+        [Authorize]
         [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int id)
         {
@@ -98,9 +101,10 @@ namespace OnionProject.MVC.Controllers
 
             return View(model); // Modeli View'e gönder
         }
-        
+
 
         // CreateComment metodu için özel route ekliyoruz
+        [Authorize]
         [HttpPost("CreateComment")]
         public async Task<IActionResult> CreateComment(PostDetailsWithCommentVm model)
         {
@@ -139,6 +143,7 @@ namespace OnionProject.MVC.Controllers
 
 
         [HttpPost("DeleteComment")]
+        [Authorize]
         public async Task<IActionResult> DeleteComment(int commentId, int postId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

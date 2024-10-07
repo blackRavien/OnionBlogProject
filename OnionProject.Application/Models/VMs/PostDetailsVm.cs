@@ -9,7 +9,7 @@ namespace OnionProject.Application.Models.VMs
         public string? Content { get; set; } // Gönderinin içeriği
 
 
-        public string ImagePath { get; set; } // Gönderinin resmi
+        public string? ImagePath { get; set; } // Gönderinin resmi
 
 
         public string? GenreName { get; set; } // Türün adı

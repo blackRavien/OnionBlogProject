@@ -146,6 +146,13 @@ namespace OnionProject.MVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+
+            
+            // Tarayýcý önbelleðini temizleme
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "-1";
+
             return RedirectToAction("Index", "Home");
         }
     }

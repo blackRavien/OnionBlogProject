@@ -51,33 +51,6 @@ namespace OnionProject.API.Controllers
             return Ok();
         }
 
-        //// Yorum güncelleme
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateComment(int id, UpdateCommentDTO updateCommentDto)
-        //{
-        //    if (id != updateCommentDto.Id)
-        //    {
-        //        return BadRequest(); // ID'ler eşleşmiyorsa 400 döner
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState); // Model geçersizse 400 döner
-        //    }
-
-        //    // UpdateCommentDTO'yu Comment nesnesine dönüştür
-        //    var comment = new Comment
-        //    {
-        //        Id = updateCommentDto.Id,
-        //        Content = updateCommentDto.Content,
-        //        UpdatedDate = DateTime.UtcNow // Güncellenme tarihi ekleyin
-        //    };
-
-        //    await _commentRepo.UpdateAsync(comment); // API'ye güncelleme isteği
-        //    return Ok(); // Başarılı ise 200 döner
-        //}
-
-
 
         // Yorum silme
         [HttpDelete("{id}")]
