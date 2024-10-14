@@ -35,6 +35,7 @@ public class AuthorRepo : BaseRepo<Author>, IAuthorRepo
     public async Task<Author> GetById(int id)
     {
         return await _context.Authors
+            .Include(a=>a.Posts)
             .FirstOrDefaultAsync(a => a.Id == id); // ID'ye göre yazar arar
     }
 

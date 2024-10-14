@@ -24,16 +24,17 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
         private readonly ICommentRepo _commentRepo;
+        private readonly HttpClient _httpClient;
         private readonly string uri = "https://localhost:7296"; // API URL
 
         // DI ile repo'yu controller'a enjekte edin
-        public AdminPostController(ICommentRepo commentRepo, IMapper mapper, ICommentService commentService, IPostService postService)
+        public AdminPostController(ICommentRepo commentRepo, IMapper mapper, ICommentService commentService, IPostService postService, HttpClient httpClient)
         {
             _commentRepo = commentRepo;
             _mapper = mapper;
             _commentService = commentService;
             _postService = postService;
-            
+            _httpClient = httpClient;
         }
 
         public async Task<IActionResult> Index()
@@ -223,7 +224,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                 form.Add(new StringContent(post.Content), "Content");
                 form.Add(new StringContent(post.AuthorId.ToString()), "AuthorId");
                 form.Add(new StringContent(post.GenreId.ToString()), "GenreId");
-                form.Add(new StringContent(post.CreatedDate.ToString("o")), "CreatedDate"); // CreatedDate eklendi
+                //form.Add(new StringContent(post.CreatedDate.ToString("o")), "CreatedDate"); // CreatedDate eklendi
 
 
                 if (post.UploadPath != null)
@@ -231,6 +232,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                     var fileStreamContent = new StreamContent(post.UploadPath.OpenReadStream());
                     form.Add(fileStreamContent, "UploadPath", post.UploadPath.FileName);
                 }
+                
 
                 var response = await httpClient.PutAsync($"{uri}/api/AdminPostApi/Update", form);
                 if (response.IsSuccessStatusCode)
@@ -330,6 +332,41 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
 
             //return RedirectToAction("Details", new { id = postId }); // Hata olsa bile detaya geri dön
             return Redirect($"https://localhost:7225/Admin/AdminPost/Details/{postId}"); // Hata olsa bile detaya geri dön
+        }
+
+
+        public async Task<IActionResult> GetContactMessages()
+        {
+            var response = await _httpClient.GetAsync($"{uri}/api/AdminPostApi/GetContactMessages/api/contact");
+            if (response.IsSuccessStatusCode)
+            {
+                var contactMessages = await response.Content.ReadFromJsonAsync<List<ContactMessage>>();
+                return View(contactMessages);
+            }
+            else
+            {
+                // Hata yönetimi
+                TempData["ErrorMessage"] = "İletişim mesajları alınamadı.";
+                return View(new List<ContactMessage>());
+            }
+        }
+
+        public async Task<IActionResult> DeleteContactMessage(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"{uri}/api/AdminPostApi/DeleteContactMessage/api/contact/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Mesaj başarıyla silindi.";
+                // Silme başarılıysa aynı sayfaya yönlendir
+                return Redirect("https://localhost:7225/Admin/AdminPost/GetContactMessages");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Mesaj silinirken bir hata oluştu.";
+                return Redirect("https://localhost:7225/Admin/AdminPost/GetContactMessages");
+            }
+
+            
         }
 
     }

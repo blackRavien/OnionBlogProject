@@ -7,6 +7,11 @@ using OnionProject.Domain.AbstractRepositories;
 using OnionProject.Domain.Entities;
 using System.Security.Claims;
 
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats;
+using OnionProject.Infrastructure.Context;
+
 namespace OnionProject.API.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -17,13 +22,15 @@ namespace OnionProject.API.Controllers
         private readonly IAuthorService _authorService;
         private readonly ICommentService _commentService;
         private readonly ICommentRepo _commentRepo;
+        private readonly AppDbContext _appDbContext;
 
-        public AdminPostApiController(IPostService postService, IAuthorService authorService, ICommentRepo commentRepo, ICommentService commentService)
+        public AdminPostApiController(IPostService postService, IAuthorService authorService, ICommentRepo commentRepo, ICommentService commentService, AppDbContext appDbContext)
         {
             _postService = postService;
             _authorService = authorService;
             _commentRepo = commentRepo;
             _commentService = commentService;
+            _appDbContext = appDbContext;
         }
 
 
@@ -100,7 +107,12 @@ namespace OnionProject.API.Controllers
         }
 
 
-        // Postu güncellemek için
+
+
+
+
+
+        //Postu güncellemek için
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
         {
@@ -111,15 +123,64 @@ namespace OnionProject.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _postService.Update(model);
+                var post = await _postService.GetById(model.Id);
+                if (post == null)
+                {
+                    return NotFound(new { message = "Post bulunamadı" });
+                }
+
+                // Diğer alanları güncelle
+                post.Title = model.Title;
+                post.Content = model.Content;
+                post.AuthorId = model.AuthorId;
+                post.GenreId = model.GenreId;
+                post.UpdatedDate = DateTime.Now;
+
+                // Yeni bir resim yüklenmemişse mevcut resmi koru
+                if (model.UploadPath != null && model.UploadPath.Length > 0)
+                {
+                    using var image = Image.Load(model.UploadPath.OpenReadStream());
+                    image.Mutate(x => x.Resize(600, 500));
+                    Guid guid = Guid.NewGuid();
+                    image.Save($"wwwroot/images/{guid}.jpg");
+                    post.ImagePath = $"/images/{guid}.jpg"; // Yeni resmi güncelle
+                }
+
+                await _postService.Update(post);
                 return Ok(); // Başarıyla güncellendi
             }
             catch (Exception ex)
             {
-                // Hata detaylarını logla
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+
+
+
+
+        //[HttpPut]
+        // public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
+        // {
+        //     try
+        //     {
+        //         if (!ModelState.IsValid)
+        //         {
+        //             return BadRequest(ModelState);
+        //         }
+
+
+
+        //         await _postService.Update(model);
+        //         return Ok(); // Başarıyla güncellendi
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         // Hata detaylarını logla
+        //         return StatusCode(500, $"Internal server error: {ex.Message}");
+        //     }
+        // }
+
 
         // ID ile belirli bir postu almak için
         [HttpGet("{id}")]
@@ -181,6 +242,29 @@ namespace OnionProject.API.Controllers
 
             return Ok(new { message = "Yorum başarıyla silindi." });
         }
+
+
+        [HttpGet("api/contact")]
+        public async Task<IActionResult> GetContactMessages()
+        {
+            var contactMessages = await _appDbContext.ContactMessages.ToListAsync();
+            return Ok(contactMessages);
+        }
+
+        [HttpDelete("api/contact/{id}")]
+        public async Task<IActionResult> DeleteContactMessage(int id)
+        {
+            var message = await _appDbContext.ContactMessages.FindAsync(id);
+            if (message == null)
+            {
+                return NotFound();
+            }
+
+            _appDbContext.ContactMessages.Remove(message);
+            await _appDbContext.SaveChangesAsync();
+            return NoContent(); // 204 No Content
+        }
+
 
     }
 }

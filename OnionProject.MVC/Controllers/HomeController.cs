@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
+using OnionProject.Application.Services.AbstractServices;
+using OnionProject.Application.Services.ConcreteManagers;
 using OnionProject.Domain.Entities;
 
 namespace OnionProject.MVC.Controllers
@@ -10,11 +12,13 @@ namespace OnionProject.MVC.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IAuthorService _authorService;
 
-        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAuthorService authorService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _authorService = authorService;
         }
 
         public IActionResult Index()
@@ -61,8 +65,34 @@ namespace OnionProject.MVC.Controllers
             return View(model);
         }
 
-        // Login (Giriþ)
-        [HttpGet]
+        public async Task<IActionResult> AboutUs()
+        {
+            ViewData["Layout"] = "~/Areas/User/Views/Shared/_UserLayout.cshtml";
+            var authors = await _authorService.GetAuthors();
+
+
+            // Her yazarýn ImagePath'ini tam URL'ye dönüþtür
+            foreach (var author in authors)
+            {
+                if (!string.IsNullOrEmpty(author.ImagePath) && !author.ImagePath.StartsWith("http"))
+                {
+                    author.ImagePath = $"https://localhost:7296{author.ImagePath}"; // Tam URL oluþtur
+                }
+            }
+
+            return View(authors);
+        }
+
+
+        public async Task<IActionResult> ContactUs()
+        {
+            ViewData["Layout"] = "~/Areas/User/Views/Shared/_UserLayout.cshtml";
+            return View();
+        }
+
+
+            // Login (Giriþ)
+            [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -103,42 +133,6 @@ namespace OnionProject.MVC.Controllers
             // Model hatalýysa ya da kullanýcý bulunamazsa, giriþ sayfasýný tekrar göster
             return View(model);
         }
-
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> Login(LoginDTO model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = await _userManager.FindByEmailAsync(model.Email);
-
-        //        if (user != null)
-        //        {
-        //            var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, false, false);
-
-        //            if (result.Succeeded)
-        //            {
-        //                if (await _userManager.IsInRoleAsync(user, "Member"))
-        //                {
-        //                    return RedirectToAction("Index", "UserPost", new { area = "User" }); // Member ise UserPost sayfasýna yönlendir
-        //                }
-
-        //                return RedirectToAction("Index", "AdminPost", new { area = "Admin" }); // Admin ise admin sayfasýna yönlendir
-        //            }
-
-        //        }
-
-        //        ModelState.AddModelError("", "Geçersiz giriþ denemesi.");
-        //    }
-
-
-        //    return View(model);
-        //}
-
-
-
-        // Logout (Çýkýþ)
 
 
 

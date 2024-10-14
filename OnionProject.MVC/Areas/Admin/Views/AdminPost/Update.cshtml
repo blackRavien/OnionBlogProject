@@ -5,6 +5,91 @@
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Gönderiyi Düzenle</h2>
+    <form action="https://localhost:7225/Admin/AdminPost/Update" method="post" enctype="multipart/form-data" class="shadow p-4 rounded">
+        <input type="hidden" asp-for="Id" /> <!-- Güncelleme: ID'yi form ile gönderiyoruz -->
+        <input type="hidden" asp-for="CreatedDate" />
+
+        <div class="form-group">
+            <label for="Title" class="font-weight-bold">Başlık</label>
+            <input asp-for="Title" class="form-control" placeholder="Başlığı güncelle" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Content" class="font-weight-bold">İçerik</label>
+            <textarea asp-for="Content" class="form-control" placeholder="İçeriği güncelle" rows="5" required></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="UploadPath" class="font-weight-bold">Resmi Güncelle</label>
+            <input asp-for="UploadPath" type="file" class="form-control-file" />
+            <span asp-validation-for="UploadPath" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="AuthorId" class="font-weight-bold">Yazar Seçin</label>
+            <select asp-for="AuthorId" class="form-control" required>
+                <option value="">Yazar Seçiniz</option>
+                @if (ViewBag.Authors != null)
+                {
+                    foreach (var author in ViewBag.Authors)
+                    {
+                        <option value="@author.Id">@author.FirstName @author.LastName</option>
+                    }
+                }
+                else
+                {
+                    <option disabled>Yazar bulunamadı</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="GenreId" class="font-weight-bold">Kategori Seçin</label>
+            <select asp-for="GenreId" class="form-control" required>
+                <option value="">Lütfen bir tür seçin</option>
+                @if (ViewBag.Genres != null)
+                {
+                    foreach (var genre in ViewBag.Genres)
+                    {
+                        <option value="@genre.Id">@genre.Name</option>
+                    }
+                }
+                else
+                {
+                    <option disabled>Tür bulunamadı</option>
+                }
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-primary">Gönderiyi Güncelle</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("form").on("submit", function () {
+                // Formu gönderirken gerekli kontrolleri ekleyebilirsiniz
+            });
+        });
+    </script>
+}
+
+
+
+
+@* @model UpdatePostDTO
+@{
+    ViewBag.Title = "Gönderiyi Düzenle";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Gönderiyi Düzenle</h2>
     <form action="https://localhost:7225/Admin/AdminPost/Update" method="post" enctype="multipart/form-data">
          <input type="hidden" asp-for="Id" />  <!--GÜNCELLEME: ID'yi form ile gönderiyoruz -->
         <!-- Oluşturulma tarihini saklı input alanı olarak ekleyelim -->
@@ -69,3 +154,4 @@
         <button class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
     </form>
 </div>
+ *@

@@ -28,6 +28,7 @@ namespace OnionProject.Infrastructure.Context
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; }
 
 
         // DbContext'in yapılandırılması (örneğin, bağlantı dizesi ayarları)
@@ -45,6 +46,7 @@ namespace OnionProject.Infrastructure.Context
             builder.ApplyConfiguration(new GenreConfig());
             builder.ApplyConfiguration(new PostConfig());
             builder.ApplyConfiguration(new CommentConfig());
+            builder.ApplyConfiguration(new ContactMessageConfig());
 
             // Seed data olarak rol ekleme (örneğin, Admin ve Member rolleri)
             builder.Entity<IdentityRole>().HasData(

@@ -59,12 +59,16 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                 var form = new MultipartFormDataContent();
                 form.Add(new StringContent(author.FirstName), "FirstName");
                 form.Add(new StringContent(author.LastName), "LastName");
+                form.Add(new StringContent(author.Email), "Email");
+                form.Add(new StringContent(author.PhoneNumber ?? ""), "PhoneNumber"); // null kontrolü
+                form.Add(new StringContent(author.Biography ?? ""), "Biography"); // null kontrolü
+
 
                 // Dosya varsa form-data'ya ekle
-                if (author.Image != null) // UploadPath yerine Image kullanılacak
+                if (author.Image != null) 
                 {
                     var fileStreamContent = new StreamContent(author.Image.OpenReadStream());
-                    form.Add(fileStreamContent, "Image", author.Image.FileName); // UploadPath yerine Image kullanılıyor
+                    form.Add(fileStreamContent, "Image", author.Image.FileName); 
                 }
 
                 var response = await httpClient.PostAsync($"{uri}/api/AuthorApi/Create", form);
@@ -86,7 +90,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
             return Redirect("https://localhost:7225/Admin/Author/Index");
         }
 
-
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             AuthorDetailVm authorDetail = null;
@@ -141,6 +145,10 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                 form.Add(new StringContent(author.Id.ToString()), "Id");
                 form.Add(new StringContent(author.FirstName), "FirstName");
                 form.Add(new StringContent(author.LastName), "LastName");
+                form.Add(new StringContent(author.Email), "Email");
+                form.Add(new StringContent(author.PhoneNumber), "PhoneNumber");
+                form.Add(new StringContent(author.Biography), "Biography");
+
 
                 // Eğer bir resim yüklenmişse, dosyayı da ekle
                 if (author.Image != null)
@@ -149,7 +157,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
                     form.Add(fileStreamContent, "Image", author.Image.FileName);
                 }
                 
-                var response = await httpClient.PostAsync($"{uri}/api/AuthorApi/Update", form);
+                var response = await httpClient.PutAsync($"{uri}/api/AuthorApi/Update", form);
                 if (response.IsSuccessStatusCode)
                 {
                     TempData["Success"] = $"{author.FirstName} {author.LastName} kişisinin kaydı başarıyla güncellendi!";

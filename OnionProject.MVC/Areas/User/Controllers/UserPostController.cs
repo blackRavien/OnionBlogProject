@@ -20,12 +20,14 @@ namespace OnionProject.MVC.Controllers
         private readonly IPostService _postService;
         private readonly IMapper _mapper;
         private readonly IAppUserService _appUserService;
+        private readonly IAuthorService _authorService;
 
-        public UserPostController(IMapper mapper, IPostService postService, ICommentService commentService)
+        public UserPostController(IMapper mapper, IPostService postService, ICommentService commentService, IAuthorService authorService)
         {
             _mapper = mapper;
             _postService = postService;
             _commentService = commentService;
+            _authorService = authorService; 
         }
 
         // GET: UserPost
@@ -58,8 +60,6 @@ namespace OnionProject.MVC.Controllers
 
             return View(posts);
         }
-
-
 
 
         // GET: UserPost/Details/5

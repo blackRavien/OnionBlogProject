@@ -1,5 +1,6 @@
-﻿@* @model IEnumerable<OnionProject.Application.Models.VMs.AuthorDetailVm> *@
-
+﻿@using Microsoft.AspNetCore.Identity
+@using OnionProject.Domain.Entities
+@inject SignInManager<AppUser> SignInManager
 @model OnionProject.Application.Models.VMs.AuthorDetailVm
 
 @{
@@ -69,6 +70,22 @@
     </div>
     
     <div class="mt-3">
-        <a href="https://localhost:7225/Admin/Author/Index" class="btn btn-primary">Back to List</a>
+        @* <a href="https://localhost:7225/Admin/Author/Index" class="btn btn-primary">Back to List</a> *@
+        <a href="@GetReturnUrl()" class="btn btn-primary">Go Back</a>
     </div>
 </div>
+
+@section Scripts {
+    @functions {
+    public string GetReturnUrl()
+    {
+        // Eğer kullanıcı adminse Admin/Author/Index'e yönlendir
+        if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+        {
+            return "https://localhost:7225/Admin/Author/Index";
+        }
+        // Eğer kullanıcı admin değilse Home/AboutUs'a yönlendir
+        return Url.Action("AboutUs", "Home");
+    }
+    }
+}

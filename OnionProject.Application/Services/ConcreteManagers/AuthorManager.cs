@@ -102,6 +102,10 @@ namespace OnionProject.Application.Services.ConcreteManagers
 
             existingAuthor.FirstName = model.FirstName;
             existingAuthor.LastName = model.LastName;
+            existingAuthor.Biography = model.Biography;
+            existingAuthor.PhoneNumber = model.PhoneNumber;
+            existingAuthor.Email = model.Email;
+            
 
             if (model.Image is not null)
             {

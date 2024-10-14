@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnionProject.MVC.Areas.Admin.Controllers
 {
@@ -11,5 +12,8 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
         {
             return View();
         }
+
+        
+
     }
 }

@@ -31,5 +31,24 @@
         </select>
     </div>
 
+    <div>
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+
+    <div>
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" />
+        <span asp-validation-for="PhoneNumber"></span>
+    </div>
+
+    <div>
+        <label asp-for="Biography"></label>
+        <textarea asp-for="Biography"></textarea>
+        <span asp-validation-for="Biography"></span>
+    </div>
+
     <button type="submit">Güncelle</button>
 </form>
+

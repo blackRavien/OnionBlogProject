@@ -18,6 +18,8 @@ namespace OnionProject.MVC
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddRazorPages(); // Razor Pages servisini ekleyin
 
+            builder.Services.AddHttpClient(); //SONRADAN EKLENDÝ
+
             string connectionString = builder.Configuration.GetConnectionString("DefaultConncetion");
 
             builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));

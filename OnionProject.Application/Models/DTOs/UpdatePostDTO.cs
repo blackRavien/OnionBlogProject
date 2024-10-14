@@ -23,16 +23,17 @@ namespace OnionProject.Application.Models.DTOs
         public string Content { get; set; }
 
         // Gönderinin yeni resmini güncellemek için dosya yükleme özelliği.
-        public IFormFile UploadPath { get; set; }
+        public IFormFile? UploadPath { get; set; }
 
         // Gönderinin mevcut resim yolu (opsiyonel).
         public string? ImagePath { get; set; }
+        
 
         // Gönderinin durumunu (aktif, pasif vs.) güncellemek için gerekli alan.
         public Status Status { get; set; }
 
         // Gönderinin güncelleme tarihini tutan alan. Güncelleme işleminde tarih otomatik olarak atanır.
-        public DateTime UpdatedDate {  get; set; }
+        public DateTime? UpdatedDate {  get; set; }
 
         // Gönderinin yazarını güncellemek için gerekli olan yazar id'si.
         [Required]
@@ -42,6 +43,6 @@ namespace OnionProject.Application.Models.DTOs
         [Required]
         public int GenreId { get; set; }
 
-        public DateTime CreatedDate {  get; set; }
+        public DateTime? CreatedDate {  get; set; }
     }
 }

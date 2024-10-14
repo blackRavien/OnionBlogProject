@@ -1,4 +1,5 @@
-﻿using OnionProject.Application.Models.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,7 @@ namespace OnionProject.Application.Services.AbstractServices
         Task<List<PostVm>> GetPostsByDateRange(DateTime startDate, DateTime endDate);
         Task<List<PostVm>> GetPostsWithAuthorAndGenre();
         
+
+
     }
 }

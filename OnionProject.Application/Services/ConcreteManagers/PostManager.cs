@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
@@ -46,11 +47,20 @@ namespace OnionProject.Application.Services.ConcreteManagers
 
         public async Task Update(UpdatePostDTO model)
         {
-            var post = _mapper.Map<Post>(model);
-
-            if (model.UploadPath is not null)
+            // Öncelikle mevcut postu bul
+            var post = await _postRepo.GetById(model.Id);
+            if (post == null)
             {
-                using var image = Image.Load(model.UploadPath.OpenReadStream());
+                throw new Exception("Post bulunamadı."); // Post yoksa hata at
+            }
+
+            // Modelden gelen verileri mevcut post nesnesine aktar
+            _mapper.Map(model, post);
+
+            if (model.UploadPath != null)
+            {
+                using var stream = model.UploadPath.OpenReadStream();
+                using var image = Image.Load(stream);
                 image.Mutate(x => x.Resize(600, 500));
                 Guid guid = Guid.NewGuid();
                 image.Save($"wwwroot/images/{guid}.jpg");
@@ -59,6 +69,23 @@ namespace OnionProject.Application.Services.ConcreteManagers
 
             await _postRepo.Update(post);
         }
+
+
+        //public async Task Update(UpdatePostDTO model)
+        //{
+        //    var post = _mapper.Map<Post>(model);
+
+        //    if (model.UploadPath is not null)
+        //    {
+        //        using var image = Image.Load(model.UploadPath.OpenReadStream());
+        //        image.Mutate(x => x.Resize(600, 500));
+        //        Guid guid = Guid.NewGuid();
+        //        image.Save($"wwwroot/images/{guid}.jpg");
+        //        post.ImagePath = $"/images/{guid}.jpg";
+        //    }
+
+        //    await _postRepo.Update(post);
+        //}
 
         public async Task Delete(int id)
         {
@@ -118,7 +145,7 @@ namespace OnionProject.Application.Services.ConcreteManagers
             return _mapper.Map<List<PostVm>>(posts);
         }
 
-        
+       
 
     }
 }

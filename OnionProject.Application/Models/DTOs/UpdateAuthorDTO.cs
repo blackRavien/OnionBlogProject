@@ -24,7 +24,7 @@ namespace OnionProject.Application.Models.DTOs
         public string LastName { get; set; }
 
         // Yazarın yeni profil fotoğrafını güncellemek için dosya yükleme özelliği.
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         // Yazarın mevcut profil fotoğrafı (opsiyonel).
         public string? ImagePath { get; set; }
@@ -34,5 +34,16 @@ namespace OnionProject.Application.Models.DTOs
 
         // Yazarın güncelleme tarihini tutan alan. Güncelleme işleminde tarih otomatik olarak atanır.
         public DateTime UpdatedDate => DateTime.Now;
+
+
+        // Yeni alanlar
+        [Required(ErrorMessage = "E-posta adresi zorunludur.")]
+        [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi giriniz.")]
+        public string Email { get; set; }
+
+        [Phone(ErrorMessage = "Geçerli bir telefon numarası giriniz.")]
+        public string PhoneNumber { get; set; }
+
+        public string Biography { get; set; }
     }
 }

@@ -1,0 +1,64 @@
+﻿@using OnionProject.Domain.Entities
+@model List<ContactMessage>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Gelen İletişim İstekleri</h2>
+
+    <div class="card shadow-lg">
+        <div class="card-body p-4">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>İsim</th>
+                        <th>Email</th>
+                        <th>Mesaj</th>
+                        <th class="text-center">Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var message in Model)
+                    {
+                        <tr class="align-middle">
+                            <td>@message.Id</td>
+                            <td>@message.Name</td>
+                            <td>@message.Email</td>
+                            <td>@message.Message</td>
+                            <td class="text-center">
+                                <a href="https://localhost:7225/Admin/AdminPost/DeleteContactMessage/@message.Id" class="btn btn-danger" onclick="return confirm('Silmek istediğinize emin misiniz?');">Sil</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .container {
+        font-family: 'Helvetica', sans-serif;
+    }
+
+    h2 {
+        color: #343a40;
+    }
+
+    .table {
+        background-color: #fff;
+    }
+
+        .table thead th {
+            background-color: #007bff;
+            color: white;
+        }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-body {
+        background-color: #f8f9fa;
+    }
+</style>

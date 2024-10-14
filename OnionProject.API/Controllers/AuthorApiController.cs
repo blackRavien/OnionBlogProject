@@ -54,30 +54,6 @@ namespace OnionProject.API.Controllers
         }
 
 
-
-        
-
-        //[HttpGet]
-        //public async Task<IActionResult> Index()
-        //{
-        //    var authorList = await _authorService.GetAuthors();
-        //    return Ok(authorList); // Burada AuthorVm kullanılıyor.
-        //}
-
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> Details(int id)
-        //{
-        //    var authorDetail = await _authorService.GetDetail(id);
-        //    if (authorDetail == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(authorDetail);
-        //}
-
-
-
-
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CreateAuthorDTO author)
         {
@@ -117,7 +93,7 @@ namespace OnionProject.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
+        public async Task<IActionResult> Update([FromForm] UpdateAuthorDTO model)
         {
             try
             {
@@ -126,22 +102,22 @@ namespace OnionProject.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                // Mevcut postu al
-                var post = await _postService.GetById(model.Id);
-                if (post == null)
+                // Mevcut yazarı al
+                var author = await _authorService.GetById(model.Id);
+                if (author == null)
                 {
-                    return NotFound(new { message = "Post bulunamadı" });
+                    return NotFound(new { message = "Yazar bulunamadı" });
                 }
 
                 // Diğer alanları güncelle, ancak CreatedDate'i değiştirme
-                post.Title = model.Title;
-                post.Content = model.Content;
-                post.AuthorId = model.AuthorId;
-                post.GenreId = model.GenreId;
-                post.UpdatedDate = DateTime.Now;  // Güncelleme tarihini güncelle, oluşturulma tarihini koru.
-                // post.CreatedDate = model.CreatedDate;  // Bu alanı güncellemiyoruz!
-
-                await _postService.Update(post);
+                author.FirstName = model.FirstName;
+                author.LastName = model.LastName;
+                author.Image = model.Image;
+                author.Email = model.Email;
+                author.PhoneNumber = model.PhoneNumber;
+                author.Biography = model.Biography;
+                
+                await _authorService.Update(author);
                 return Ok();
             }
             catch (Exception ex)
@@ -149,6 +125,40 @@ namespace OnionProject.API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        //[HttpPut]
+        //public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest(ModelState);
+        //        }
+
+        //        // Mevcut postu al
+        //        var post = await _postService.GetById(model.Id);
+        //        if (post == null)
+        //        {
+        //            return NotFound(new { message = "Post bulunamadı" });
+        //        }
+
+        //        // Diğer alanları güncelle, ancak CreatedDate'i değiştirme
+        //        post.Title = model.Title;
+        //        post.Content = model.Content;
+        //        post.AuthorId = model.AuthorId;
+        //        post.GenreId = model.GenreId;
+        //        post.UpdatedDate = DateTime.Now;  // Güncelleme tarihini güncelle, oluşturulma tarihini koru.
+        //        // post.CreatedDate = model.CreatedDate;  // Bu alanı güncellemiyoruz!
+
+        //        await _postService.Update(post);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Internal server error: {ex.Message}");
+        //    }
+        //}
 
 
         [HttpDelete("{id}")]

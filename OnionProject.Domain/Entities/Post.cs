@@ -21,11 +21,11 @@ namespace OnionProject.Domain.Entities
         public string Content { get; set; }
 
         // Gönderinin resim yolunu tutar
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
 
         // Veritabanına kaydedilmeyen, gönderinin dosya yükleme işlemi için kullanılan alan
         [NotMapped] // Bu özellik veritabanına gönderilmez
-        public IFormFile UploadPath { get; set; } // Gönderinin resmini yüklemek için kullanılır
+        public IFormFile? UploadPath { get; set; } // Gönderinin resmini yüklemek için kullanılır
 
         // IBaseEntity'den gelen özellikler
         public DateTime CreatedDate { get; set; }

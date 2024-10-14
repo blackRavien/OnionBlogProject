@@ -19,6 +19,14 @@ namespace OnionProject.Domain.Entities
         // Yazarın profil resminin dosya yolu
         public string ImagePath { get; set; }
 
+        // Yeni eklemeler
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Biography { get; set; }
+
+        // Dinamik post sayısı
+        public int NumberOfPosts => Posts?.Count ?? 0;
+
         // Veritabanına kaydedilmeyen, yazarın profil fotoğrafı yüklemek için kullanılan alan
         [NotMapped]
         public IFormFile UploadPath { get; set; }

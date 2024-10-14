@@ -33,6 +33,17 @@ namespace OnionProject.Application.Models.DTOs
 
         public DateTime CreatedDate => DateTime.Now; // Oluşturulma tarihi
         public Status Status => Status.Active; // Varsayılan olarak aktif
+
+        // Yeni eklemeler
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Phone]
+        public string PhoneNumber { get; set; }
+
+        [MaxLength(1000)]
+        public string Biography { get; set; }
     }
 
 }
