@@ -78,7 +78,7 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
         {
             return await _context.Posts
                 .Include(p => p.Author)  // Yazar ilişkisini dahil et
-                .Include(p => p.Genre)   // Tür ilişkisini dahil et
+                .Include(p => p.Genre)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

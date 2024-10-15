@@ -1,6 +1,6 @@
 ﻿@model PostDetailsWithCommentVm
 @using System.Security.Claims
-
+@using OnionProject.Application.Models.VMs
 
 <head>
     <style>
@@ -27,6 +27,7 @@
     </style>
 </head>
 
+
 <div class="container my-5">
     <!-- Post Header -->
     <div class="card mb-4 shadow-sm border-primary">
@@ -36,7 +37,7 @@
             <div class="card-text">@Html.Raw(Model.PostDetails.Content)</div>
             <hr>
 
-            <div class="author-box d-flex align-items-center p-3 border rounded bg-light">
+          <div class="author-box d-flex align-items-center p-3 border rounded bg-light">
                 <div class="author-image-container me-3">
                     <img src="@Model.PostDetails.AuthorDetailVm.ImagePath" alt="@Model.PostDetails.AuthorDetailVm.FirstName" class="rounded-circle img-fluid" style="width: 90px; height: 90px; object-fit: cover;" />
                 </div>
@@ -51,16 +52,24 @@
                     <a href="https://localhost:7225/Admin/Author/Details/@Model.PostDetails.AuthorDetailVm.Id" class="btn btn-primary">Yazar Detayları</a>
                 </div>
 
-          </div> 
+          </div>  
         </div>
     </div>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-warning">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 
     <!-- Yorum Ekle -->
     <div class="card mb-4 shadow-sm border-success">
         <div class="card-body bg-light">
             <h4 class="card-title text-success">Yorum Ekle</h4>
             <form asp-action="CreateComment" method="post">
-                <input type="hidden" asp-for="PostDetails.Id" />
+                @* <input type="hidden" asp-for="PostDetails.Id" /> *@
+                <input type="hidden" name="postId" value="@Model.PostDetails.Id" />
+
                 <div class="form-group">
                     <textarea asp-for="NewComment.Content" class="form-control" rows="3" placeholder="Yorumunuzu buraya yazın..." style="border: 1px solid #28a745;"></textarea>
                 </div>

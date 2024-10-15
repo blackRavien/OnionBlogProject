@@ -19,9 +19,19 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="User" asp-controller="UserPost" asp-action="Index">Home</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="User" asp-controller="UserPost" asp-action="Index">Home</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="User" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
                         </li>
@@ -31,19 +41,31 @@
                     </ul>
                     
                     <ul class="navbar-nav ms-auto">
-                        @if (ViewBag.Username != null)
+                        @if (User.Identity.IsAuthenticated)
                         {
+                            @if (ViewBag.Username != null)
+                            {
+                                <li class="nav-item">
+                                    <span class="navbar-text fw-bold" style="margin-right: 20px; margin-top: 10px;">
+                                        Hoşgeldin, @ViewBag.Username!
+                                    </span>
+                                </li>
+                            }
                             <li class="nav-item">
-                                <span class="navbar-text fw-bold" style="margin-right: 20px; margin-top: 10px;">
-                                    Hoşgeldin, @ViewBag.Username!
-                                </span>
+                                <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                </form>
                             </li>
                         }
-                        <li class="nav-item">
-                            <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
-                                <button type="submit" class="btn btn-danger">Logout</button>
-                            </form>
-                        </li>
+                        else
+                        {
+                            <div class="d-flex ms-auto">
+                                <a href="https://localhost:7225/Home/Login" class="btn btn-outline-primary me-2">Giriş Yapın</a>
+                                <a href="https://localhost:7225/Home/Register" class="btn btn-outline-success">Hesap Oluşturun</a>
+                            </div>
+                        }
+
+                        
                     </ul>
                 </div>
             </div>

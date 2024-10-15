@@ -77,8 +77,10 @@ namespace OnionProject.API.Controllers
                 AuthorLastName = postDetail.AuthorLastName,
                 CreatedDate = postDetail.CreatedDate,
                 Comments = postDetail.Comments,
+                AuthorDetailVm = postDetail.AuthorDetailVm,
                 // ImagePath'i tam URL olarak ayarla
-                ImagePath = $"https://localhost:7296/{postDetail.ImagePath.TrimStart('/')}" // Tam URL'yi oluştur
+                
+                ImagePath = $"{postDetail.ImagePath.TrimStart('/')}" // Tam URL'yi oluştur
             };
 
             return Ok(postDetailsVm); // PostDetailsVm döner

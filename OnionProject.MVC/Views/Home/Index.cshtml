@@ -1,34 +1,119 @@
-﻿@model OnionProject.Application.Models.DTOs.LoginDTO
+﻿@using OnionProject.Application.Models.VMs
+@model List<GetPostsVm>
+@{
+    ViewBag.Title = "Postlar";
+}
 
-<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
-    <div class="card p-5 shadow-lg" style="max-width: 400px; width: 100%;">
-        <div class="text-center mb-4">
-            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Logo">
-            <h2 class="fw-bold">Hoş Geldiniz!</h2>
-            <p class="text-muted">Lütfen giriş yapın</p>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-center">Tüm Postlar</h2>
+        @if (ViewBag.Username != null)
+        {
+            <h5 class="text-right">Hoşgeldin, @ViewBag.Username!</h5>
+        }
+    </div>
+
+    <!-- Arama Çubuğu -->
+    <div class="mb-4">
+        <input type="text" id="searchInput" class="form-control" placeholder="Post başlığı ile ara..." onkeyup="searchPosts()">
+    </div>
+
+    <div id="postCarousel" class="carousel slide" data-bs-ride="false">
+        <!-- Otomatik geçişi kapat -->
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Count(); i += 6)
+            {
+                var postsInGroup = Model.Skip(i).Take(6).ToList();
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <div class="row">
+                        @foreach (var post in postsInGroup)
+                        {
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card h-100 shadow-sm">
+                                    <img src="@post.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 200px; object-fit: cover;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary">@post.Title</h5>
+                                        <a href="@Url.Action("Details", "Home", new { id = post.Id })" class="btn btn-outline-primary btn-block">Detayları Gör</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Boş Kartlar Ekleyerek Sabit Alan Oluşturma -->
+                        @for (int j = postsInGroup.Count; j < 6; j++)
+                        {
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card h-100" style="visibility: hidden;">
+                                    <!-- Gizli kart -->
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary"></h5>
+                                        <a href="#" class="btn btn-outline-primary btn-block" style="visibility: hidden;">Detayları Gör</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         </div>
+    </div>
 
-        <form asp-action="Login" method="post">
-            <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="email" asp-for="Email" placeholder="Email" />
-                <label for="email">Email Adresiniz</label>
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password" asp-for="Password" placeholder="Şifreniz" />
-                <label for="password">Şifreniz</label>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary btn-lg">Giriş Yap</button>
-            </div>
-        </form>
-
-        <div class="text-center mt-3">
-            <p>Hesabınız yok mu? <a href="@Url.Action("Register", "Home")" class="text-decoration-none">Kayıt olun</a></p>
-        </div>
+    <div class="d-flex justify-content-center mt-3">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @for (int i = 0; i < Math.Ceiling((double)Model.Count() / 6); i++)
+                {
+                    <li class="page-item @(i == 0 ? "active" : "")">
+                        <a class="page-link" href="#" onclick="goToSlide(@i)" aria-label="Sayfa @(i + 1)">@(i + 1)</a>
+                    </li>
+                }
+            </ul>
+        </nav>
     </div>
 </div>
 
-<partial name="_ValidationScriptsPartial" />
+<div class="container mt-5">
+    <!-- Sitenin Kurucusu Hakkında Bölümü -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <img src="https://localhost:7296/images/istock.jpg" class="img-fluid" alt="Kurucu Resmi" style="object-fit: cover; height: 100%; max-height: 400px;">
+        </div>
+        <div class="col-md-6">
+            <h2 class="text-center">Sitenin Kurucusu Hakkında</h2>
+            <p class="text-justify">
+                Sitemizin kurucusu, teknoloji ve eğitim alanında deneyimli bir profesyoneldir. Amacı, bilgi paylaşımını artırmak ve öğrenmeyi teşvik etmektir. Projeler, kullanıcı deneyimini ön planda tutarak hayata geçirilmiştir.
+            </p>
+            <a href="@Url.Action("AboutUs", "Home")" class="btn btn-primary">Daha Fazla</a>
+        </div>
 
+    </div>
+</div>
+
+
+<script>
+    var carouselElement = document.getElementById('postCarousel');
+    var carousel = new bootstrap.Carousel(carouselElement, {
+        interval: false, // Otomatik geçişi kapat
+        wrap: false // Döngü olmadan geçiş
+    });
+
+    function goToSlide(slideIndex) {
+        var carousel = new bootstrap.Carousel(document.getElementById('postCarousel'));
+        carousel.to(slideIndex);
+    }
+
+
+
+    function searchPosts() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const posts = document.querySelectorAll('.card'); // Kartları seç
+
+        posts.forEach(post => {
+            const title = post.querySelector('.card-title').innerText.toLowerCase();
+            if (title.includes(input)) {
+                post.closest('.col-lg-4').style.display = ""; // Göster
+            } else {
+                post.closest('.col-lg-4').style.display = "none"; // Gizle
+            }
+        });
+    }
+</script>

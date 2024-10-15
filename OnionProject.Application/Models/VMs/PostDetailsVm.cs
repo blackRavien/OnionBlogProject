@@ -20,7 +20,8 @@ namespace OnionProject.Application.Models.VMs
         public List<CommentVm>? Comments { get; set; } // Yorumlar
 
         public DateTime CreatedDate { get; set; } // Gönderinin oluşturulma tarihi
- 
+        
+        public AuthorDetailVm AuthorDetailVm { get; set; }
 
     }
 }

@@ -20,16 +20,46 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a href="https://localhost:7225/Admin/AdminMain/Index" class="btn btn-info">Home</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a href="https://localhost:7225/Admin/AdminMain/Index" class="btn btn-info">Home</a>
+                            }
+                            else
+                            {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="User" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>
+                            </li>
+                            }
+
                         </li>
+
+
                         <!-- Logout Butonu -->
                         <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
-                                    <button type="submit" class="btn btn-danger">Logout</button>
-                                </form>
-                            </li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
+                                        <button type="submit" class="btn btn-danger">Logout</button>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                <div class="d-flex ms-auto">
+                                    <a href="https://localhost:7225/Home/Login" class="btn btn-outline-primary me-2">Giriş Yapın</a>
+                                    <a href="https://localhost:7225/Home/Register" class="btn btn-outline-success">Hesap Oluşturun</a>
+                                </div>
+                            }
                         </ul>
+
+
                     </ul>
                 </div>
             </div>

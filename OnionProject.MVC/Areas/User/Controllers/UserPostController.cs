@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
 using OnionProject.Application.Services.AbstractServices;
+using OnionProject.Domain.Entities;
 using System.Net.Http;
 using System.Security.Claims;
 
@@ -108,6 +109,7 @@ namespace OnionProject.MVC.Controllers
         [HttpPost("CreateComment")]
         public async Task<IActionResult> CreateComment(PostDetailsWithCommentVm model)
         {
+
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);// Kullanıcının ID'sini alın.

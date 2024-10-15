@@ -1,15 +1,48 @@
 ﻿@using System.Security.Claims
 @model PostDetailsWithCommentVm
 
+<head>
+    <style>
+        .card-text {
+            white-space: pre-line;
+            word-wrap: break-word;
+        }
+
+        @*sonradan eklendi*@
+        .author-image-container {
+            width: 100px; /* Yuvarlak kapsayıcının genişliği */
+            height: 100px; /* Yuvarlak kapsayıcının yüksekliği */
+            overflow: hidden; /* Taşmayı önlemek için */
+            border-radius: 50%; /* Dairesel görünüm için */
+            display: flex; /* İçerikleri ortalamak için */
+            justify-content: center; /* İçerikleri yatayda ortalamak için */
+            align-items: center; /* İçerikleri dikeyde ortalamak için */
+        }
+
+            .author-image-container img {
+                width: 100%; /* Resmin kapsayıcıya tam oturması için */
+                height: auto; /* Orantıyı korumak için */
+            }
+
+    </style>
+</head>
+
+
 <div class="container my-5">
+
     <!-- Post Header -->
     <div class="card mb-4 shadow-sm border-primary">
-        <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 400px; object-fit: cover;">
+        <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 600px; object-fit: cover;">
         <div class="card-body bg-light">
             <h2 class="card-title text-center text-primary">@Model.PostDetails.Title</h2>
-            <p class="card-text">@Model.PostDetails.Content</p>
+            <div class="card-text">@Html.Raw(Model.PostDetails.Content)</div>
             <hr>
             <p class="text-muted">Yazar: <strong class="text-dark">@Model.PostDetails.AuthorFullName</strong></p>
+
+            <div class="author-image-container text-center mb-3">
+                <img src="@Model.PostDetails.AuthorDetailVm.ImagePath" alt="@Model.PostDetails.AuthorDetailVm.FirstName" class="rounded-circle img-fluid" />
+            </div>
+
             <p class="text-muted">Tarih: <strong class="text-dark">@Model.PostDetails.CreatedDate.ToString("dd MMM yyyy")</strong></p>
             <p class="text-muted">Tür: <strong class="text-dark">@Model.PostDetails.GenreName</strong></p>
         </div>

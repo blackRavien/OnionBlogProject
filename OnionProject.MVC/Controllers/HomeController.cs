@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
 using OnionProject.Application.Services.AbstractServices;
 using OnionProject.Application.Services.ConcreteManagers;
 using OnionProject.Domain.Entities;
+using System.Security.Claims;
+using System;
 
 namespace OnionProject.MVC.Controllers
 {
@@ -13,17 +17,43 @@ namespace OnionProject.MVC.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IAuthorService _authorService;
+        private readonly ICommentService _commentService;
 
-        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAuthorService authorService)
+        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAuthorService authorService, ICommentService commentService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authorService = authorService;
+            _commentService = commentService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var username = User.Identity.Name; // Kullanýcý adýný al
+            ViewBag.Username = username; // ViewBag ile gönder
+
+            List<GetPostsVm> posts = new List<GetPostsVm>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"https://localhost:7296/api/UserPostApi/Index"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
+                }
+            }
+
+            // Her post için ImagePath'i kontrol et ve gerekirse düzelt
+            foreach (var post in posts)
+            {
+                if (!string.IsNullOrEmpty(post.ImagePath) && !post.ImagePath.StartsWith("http"))
+                {
+                    // Eðer ImagePath zaten tam bir URL deðilse, tam URL'yi ekleyin
+                    post.ImagePath = $"https://localhost:7296/{post.ImagePath.TrimStart('/')}";
+                }
+            }
+
+            return View(posts);
         }
 
 
@@ -63,6 +93,47 @@ namespace OnionProject.MVC.Controllers
                 }
             }
             return View(model);
+        }
+
+        // GET: UserPost/Details/5
+        
+        [HttpGet("Details/{id}")]
+        public async Task<IActionResult> Details(int id)
+        {
+            PostDetailsVm postDetailsVm = new PostDetailsVm();
+            using (var httpClient = new HttpClient())
+            {
+                // API isteði oluþtur ve yanýtý al
+                using (var response = await httpClient.GetAsync($"https://localhost:7296/api/AdminPostApi/Details/{id}"))
+                {
+                    if (response.IsSuccessStatusCode) // Ýstek baþarýlý olduysa
+                    {
+                        // API'den gelen JSON'u string olarak oku
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+
+                        // JSON'u PostDetailsVm nesnesine deserialize et
+                        postDetailsVm = JsonConvert.DeserializeObject<PostDetailsVm>(apiResponse);
+                    }
+                    else
+                    {
+                        return NotFound(); // Eðer istek baþarýsýzsa NotFound döndür
+                    }
+                }
+            }
+
+            // Yorumlarý al
+            var comments = await _commentService.GetCommentsByPostIdAsync(id);
+
+            // View'e göndermek için bir model oluþtur
+            var model = new PostDetailsWithCommentVm
+            {
+                PostDetails = postDetailsVm, // Post detaylarý (API'den gelen tam resim URL'si ile)
+                Comments = comments, // Yorumlar
+                NewComment = new CreateCommentDTO(), // Yeni yorum için boþ bir DTO
+                AuthorDetail = new AuthorDetailVm()
+            };
+
+            return View(model); // Modeli View'e gönder
         }
 
         public async Task<IActionResult> AboutUs()
@@ -134,6 +205,21 @@ namespace OnionProject.MVC.Controllers
             return View(model);
         }
 
+
+        [HttpPost]
+        public IActionResult CreateComment(int postId)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["ErrorMessage"] = "Yorum yapabilmek için giriþ yapmalýsýnýz.";
+                return RedirectToAction("Details", new { id = postId });
+            }
+
+            // Eðer kullanýcý giriþ yapmýþsa yapýlacak iþlemler:
+            // Yorum ekleme iþlemi burada gerçekleþmeli.
+
+            return RedirectToAction("Details", new { id = postId }); // Yorum eklendikten sonra da ayný sayfaya geri dönülür.
+        }
 
 
         [HttpPost]
