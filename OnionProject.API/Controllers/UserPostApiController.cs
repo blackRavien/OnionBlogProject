@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace OnionProject.API.Controllers
 {
+    
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserPostApiController : ControllerBase
@@ -75,6 +77,7 @@ namespace OnionProject.API.Controllers
         }
 
         [HttpPost]
+        
         public async Task<IActionResult> CreateComment([FromBody] CreateCommentDTO createCommentDto)
         {
             if (!ModelState.IsValid)
@@ -88,6 +91,7 @@ namespace OnionProject.API.Controllers
 
 
         [HttpDelete("DeleteComment/{commentId}")]
+        
         public async Task<IActionResult> DeleteComment(int commentId)
         {
             var comment = await _commentService.GetCommentsByPostIdAsync(commentId); // Yorumu bul

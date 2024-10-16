@@ -9,10 +9,10 @@ namespace OnionProject.Application.Models.VMs
 {
     public class PostDetailsWithCommentVm
     {
-        public PostDetailsVm PostDetails { get; set; }
+        public PostDetailsVm? PostDetails { get; set; }
         public CreateCommentDTO NewComment { get; set; }
         public List<GetCommentDTO>? Comments { get; set; }  // Yorumları listeleme için ekledik.
-        public AuthorDetailVm AuthorDetail { get; set; }
+        public AuthorDetailVm? AuthorDetail { get; set; }
         
     }
 }

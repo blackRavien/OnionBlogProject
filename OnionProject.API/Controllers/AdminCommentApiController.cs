@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Domain.AbstractRepositories;
 using OnionProject.Domain.Entities;
@@ -6,6 +7,7 @@ using OnionProject.Domain.Enum;
 
 namespace OnionProject.API.Controllers
 {
+    
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdminCommentApiController : ControllerBase

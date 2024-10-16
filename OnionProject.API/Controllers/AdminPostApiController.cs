@@ -11,9 +11,11 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats;
 using OnionProject.Infrastructure.Context;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OnionProject.API.Controllers
 {
+    
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class AdminPostApiController : ControllerBase
@@ -96,6 +98,7 @@ namespace OnionProject.API.Controllers
 
         // Yeni bir post oluşturmak için
         [HttpPost]
+        
         public async Task<IActionResult> Create([FromForm] CreatePostDTO post)
         {
             if (!ModelState.IsValid)
@@ -116,6 +119,7 @@ namespace OnionProject.API.Controllers
 
         //Postu güncellemek için
         [HttpPut]
+        
         public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
         {
             try
@@ -158,32 +162,6 @@ namespace OnionProject.API.Controllers
         }
 
 
-
-
-
-        //[HttpPut]
-        // public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
-        // {
-        //     try
-        //     {
-        //         if (!ModelState.IsValid)
-        //         {
-        //             return BadRequest(ModelState);
-        //         }
-
-
-
-        //         await _postService.Update(model);
-        //         return Ok(); // Başarıyla güncellendi
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         // Hata detaylarını logla
-        //         return StatusCode(500, $"Internal server error: {ex.Message}");
-        //     }
-        // }
-
-
         // ID ile belirli bir postu almak için
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPost(int id)
@@ -200,6 +178,7 @@ namespace OnionProject.API.Controllers
 
         // Postu silmek için
         [HttpDelete("{id}")]
+        
         public async Task<IActionResult> Delete(int id)
         {
             var post = await _postService.GetById(id);
@@ -247,6 +226,7 @@ namespace OnionProject.API.Controllers
 
 
         [HttpGet("api/contact")]
+        
         public async Task<IActionResult> GetContactMessages()
         {
             var contactMessages = await _appDbContext.ContactMessages.ToListAsync();
@@ -254,6 +234,7 @@ namespace OnionProject.API.Controllers
         }
 
         [HttpDelete("api/contact/{id}")]
+        
         public async Task<IActionResult> DeleteContactMessage(int id)
         {
             var message = await _appDbContext.ContactMessages.FindAsync(id);

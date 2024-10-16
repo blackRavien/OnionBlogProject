@@ -76,7 +76,7 @@
 
                         @if (User.IsInRole("Admin") || comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                         {
-                            <form action="https://localhost:7225/Admin/AdminPost/DeleteComment/@comment.Id" method="post" class="d-inline">
+                            <form action="https://localhost:7225/Admin/AdminPost/DeleteComment/@comment.Id" method="post" onsubmit="return confirm('Silmek istediğinizden emin misiniz?');" class="d-inline">
                                 <input type="hidden" name="commentId" value="@comment.Id" />
                                 <input type="hidden" name="postId" value="@Model.PostDetails.Id" />
                                 <button type="submit" class="btn btn-danger btn-sm">Sil</button>

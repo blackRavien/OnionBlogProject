@@ -119,7 +119,8 @@ namespace OnionProject.MVC.Controllers
                 {
                     Content = model.NewComment.Content,
                     PostId = model.PostDetails.Id,
-                    UserId = userId
+                    UserId = userId,
+                    
                 };
 
                 // API üzerinden yorum oluştur
@@ -137,6 +138,12 @@ namespace OnionProject.MVC.Controllers
                 }
 
                 return RedirectToAction("Details", new { id = model.PostDetails.Id });
+            }
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            // Hata mesajlarını bir log dosyasına yazdırabilirsiniz veya UI'da gösterin.
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error);
             }
 
             return View("Details", model);

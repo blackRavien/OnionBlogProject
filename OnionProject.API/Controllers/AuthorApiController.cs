@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Services.AbstractServices;
@@ -53,7 +54,7 @@ namespace OnionProject.API.Controllers
             return Ok(authorDetail);
         }
 
-
+        
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CreateAuthorDTO author)
         {
@@ -92,6 +93,7 @@ namespace OnionProject.API.Controllers
             return Ok();
         }
 
+        
         [HttpPut]
         public async Task<IActionResult> Update([FromForm] UpdateAuthorDTO model)
         {
@@ -126,41 +128,8 @@ namespace OnionProject.API.Controllers
             }
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> Update([FromForm] UpdatePostDTO model)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return BadRequest(ModelState);
-        //        }
 
-        //        // Mevcut postu al
-        //        var post = await _postService.GetById(model.Id);
-        //        if (post == null)
-        //        {
-        //            return NotFound(new { message = "Post bulunamadı" });
-        //        }
-
-        //        // Diğer alanları güncelle, ancak CreatedDate'i değiştirme
-        //        post.Title = model.Title;
-        //        post.Content = model.Content;
-        //        post.AuthorId = model.AuthorId;
-        //        post.GenreId = model.GenreId;
-        //        post.UpdatedDate = DateTime.Now;  // Güncelleme tarihini güncelle, oluşturulma tarihini koru.
-        //        // post.CreatedDate = model.CreatedDate;  // Bu alanı güncellemiyoruz!
-
-        //        await _postService.Update(post);
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Internal server error: {ex.Message}");
-        //    }
-        //}
-
-
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

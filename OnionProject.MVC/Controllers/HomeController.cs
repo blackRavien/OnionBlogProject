@@ -27,6 +27,8 @@ namespace OnionProject.MVC.Controllers
             _commentService = commentService;
         }
 
+
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -38,8 +40,17 @@ namespace OnionProject.MVC.Controllers
             {
                 using (var response = await httpClient.GetAsync($"https://localhost:7296/api/UserPostApi/Index"))
                 {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
+                    if (response.IsSuccessStatusCode) // Baþarýlý bir yanýt alýndý mý?
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
+                    }
+                    else
+                    {
+                        // Hata durumu, isterseniz burada hata mesajýný loglayabilirsiniz
+                        ModelState.AddModelError(string.Empty, "API'den veri alýnamadý.");
+                        return View(new List<GetPostsVm>()); // Boþ bir liste ile geri dön
+                    }
                 }
             }
 
@@ -57,7 +68,45 @@ namespace OnionProject.MVC.Controllers
         }
 
 
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> Index()
+        //{
+        //    var username = User.Identity.Name; // Kullanýcý adýný al
+        //    ViewBag.Username = username; // ViewBag ile gönder
+
+        //    List<GetPostsVm> posts = new List<GetPostsVm>();
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        using (var response = await httpClient.GetAsync($"https://localhost:7296/api/UserPostApi/Index"))
+        //        {
+        //            string apiResponse = await response.Content.ReadAsStringAsync();
+        //            posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
+        //        }
+        //    }
+
+        //    // Her post için ImagePath'i kontrol et ve gerekirse düzelt
+        //    foreach (var post in posts)
+        //    {
+        //        if (!string.IsNullOrEmpty(post.ImagePath) && !post.ImagePath.StartsWith("http"))
+        //        {
+        //            // Eðer ImagePath zaten tam bir URL deðilse, tam URL'yi ekleyin
+        //            post.ImagePath = $"https://localhost:7296/{post.ImagePath.TrimStart('/')}";
+        //        }
+        //    }
+
+        //    return View(posts);
+        //}
+
+
+
+
         // Register (Kayýt Olma)
+
+
+
+
         [HttpGet]
         public IActionResult Register()
         {

@@ -21,7 +21,7 @@ namespace OnionProject.Application.Models.VMs
 
         public DateTime CreatedDate { get; set; } // Gönderinin oluşturulma tarihi
         
-        public AuthorDetailVm AuthorDetailVm { get; set; }
+        public AuthorDetailVm? AuthorDetailVm { get; set; }
 
     }
 }

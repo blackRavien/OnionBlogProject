@@ -83,7 +83,7 @@
 
                         @if (comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                         {
-                            <form asp-action="DeleteComment" method="post" class="d-inline">
+                            <form asp-action="DeleteComment" method="post" onsubmit="return confirm('Silmek istediğinizden emin misiniz?');" class="d-inline">
                                 <input type="hidden" name="commentId" value="@comment.Id" />
                                 <input type="hidden" name="postId" value="@Model.PostDetails.Id" />
                                 <button type="submit" class="btn btn-danger btn-sm">Sil</button>

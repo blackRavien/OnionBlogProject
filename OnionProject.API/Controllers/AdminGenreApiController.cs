@@ -6,6 +6,8 @@ using OnionProject.Domain.AbstractRepositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OnionProject.Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
+
 
 [Route("api/[controller]")]
 [ApiController]
