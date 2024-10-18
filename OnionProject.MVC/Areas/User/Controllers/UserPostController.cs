@@ -22,13 +22,15 @@ namespace OnionProject.MVC.Controllers
         private readonly IMapper _mapper;
         private readonly IAppUserService _appUserService;
         private readonly IAuthorService _authorService;
+        private readonly IGenreService _genreService;
 
-        public UserPostController(IMapper mapper, IPostService postService, ICommentService commentService, IAuthorService authorService)
+        public UserPostController(IMapper mapper, IPostService postService, ICommentService commentService, IAuthorService authorService, IGenreService genreService)
         {
             _mapper = mapper;
             _postService = postService;
             _commentService = commentService;
-            _authorService = authorService; 
+            _authorService = authorService;
+            _genreService = genreService;
         }
 
         // GET: UserPost
@@ -38,6 +40,8 @@ namespace OnionProject.MVC.Controllers
         {
             var username = User.Identity.Name; // Kullanıcı adını al
             ViewBag.Username = username; // ViewBag ile gönder
+            ViewBag.Genres = await _genreService.GetAllGenres();
+            ViewBag.Authors = await _authorService.GetAuthors();
 
             List<GetPostsVm> posts = new List<GetPostsVm>();
             using (var httpClient = new HttpClient())
@@ -170,8 +174,147 @@ namespace OnionProject.MVC.Controllers
             return RedirectToAction("Details", new { id = postId }); // Hata olsa bile detaya geri dön
         }
 
+
+
+        // GET: UserPost/Profile
+        [Authorize]
+        [HttpGet("Profile")]
+        public async Task<IActionResult> Profile()
+        {
+            ProfileVm profileVm;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcı ID'sini alın
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{uri}/api/UserPostApi/GetProfile/GetProfile/{userId}"))
+
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        profileVm = JsonConvert.DeserializeObject<ProfileVm>(apiResponse);
+                    }
+                    else
+                    {
+                        return NotFound(); // Profil bulunamadıysa NotFound döndür
+                    }
+                }
+            }
+
+            return View(profileVm);
+        }
+
+
+        // GET: UserPost/EditProfile
+        [Authorize]
+        [HttpGet("EditProfile")]
+        public async Task<IActionResult> EditProfile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcı ID'sini alın
+            ProfileUpdateDTO updateProfileDto;
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"{uri}/api/UserPostApi/GetProfile/GetProfile/{userId}"))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        var currentUser = JsonConvert.DeserializeObject<AppUser>(apiResponse);
+
+                        // ProfileUpdateDTO'yu doldurun
+                        updateProfileDto = new ProfileUpdateDTO
+                        {
+                            FirstName = currentUser.FirstName,
+                            LastName = currentUser.LastName,
+                            UserName = currentUser.UserName,
+                            Email = currentUser.Email,
+                            PhoneNumber = currentUser.PhoneNumber,
+                            
+                            // Gerekirse diğer alanları da doldurun
+                        };
+                    }
+                    else
+                    {
+                        return NotFound(); // Profil bulunamadıysa NotFound döndür
+                    }
+                }
+            }
+
+            return View("EditProfile", updateProfileDto); // EditProfile view'ına yönlendirilir
+        }
+
+
+
+
         
 
 
+        // POST: UserPost/EditProfile
+        [Authorize]
+        [HttpPost("EditProfile")]
+        public async Task<IActionResult> EditProfile(ProfileUpdateDTO updateProfileDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcı ID'sini al
+
+                // Mevcut kullanıcı bilgilerini al
+                AppUser currentUser;
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.GetAsync($"{uri}/api/UserPostApi/GetProfile/GetProfile/{userId}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        currentUser = JsonConvert.DeserializeObject<AppUser>(apiResponse);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Kullanıcı bilgileri alınamadı.");
+                        return View(updateProfileDto); // Hata varsa DTO'yu geri gönder
+                    }
+                }
+
+                // Güncelleme işlemleri
+                currentUser.FirstName = string.IsNullOrEmpty(updateProfileDto.FirstName) ? currentUser.FirstName : updateProfileDto.FirstName;
+                currentUser.LastName = string.IsNullOrEmpty(updateProfileDto.LastName) ? currentUser.LastName : updateProfileDto.LastName;
+                currentUser.UserName = string.IsNullOrEmpty(updateProfileDto.UserName) ? currentUser.UserName : updateProfileDto.UserName;
+                currentUser.Email = string.IsNullOrEmpty(updateProfileDto.Email) ? currentUser.Email : updateProfileDto.Email;
+                currentUser.PhoneNumber = string.IsNullOrEmpty(updateProfileDto.PhoneNumber) ? currentUser.PhoneNumber : updateProfileDto.PhoneNumber;
+
+                // Şifre güncelleme kontrolü
+                if (!string.IsNullOrEmpty(updateProfileDto.Password))
+                {
+                    // Yeni bir PasswordHash oluştur
+                    var passwordHasher = new PasswordHasher<AppUser>();
+                    currentUser.PasswordHash = passwordHasher.HashPassword(currentUser, updateProfileDto.Password);
+                }
+
+
+                // Kullanıcıyı güncelle
+                using (var httpClient = new HttpClient())
+                {
+                    var json = JsonConvert.SerializeObject(currentUser);
+                    var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                    var response = await httpClient.PostAsync($"{uri}/api/UserPostApi/UpdateProfile/UpdateProfile/{userId}", content);
+
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Profile"); // Başarılıysa Profile view'ına yönlendir
+                    }
+                    else
+                    {
+                        return RedirectToAction("Profile"); // Eğer istek başarısızsa NotFound döndür
+                    }
+                }
+
+
+            }
+            return View(updateProfileDto); // Hata durumu veya ModelState geçerli değilse DTO'yu geri döndür
+        }
+
+       
     }
 }

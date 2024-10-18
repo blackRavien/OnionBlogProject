@@ -16,8 +16,6 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
         {
         }
 
-        // Özel metodlar ekleyebilirsiniz.
-        // Örneğin:
 
         // Belirli bir yazarın yazılarını getiren bir metod
         public async Task<List<Post>> GetPostsByAuthor(int authorId)
@@ -64,15 +62,10 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
         public async Task<List<Post>> GetAll()
         {
             return await _context.Posts
+                .Include(p => p.Author)
+                .Include(p => p.Genre)
                 .ToListAsync();
         }
-
-        //Belirli bir ID'ye sahip postu getirir
-        //public async Task<Post> GetById(int id)
-        //{
-        //    return await _context.Posts
-        //        .FindAsync(id);
-        //}
 
         public async Task<Post> GetById(int id)
         {

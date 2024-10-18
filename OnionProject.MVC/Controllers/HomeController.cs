@@ -18,13 +18,15 @@ namespace OnionProject.MVC.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IAuthorService _authorService;
         private readonly ICommentService _commentService;
+        private readonly IGenreService _genreService;
 
-        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAuthorService authorService, ICommentService commentService)
+        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAuthorService authorService, ICommentService commentService, IGenreService genreService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _authorService = authorService;
             _commentService = commentService;
+            _genreService = genreService;
         }
 
 
@@ -34,6 +36,8 @@ namespace OnionProject.MVC.Controllers
         {
             var username = User.Identity.Name; // Kullanýcý adýný al
             ViewBag.Username = username; // ViewBag ile gönder
+            ViewBag.Genres = await _genreService.GetAllGenres();
+            ViewBag.Authors = await _authorService.GetAuthors();
 
             List<GetPostsVm> posts = new List<GetPostsVm>();
             using (var httpClient = new HttpClient())

@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnionProject.Application.Models.DTOs;
 using OnionProject.Application.Models.VMs;
 using OnionProject.Application.Services.AbstractServices;
+using OnionProject.Domain.AbstractRepositories;
+using OnionProject.Domain.Entities;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,12 +19,17 @@ namespace OnionProject.API.Controllers
     public class UserPostApiController : ControllerBase
     {
         private readonly IPostService _postService;
+        private readonly IAppUserRepo _appUserRepo;
         private readonly ICommentService _commentService;
+        private readonly IAppUserService _appUserService;
+        private readonly ILogger _logger;
 
-        public UserPostApiController(IPostService postService, ICommentService commentService)
+        public UserPostApiController(IPostService postService, ICommentService commentService, IAppUserService appUserService, IAppUserRepo appUserRepo)
         {
             _postService = postService;
             _commentService = commentService;
+            _appUserService = appUserService;
+            _appUserRepo = appUserRepo;
         }
 
         // Tüm gönderileri almak için
@@ -108,6 +116,72 @@ namespace OnionProject.API.Controllers
 
             return Ok(new { message = "Yorum başarıyla silindi." });
         }
+
+
+
+
+        [HttpGet("GetProfile/{userId}")]
+        public async Task<IActionResult> GetProfile(string userId)
+        {
+            var userProfile = await _appUserService.GetUserById(userId);
+
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+
+            var profileVm = new ProfileVm
+            {
+                FirstName = userProfile.FirstName,
+                LastName = userProfile.LastName,
+                UserName = userProfile.UserName,
+                Email = userProfile.Email,
+                PhoneNumber = userProfile.PhoneNumber,
+                
+            };
+
+            return Ok(profileVm);
+        }
+
+
+
+        [HttpPost("UpdateProfile/{userId}")]
+        public async Task<IActionResult> UpdateProfile([FromBody] ProfileUpdateDTO updateProfileDto, string userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Kullanıcıyı veritabanından al
+            var user = await _appUserRepo.GetById(userId);
+            if (user == null)
+            {
+                return NotFound("Kullanıcı bulunamadı.");
+            }
+
+            // Profil bilgilerini güncelle
+            user.FirstName = updateProfileDto.FirstName ?? user.FirstName;
+            user.LastName = updateProfileDto.LastName ?? user.LastName;
+            user.UserName = updateProfileDto.UserName ?? user.UserName;
+            user.Email = updateProfileDto.Email ?? user.Email;
+            user.PhoneNumber = updateProfileDto.PhoneNumber ?? user.PhoneNumber;
+
+            // Şifre güncelleme kontrolü
+            if (!string.IsNullOrEmpty(updateProfileDto.Password))
+            {
+                var passwordHasher = new PasswordHasher<AppUser>();
+                user.PasswordHash = passwordHasher.HashPassword(user, updateProfileDto.Password);
+            }
+
+
+            // Kullanıcıyı güncelle
+            await _appUserRepo.Update(user);
+
+            return Ok("Profil başarıyla güncellendi.");
+        }
+
+
 
 
     }

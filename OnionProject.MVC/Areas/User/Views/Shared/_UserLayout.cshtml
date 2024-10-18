@@ -39,8 +39,38 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>
                         </li>
                     </ul>
-                    
                     <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (ViewBag.Username != null)
+                            {
+                                <li class="nav-item">
+                                    <span class="navbar-text fw-bold" style="margin-right: 20px; margin-top: 10px;">
+                                        Hoşgeldin, @ViewBag.Username!
+                                    </span>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="User" asp-controller="UserPost" asp-action="Profile" title="Profile">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Profil İkonu" style="width: 25px; height: 25px;" />
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <div class="d-flex ms-auto">
+                                <a href="https://localhost:7225/Home/Login" class="btn btn-outline-primary me-2">Giriş Yapın</a>
+                                <a href="https://localhost:7225/Home/Register" class="btn btn-outline-success">Hesap Oluşturun</a>
+                            </div>
+                        }
+                    </ul>
+
+                    @* <ul class="navbar-nav ms-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
                             @if (ViewBag.Username != null)
@@ -66,7 +96,7 @@
                         }
 
                         
-                    </ul>
+                    </ul> *@
                 </div>
             </div>
         </nav>

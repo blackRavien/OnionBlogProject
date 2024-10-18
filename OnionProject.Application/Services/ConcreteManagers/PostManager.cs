@@ -119,44 +119,6 @@ namespace OnionProject.Application.Services.ConcreteManagers
         }
 
 
-        //public async Task<PostDetailsVm> GetDetail(int id)
-        //{
-        //    var post = await _postRepo.GetById(id);
-        //    if (post == null)
-        //    {
-        //        throw new Exception("Post bulunamadı.");
-        //    }
-
-        //    // Yazar bilgilerini yüklemek için Include kullanın
-        //    var author = await _authorService.GetDetail(post.AuthorId); // Yazar bilgilerini al
-        //    if (author == null)
-        //    {
-        //        throw new Exception($"Yazar bulunamadı: {post.AuthorId}");
-        //    }
-
-        //    var postDetailsVm = _mapper.Map<PostDetailsVm>(post);
-
-        //    // Post resmi için tam URL oluşturma
-        //    postDetailsVm.ImagePath = $"https://localhost:7296/{post.ImagePath.TrimStart('/')}";
-
-        //    // Yazar resmi için tam URL oluşturma
-        //    postDetailsVm.AuthorDetailVm = author;
-        //    postDetailsVm.AuthorDetailVm.ImagePath = $"https://localhost:7296/{author.ImagePath.TrimStart('/')}";
-
-
-
-        //    return postDetailsVm;
-        //}
-
-
-        ////post detayları?
-        //public async Task<PostDetailsVm> GetDetail(int id)
-        //{
-        //    var post = await _postRepo.GetById(id);
-
-        //    return _mapper.Map<PostDetailsVm>(post);
-        //}
-
         public async Task<UpdatePostDTO> GetById(int id)
         {
             var post = await _postRepo.GetById(id);

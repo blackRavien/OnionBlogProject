@@ -120,7 +120,17 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
         public async Task<AppUser> GetById(string userId)
         {
             // Kullanıcı ID'si ile veritabanından kullanıcıyı asenkron olarak getirir.
-            return await _context.AppUsers.FindAsync(userId);
+            //return await _context.AppUsers
+            //    .FindAsync(userId);
+
+            var user = await _context.AppUsers.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                throw new Exception($"Kullanıcı ID'si '{userId}' ile eşleşen bir kullanıcı bulunamadı.");
+            }
+
+            return user;
         }
 
 

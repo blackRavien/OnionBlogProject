@@ -31,6 +31,8 @@ namespace OnionProject.Application.IoC
             builder.RegisterType<CommentManager>().As<ICommentService>().InstancePerLifetimeScope();
             builder.RegisterType<ContactMessageRepo>().As<IContactMessageRepo>().InstancePerLifetimeScope();
             builder.RegisterType<ContactMessageManager>().As<IContactMessageService>().InstancePerLifetimeScope();
+            builder.RegisterType<AppUserManager>().As<IAppUserService>().InstancePerLifetimeScope();
+
 
             //diğer servisler ve managerlar buraya eklenecek...
             //builder.RegisterType<AppUserManager>().As<IAppUserService>().InstancePerLifetimeScope();

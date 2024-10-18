@@ -6,6 +6,8 @@ using Autofac;
 using Microsoft.EntityFrameworkCore;
 using OnionProject.Application.IoC;
 using OnionProject.Infrastructure.Context;
+using Microsoft.AspNetCore.Identity;
+using OnionProject.Domain.Entities;
 
 namespace OnionProject.API
 {
@@ -25,6 +27,14 @@ namespace OnionProject.API
             string connectionString = builder.Configuration.GetConnectionString("DefaultConncetion");
             builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 
+            // Identity Setup
+            builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()); //autofac için

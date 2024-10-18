@@ -19,6 +19,8 @@ namespace OnionProject.Domain.Entities
         // Kullanıcının soyadı
         public string LastName { get; set; }
 
+        public string FullName => $"{FirstName} {LastName}";
+
         // Profil fotoğrafının dosya yolu (string olarak saklanır)
         public string ImagePath { get; set; }
 
