@@ -1,12 +1,59 @@
 ﻿@model OnionProject.Application.Models.DTOs.LoginDTO
 
-<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+<style>
+    body {
+        background-color: #eab676; /* Krem rengi arka plan */
+        color: #333; /* Metin rengi */
+    }
+
+    .container {
+        background-color: #ebc18f; /* Beyaz arka plan */
+        border-radius: 8px; /* Köşeleri yuvarlak */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        padding: 20px; /* İç boşluk */
+        margin-bottom: 20px; /* Dış boşluk */
+    }
+
+    h2, h5 {
+        color: #21130d /* Koyu yeşil başlık rengi */
+    }
+
+    .form-control {
+        border-radius: 20px; /* Yuvarlak kenarlar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Buton arka plan rengi */
+        border-color: #007bff; /* Buton kenar rengi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Buton hover rengi */
+            border-color: #0056b3; /* Buton hover kenar rengi */
+        }
+
+    .card {
+        background-color: #f5f5dc;
+        border: none; /* Kart kenarını kaldır */
+        border-radius: 8px; /* Yuvarlak köşeler */
+    }
+
+    
+
+    
+</style>
+
+<div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="card p-5 shadow-lg" style="max-width: 400px; width: 100%;">
-        <div class="text-center mb-4">
-            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Logo">
-            <h2 class="fw-bold">Hoş Geldiniz!</h2>
+
+        <div class="text-center mb-2">
+            <img src="https://localhost:7296/images/raven-removebg-preview.png" class="rounded-circle mb-2" alt="Logo" style="width: 150px; height: 150px; object-fit: cover;" />
+            <h4>Raven's Blog</h4>
+            <h2 class="fw-bold mt-2">Hoş Geldiniz!</h2>
             <p class="text-muted">Lütfen giriş yapın</p>
         </div>
+
+
 
         <form asp-action="Login" method="post">
             <div class="form-floating mb-3">

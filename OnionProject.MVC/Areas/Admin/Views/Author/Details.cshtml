@@ -84,13 +84,10 @@
         {
             return "https://localhost:7225/Admin/Author/Index";
         }
-        else if (SignInManager.IsSignedIn(User) && User.IsInRole("Member"))
-        {
+        else 
             // Eğer kullanıcı admin değilse nereden gelmişse oraya yönlendir
             return "javascript:history.back()";
-        }
-        else
-            return "https://localhost:7225";
+        
 
     }
    }

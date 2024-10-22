@@ -24,40 +24,82 @@
                 width: 100%; /* Resmin kapsayıcıya tam oturması için */
                 height: auto; /* Orantıyı korumak için */
             }
+
+
+        body {
+        background-color: #eab676; /* Krem rengi arka plan */
+        color: #333; /* Metin rengi */
+    }
+    
+
+    h2, h5 {
+        color: #006400; /* Koyu yeşil başlık rengi */
+    }
+
+    .form-control {
+        border-radius: 20px; /* Yuvarlak kenarlar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Buton arka plan rengi */
+        border-color: #007bff; /* Buton kenar rengi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Buton hover rengi */
+            border-color: #0056b3; /* Buton hover kenar rengi */
+        }
+
+
+    .pagination .page-item.active .page-link {
+        background-color: #21130d; /* Aktif sayfa rengi */
+        border-color: #21130d; /* Aktif sayfa kenar rengi */
+    }
+        .container {
+        background-color: #ebc18f; /* Hafif gri arka plan */
+        
+        border-radius: 10px; /* Yuvarlatılmış köşeler */
+        padding: 20px; /* İç boşluk */
+    }
+
+    /* İçindeki kartın kenar renklerini özelleştir */
+    .card {
+        border-color: #21130d; /* Kart kenar rengi */
+
+    }
     </style>
 </head>
 
-<div class="container my-5">
+
     <!-- Post Header -->
     <div class="card mb-4 shadow-sm border-primary">
-        <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 400px; object-fit: cover;">
-        <div class="card-body bg-light">
-            <h2 class="card-title text-center text-primary">@Model.PostDetails.Title</h2>
-            <div class="card-text">@Html.Raw(Model.PostDetails.Content)</div>
-            <hr>
+    <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 400px; object-fit: cover;">
+    <div  class="card-body"  style="background-color: #f5f5dc;">
+        <h2 class="card-title text-center text-primary">@Model.PostDetails.Title</h2>
+        <div class="card-text" >@Html.Raw(Model.PostDetails.Content)</div>
+        <hr>
 
-            <div class="author-box d-flex align-items-center p-3 border rounded bg-light">
-                <div class="author-image-container me-3">
-                    <img src="@Model.PostDetails.AuthorDetailVm.ImagePath" alt="@Model.PostDetails.AuthorDetailVm.FirstName" class="rounded-circle img-fluid" style="width: 90px; height: 90px; object-fit: cover;" />
-                </div>
+        <div class="author-box d-flex align-items-center p-3 border rounded bg-light justify-content-between" >
+            <div class="author-image-container me-3">
+                <img src="@Model.PostDetails.AuthorDetailVm.ImagePath" alt="@Model.PostDetails.AuthorDetailVm.FirstName" class="rounded-circle img-fluid" style="width: 90px; height: 90px; object-fit: cover;" />
+            </div>
 
-                <div class="author-info">
-                    <p class="text-muted mb-0">Yazar: <strong class="text-dark">@Model.PostDetails.AuthorFullName</strong></p>   
-                    <p class="text-muted mb-0">Tarih: <strong class="text-dark">@Model.PostDetails.CreatedDate.ToString("dd MMM yyyy")</strong></p>
-                    <p class="text-muted mb-0">Tür: <strong class="text-dark">@Model.PostDetails.GenreName</strong></p>
-                </div>
+            <div class="author-info flex-grow-1" >
+                <p class="text-muted mb-0">Yazar: <strong class="text-dark">@Model.PostDetails.AuthorFullName</strong></p>
+                <p class="text-muted mb-0">Tarih: <strong class="text-dark">@Model.PostDetails.CreatedDate.ToString("dd MMM yyyy")</strong></p>
+                <p class="text-muted mb-0">Tür: <strong class="text-dark">@Model.PostDetails.GenreName</strong></p>
+            </div>
 
-                <div class="text-end">
-                    <a href="https://localhost:7225/Admin/Author/Details/@Model.PostDetails.AuthorDetailVm.Id" class="btn btn-primary">Yazar Detayları</a>
-                </div>
-
-          </div> 
-        </div>
+            <div class="text-end">
+                <a href="https://localhost:7225/Admin/Author/Details/@Model.PostDetails.AuthorDetailVm.Id" class="btn btn-primary">Yazar Detayları</a>
+            </div>
+        </div> 
     </div>
+</div>
 
     <!-- Yorum Ekle -->
-    <div class="card mb-4 shadow-sm border-success">
-        <div class="card-body bg-light">
+    <div class="card mb-4 shadow-sm border-success" style="background-color: #f5f5dc;">
+        <div class="card-body ">
             <h4 class="card-title text-success">Yorum Ekle</h4>
             <form asp-action="CreateComment" method="post">
                 <input type="hidden" asp-for="PostDetails.Id" />
@@ -70,8 +112,8 @@
     </div>
 
     <!-- Yorumlar -->
-    <div class="card mb-4 shadow-sm border-info">
-        <div class="card-body bg-light">
+    <div class="card mb-4 shadow-sm border-info"  style="background-color: #f5f5dc;">
+        <div class="card-body">
             <h3 class="card-title text-info">Yorumlar</h3>
             @if (Model.Comments != null && Model.Comments.Any())
             {
@@ -98,8 +140,9 @@
             }
         </div>
     </div>
-</div>
+    <button class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
 
-<button class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
+
+
 
 

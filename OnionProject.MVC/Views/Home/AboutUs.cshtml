@@ -3,59 +3,116 @@
 }
 
 
-<div class="container mt-5">
-    <!-- Kurucu kısmı -->
-    <div class="border p-4 mb-5 rounded">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <h2 class="font-weight-bold">Kurucu Hakkında</h2>
-                <p class="text-muted">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vulputate fermentum varius. Vivamus rutrum aliquam eros, ut aliquam libero porta sit amet. Aenean mollis orci ac tincidunt varius. Donec volutpat aliquet auctor. Sed varius lorem in augue mattis porta. Proin malesuada efficitur tellus, nec tempus risus convallis nec. Curabitur ipsum nisl, condimentum id gravida id, lacinia vitae eros. Integer in vulputate arcu. Vivamus semper leo id aliquam imperdiet. Suspendisse id dapibus lorem, ut lobortis magna. Etiam non elementum mi. Phasellus a placerat arcu. Fusce maximus tincidunt tortor in scelerisque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In at egestas quam, feugiat hendrerit quam.
-
-                    Duis venenatis odio non pharetra porta. Phasellus pharetra varius dolor, condimentum vehicula sapien finibus blandit. Nam ac ligula arcu. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse convallis tincidunt molestie. Pellentesque sit amet magna vel massa congue ornare id nec sapien. Sed placerat ipsum vitae sapien rutrum, mollis ullamcorper magna cursus. Curabitur vel magna eget risus lacinia feugiat non a ante. Maecenas mollis sit amet libero quis luctus. Donec a odio non elit tempus placerat. Donec lorem ex, congue vel ex quis, scelerisque scelerisque velit.
-                </p>
-            </div>
-            <div class="col-md-6">
-                <img src="https://localhost:7296/images/istock.jpg" class="img-fluid border" alt="Kurucu Fotoğrafı" style="width:100%; height:auto;">
-            </div>
+<!-- Hakkımızda Sayfası Başlangıcı -->
+<h1 class="text-center" style="font-weight: bold; color: #333;">Hakkımızda</h1>
+<div class="row mt-5">
+    
+    <div class="col-md-4">
+        <div class="card p-3 text-center border-0 shadow-sm rounded hover-box">
+            <img src="https://localhost:7296/images/ourvision.jpg" alt="Vizyonumuz" class="img-fluid rounded mb-3">
+            <h4 style="font-weight: bold; color: #333;">Vizyonumuz</h4>
+            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tincidunt metus.</p>
         </div>
     </div>
-
-    <!-- Diğer Yazarlar -->
-    <div class="row my-5">
-        <h2 class="mb-4 font-weight-bold">Yazarlarımız</h2>
-
-        @foreach (var author in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
-                    <img src="@author.ImagePath" alt="Yazar Fotoğrafı" class="card-img-top border">
-                    <div class="card-body">
-                        <h5 class="card-title">@author.FirstName @author.LastName</h5>
-                        <a href="https://localhost:7225/Admin/Author/Details/@author.Id" class="btn btn-info">Detaylar</a>
-                    </div>
-                </div>
+    <div class="col-md-4">
+        <div class="card p-3 text-center border-0 shadow-sm rounded hover-box">
+            <img src="https://localhost:7296/images/ourvalues.JPG" alt="Değerlerimiz" class="img-fluid rounded mb-3">
+            <h4 style="font-weight: bold; color: #333;">Değerlerimiz</h4>
+            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel neque.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+            <div class="card p-3 text-center border-0 shadow-sm rounded hover-box">
+                <img src="https://localhost:7296/images/authors.jpg" alt="Ekibimiz" class="img-fluid rounded mb-3">
+            <h4 style="font-weight: bold; color: #333;">Ekibimiz</h4>
+                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc condimentum eros.</p>
             </div>
-        }
+    </div>
+</div>
+
+<br />
+
+<!-- Kurucu kısmı -->
+<div class="border p-4 mb-5 rounded" style="background-color: #f5f5dc">
+    <div class="row align-items-center">
+        <!-- Sol tarafta metin, sağ tarafta birinci resim -->
+        <div class="col-md-6">
+            <img src="https://localhost:7296/images/ravennbanner-removebg.png" alt="Kurucu Banner" class="img-fluid rounded mb-3" style="max-width:100%; height:auto;">
+        </div>
+        <div class="col-md-6">
+            <h2 style="font-weight: bold; color: #333;">Kurucu Hakkında</h2>
+            <p class="text-muted">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vulputate fermentum varius. Vivamus rutrum aliquam eros, ut aliquam libero porta sit amet. Aenean mollis orci ac tincidunt varius. Donec volutpat aliquet auctor. Sed varius lorem in augue mattis porta. Proin malesuada efficitur tellus, nec tempus risus convallis nec. Curabitur ipsum nisl, condimentum id gravida id, lacinia vitae eros. Integer in vulputate arcu. Vivamus semper leo id aliquam imperdiet. Suspendisse id dapibus lorem, ut lobortis magna. Etiam non elementum mi. Phasellus a placerat arcu. Fusce maximus tincidunt tortor in scelerisque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+            </p>
+        </div>
+
     </div>
 
-
-    <div class="row mt-5">
-        <div class="col-md-4">
-            <h4>Telefon</h4>
-            <p><a href="tel:+900000000000">+90 512 345 1212</a></p>
+    <!-- İkinci satır: sola hizalı resim ve yazı altında tam genişlikte ikinci resim -->
+    <div class="row mt-4">
+        <div class="col-md-6 order-md-2">
+            <img src="https://localhost:7296/images/istock.jpg" class="img-fluid border rounded" alt="Kurucu Fotoğrafı" style="width:100%; height:auto;">
         </div>
-        <div class="col-md-4">
-            <h4>Email</h4>
-            <p><a href="mailto:mrtsvm569@gmail.com">info@example.com</a></p>
-        </div>
-        <div class="col-md-4">
-            <h4>Adres</h4>
-            <p>123 Sokak, Şehir, Ülke</p>   
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6023.354846742492!2d29.013791849605596!3d40.98854385190713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab98565932cb9%3A0xafaaa9dbc4bf05ab!2sBilgeAdam%20Akademi%20Kad%C4%B1k%C3%B6y!5e0!3m2!1str!2str!4v1728816300903!5m2!1str!2str" width="300" height="180" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="col-md-6 order-md-1">
+            <p class="text-muted">
+                Duis venenatis odio non pharetra porta. Phasellus pharetra varius dolor, condimentum vehicula sapien finibus blandit. Nam ac ligula arcu. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse convallis tincidunt molestie. Pellentesque sit amet magna vel massa congue ornare id nec sapien. Sed placerat ipsum vitae sapien rutrum, mollis ullamcorper magna cursus. Curabitur vel magna eget risus lacinia feugiat non a ante.
+            </p>
         </div>
     </div>
 </div>
+
+
+<!-- Diğer Yazarlar -->
+<div class="row my-5">
+    <h2 style="font-weight: bold; color: #333;">Yazarlarımız</h2>
+
+    @foreach (var author in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="@author.ImagePath" alt="Yazar Fotoğrafı" class="card-img-top border">
+                <div class="card-body">
+                    <h5 class="card-title">@author.FirstName @author.LastName</h5>
+                    <a href="https://localhost:7225/Admin/Author/Details/@author.Id" class="btn btn-info">Detaylar</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+<div class="row mt-5 p-4" style="background-color: #f5f5dc; border-radius: 15px;">
+    <div class="col-12 text-center mb-4">
+        <h2 style="font-weight: bold; color: #333;">İletişim Bilgilerimiz</h2>
+        <hr style="border-top: 2px solid #333; width: 50px; margin: 0 auto;">
+    </div>
+
+    <div class="col-md-4 text-center mb-4">
+        <h4 style="font-weight: bold; color: #333;">Telefon</h4>
+        <p><a href="tel:+900000000000" class="text-decoration-none">+90 512 345 1212</a></p>
+        <p><a href="tel:+900000000000" class="text-decoration-none">+90 543 344 9392</a></p>
+        <p><a href="tel:+900000000000" class="text-decoration-none">+90 674 876 7867</a></p>
+    </div>
+
+    <div class="col-md-4 text-center mb-4">
+        <h4 style="font-weight: bold; color: #333;">Email</h4>
+        <p><a href="mailto:mrtsvm569@gmail.com" class="text-decoration-none">mrtsvm569@gmail.com</a></p>
+        <p><a href="mailto:administrator@gmail.com" class="text-decoration-none">administrator@gmail.com</a></p>
+        <p><a href="mailto:mert.sevim@ba.com" class="text-decoration-none">mert.sevim@ba.com</a></p>
+    </div>
+
+    <div class="col-md-4 text-center mb-4">
+        <h4 style="font-weight: bold; color: #333;">Adres</h4>
+        <p>Bilge Adam Akademi Kadıköy Şube, İstanbul/TÜRKİYE</p>
+        <div class="d-flex justify-content-center">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6023.354846742492!2d29.013791849605596!3d40.98854385190713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab98565932cb9%3A0xafaaa9dbc4bf05ab!2sBilgeAdam%20Akademi%20Kad%C4%B1k%C3%B6y!5e0!3m2!1str!2str!4v1728816300903!5m2!1str!2str"
+                    width="300" height="180" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</div>
+
+
+
 
 <style>
     .container {
@@ -82,9 +139,57 @@
         a:hover {
             text-decoration: underline;
         }
+
+
+    body {
+        background-color: #eab676; /* Krem rengi arka plan */
+        color: #333; /* Metin rengi */
+    }
+
+    .card {
+        background-color: #f5f5dc;
+    }
+
+    .hover-box {
+        transition: transform 0.3s ease;
+    }
+
+        .hover-box:hover {
+            transform: scale(1.05);
+        }
+
+    .image-box img {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .image-box:hover img {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .about-us-section h2, h3, h4 {
+        color: #333;
+    }
+
+    .about-us-section .content-box {
+        border-left: 5px solid #007bff;
+    }
+
+    h2 {
+        
+        letter-spacing: 1px;
+        border-bottom: 3px solid #21130d;
+        display: inline-block;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    h4 {
+        font-weight: bold;
+        color: #333;
+        
+    }
+    
 </style>
 
-    <div class="text-center">
-        <a href="https://localhost:7225/UserPostApi" class="btn btn-dark mt-3">Geri Dön</a>
-    </div>
-</div>
+

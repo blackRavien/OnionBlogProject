@@ -1,7 +1,8 @@
 ﻿@model ProfileVm
 
-<h2>Profil</h2>
-<div class="container mt-4">
+
+
+    <h2>Profilim</h2>
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">
@@ -46,10 +47,14 @@
             </div>
         </div>
     </div>
-</div>
+
 
 
 <style>
+    body{
+        background-color: #eab676; /* Krem rengi arka plan */
+        color: #333; /* Metin rengi */
+    }
     .profile-container {
         max-width: 600px;
         margin: auto;
@@ -74,12 +79,7 @@
             vertical-align: top;
         }
 
-    .profile-image {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
+    
 
     .button-group {
         margin-top: 20px;
@@ -90,236 +90,3 @@
         margin-left: 10px;
     }
 </style>
-
-
-
-
-
-
-
-
-@* @model ProfileVm
-
-@{
-    // ViewBag.IsEditing null ise false, değilse true olarak ayarlanır.
-    bool isEditing = ViewBag.IsEditing != null && (bool)ViewBag.IsEditing;
-}
-
-<h2>Profil</h2>
-
-<div class="profile-container">
-    <div class="profile-header">
-        <h3>Profil Bilgileri</h3>
-    </div>
-
-    <form method="post" enctype="multipart/form-data">
-        <!-- İlk tablo - Profil bilgileri -->
-        <table class="profile-table">
-            <tr>
-                <td>
-                    <img src="@Model.ProfileImageUrl ?? Url.Content(" ~ /images/default-profile-icon.png")"
-                         alt="Profil Resmi"
-                         class="profile-image" />
-                </td>
-                <td>
-                    <strong>İsim:</strong>
-                    <input asp-for="FirstName" class="form-control" disabled="true" />
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <strong>Soyisim:</strong>
-                    <input asp-for="LastName" class="form-control" disabled="true" />
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <strong>Kullanıcı Adı:</strong>
-                    <input asp-for="UserName" class="form-control" disabled="true" />
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <strong>E-posta:</strong>
-                    <input asp-for="Email" class="form-control" disabled="true" />
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <strong>Telefon Numarası:</strong>
-                    <input asp-for="PhoneNumber" class="form-control" disabled="true" />
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <strong>Profil Resmi:</strong>
-                    <input type="file" asp-for="ProfileImageUrl" class="form-control" disabled="true" />
-                </td>
-            </tr>
-        </table>
-
-        <!-- Düzenleme butonu -->
-        <div class="button-group">
-            <button type="button" id="editButton" class="btn btn-primary">Düzenle</button>
-        </div>
-
-        <!-- İkinci tablo - Düzenleme için alanlar (gizli) -->
-        <div id="editTable" style="display: none;">
-            <h3>Düzenle</h3>
-            <table class="profile-table">
-                <tr>
-                    <td>
-                        <strong>İsim:</strong>
-                        <input asp-for="FirstName" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Soyisim:</strong>
-                        <input asp-for="LastName" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Kullanıcı Adı:</strong>
-                        <input asp-for="UserName" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>E-posta:</strong>
-                        <input asp-for="Email" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Telefon Numarası:</strong>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Profil Resmi:</strong>
-                        <input type="file" asp-for="ProfileImageUrl" class="form-control" />
-                    </td>
-                </tr>
-            </table>
-            <div class="button-group">
-                <button type="button" id="saveButton" class="btn btn-success">Kaydet</button>
-                <button type="button" id="cancelButton" class="btn btn-danger">İptal</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-@section Scripts {
-    <script>
-        // Düzenleme butonuna tıklandığında
-        document.getElementById('editButton').onclick = function () {
-            // İlk tabloyu gizle, düzenleme tablosunu göster
-            document.querySelector('.profile-table').style.display = 'none';
-            document.getElementById('editTable').style.display = 'block';
-            document.getElementById('editButton').style.display = 'none'; // Düzenle butonunu gizle
-        };
-
-        // Kaydet butonuna tıklandığında
-        document.getElementById('saveButton').onclick = function () {
-            // Formu gönder
-            document.querySelector('form').submit();
-        };
-
-        // İptal butonuna tıklandığında
-        document.getElementById('cancelButton').onclick = function () {
-            // İlk tabloyu göster, düzenleme tablosunu gizle
-            document.querySelector('.profile-table').style.display = 'table';
-            document.getElementById('editTable').style.display = 'none';
-            document.getElementById('editButton').style.display = 'inline-block'; // Düzenle butonunu göster
-        };
-    </script>
-}
-
-<style>
-    .profile-container {
-        max-width: 600px;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .profile-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .profile-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-        .profile-table td {
-            padding: 10px;
-            vertical-align: top;
-        }
-
-    .profile-image {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .button-group {
-        margin-top: 20px;
-        text-align: right;
-    }
-
-    .btn {
-        margin-left: 10px;
-    }
-</style> 
- *@
-
-
-
-
-@* @model ProfileVm
-
-<h2>Profil</h2>
-
-<form asp-action="Profile" method="post" enctype="multipart/form-data">
-    <div>
-        <label>İsim</label>
-        <input asp-for="FirstName" />
-    </div>
-    <div>
-        <label>Soyisim</label>
-        <input asp-for="LastName" />
-    </div>
-    <div>
-        <label>Kullanıcı Adı</label>
-        <input asp-for="UserName" />
-    </div>
-    <div>
-        <label>E-posta</label>
-        <input asp-for="Email" />
-    </div>
-    <div>
-        <label>Telefon Numarası</label>
-        <input asp-for="PhoneNumber" />
-    </div>
-    <div>
-        <label>Profil Resmi</label>
-        <input type="file" asp-for="ProfileImageUrl" />
-    </div>
-    <div>
-        <button type="submit">Güncelle</button>
-    </div>
-</form>
- *@

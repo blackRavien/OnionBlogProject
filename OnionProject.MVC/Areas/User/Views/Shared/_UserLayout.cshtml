@@ -7,12 +7,79 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OnionProject.MVC.styles.css" asp-append-version="true" />
+    <style>
+        /* Krem rengi arka plan */
+        .navbar {
+            background-color: #f5f5dc; /* Krem rengi */
+        }
+        /* Nav-link ayarları */
+        .nav-link {
+            font-weight: bold; /* Yazı kalınlığı */
+            font-family: 'Arial', sans-serif; /* Yazı fontu */
+            transition: color 0.3s ease; /* Geçiş efekti */
+        }
+            /* Hover efektleri */
+            .nav-link:hover {
+                color: #007bff; /* Hoverda renk değişimi */
+            }
+        /* Profil ikonu ve butonun stili */
+        .navbar .nav-link img, .navbar button {
+            filter: invert(1); /* Siyah renk */
+        }
+
+        .card {
+            background-color: #f5f5dc;
+            border: none; /* Kart kenarını kaldır */
+            border-radius: 8px; /* Yuvarlak köşeler */
+        }
+
+        .container {
+            background-color: #ebc18f; /* Beyaz arka plan */
+            border-radius: 8px; /* Köşeleri yuvarlak */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+            padding: 20px; /* İç boşluk */
+            margin-bottom: 20px; /* Dış boşluk */
+        }
+
+        <style >
+        .navbar-brand {
+            font-family: 'Georgia', serif;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #333; /* Yazı rengi */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
+            transition: color 0.3s ease; /* Renk geçişi efekti */
+        }
+
+        .navbar-brand:hover {
+            color: #007bff; /* Hover sırasında renk değişimi */
+        }
+    </style>
+
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" >Raven's Blog</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="https://localhost:7225/UserPostApi" class="navbar-brand d-flex align-items-center">
+                        <img src="https://localhost:7296/images/raven-removebg-preview.png" alt="Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                        Raven's Blog
+                    </a>
+                    @* <a href="https://localhost:7225/UserPostApi" class="navbar-brand">Raven's Blog</a> *@
+                }
+                else
+                {
+                    <a href="https://localhost:7225" class="navbar-brand d-flex align-items-center">
+                        <img src="https://localhost:7296/images/raven-removebg-preview.png" alt="Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                        Raven's Blog
+                    </a>
+                    @* <a href="https://localhost:7225" class="navbar-brand">Raven's Blog</a> *@
+                }
+               
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -39,25 +106,26 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto d-flex align-items-center">
                         @if (User.Identity.IsAuthenticated)
                         {
                             @if (ViewBag.Username != null)
                             {
                                 <li class="nav-item">
-                                    <span class="navbar-text fw-bold" style="margin-right: 20px; margin-top: 10px;">
+                                    <span class="navbar-text fw-bold" style="margin-right: 10px;">
                                         Hoşgeldin, @ViewBag.Username!
                                     </span>
                                 </li>
                             }
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="User" asp-controller="UserPost" asp-action="Profile" title="Profile">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Profil İkonu" style="width: 25px; height: 25px;" />
+                                    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profil İkonu" style="width: 35px; height: 35px;" />
                                 </a>
                             </li>
+
                             <li class="nav-item">
                                 <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
-                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                    <button type="submit" class="btn btn-danger ms-2">Logout</button>
                                 </form>
                             </li>
                         }
@@ -69,34 +137,6 @@
                             </div>
                         }
                     </ul>
-
-                    @* <ul class="navbar-nav ms-auto">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            @if (ViewBag.Username != null)
-                            {
-                                <li class="nav-item">
-                                    <span class="navbar-text fw-bold" style="margin-right: 20px; margin-top: 10px;">
-                                        Hoşgeldin, @ViewBag.Username!
-                                    </span>
-                                </li>
-                            }
-                            <li class="nav-item">
-                                <form asp-area="" asp-controller="Home" asp-action="Logout" method="post">
-                                    <button type="submit" class="btn btn-danger">Logout</button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <div class="d-flex ms-auto">
-                                <a href="https://localhost:7225/Home/Login" class="btn btn-outline-primary me-2">Giriş Yapın</a>
-                                <a href="https://localhost:7225/Home/Register" class="btn btn-outline-success">Hesap Oluşturun</a>
-                            </div>
-                        }
-
-                        
-                    </ul> *@
                 </div>
             </div>
         </nav>
@@ -107,8 +147,8 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted py-4">
-        <div class="container text-center">
+    <footer class="border-top footer text-muted py-4" >
+        <div class="container text-center" style="background-color: #f5f5dc;">
             <p>Bizi sosyal medya hesaplarımızdan takip edin!</p>
             <a href="https://www.instagram.com" target="_blank">
                 <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" style="width: 30px; margin-right: 15px;">
@@ -119,7 +159,7 @@
             <a href="https://www.twitter.com" target="_blank">
                 <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" style="width: 30px;">
             </a>
-            <p class="mt-3">Raven's Blog - &copy; 2024 - Tüm Hakları Saklıdır. İlgili Gizlilik Sayfamız İçin: <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
+            <p class="mt-3">Raven's Blog - &copy; 2024 - Tüm Hakları Saklıdır.</p>
         </div>
     </footer>
 

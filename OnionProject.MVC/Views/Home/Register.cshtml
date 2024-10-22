@@ -1,9 +1,48 @@
 ﻿@model OnionProject.Application.Models.DTOs.RegisterAppUserDTO
+<style>
+    body {
+        background-color: #eab676; /* Krem rengi arka plan */
+        color: #333; /* Metin rengi */
+    }
 
-<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    .container {
+        background-color: #ebc18f; /* Beyaz arka plan */
+        border-radius: 8px; /* Köşeleri yuvarlak */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        padding: 20px; /* İç boşluk */
+        margin-bottom: 20px; /* Dış boşluk */
+    }
+
+    h2, h5 {
+        color: #21130d /* Koyu yeşil başlık rengi */
+    }
+
+    .form-control {
+        border-radius: 20px; /* Yuvarlak kenarlar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Buton arka plan rengi */
+        border-color: #007bff; /* Buton kenar rengi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Buton hover rengi */
+            border-color: #0056b3; /* Buton hover kenar rengi */
+        }
+
+    .card {
+        background-color: #f5f5dc;
+        border: none; /* Kart kenarını kaldır */
+        border-radius: 8px; /* Yuvarlak köşeler */
+    }
+
+</style>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="card p-5 shadow-lg" style="max-width: 400px; width: 100%;">
         <div class="text-center mb-4">
-            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="Logo">
+            <img src="https://localhost:7296/images/raven-removebg-preview.png" class="rounded-circle mb-2" alt="Logo" style="width: 150px; height: 150px; object-fit: cover;" />
+            <h4>Raven's Blog</h4>
             <h2 class="fw-bold">Kayıt Ol</h2>
             <p class="text-muted">Lütfen bilgilerinizi girin</p>
         </div>
@@ -50,41 +89,3 @@
 
 
 
-@* @model OnionProject.Application.Models.DTOs.RegisterAppUserDTO
-
-<form asp-action="Register" method="post">
-    <div>
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName" />
-        <span asp-validation-for="UserName"></span>
-    </div>
-
-    <div>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
-    </div>
-
-    <div>
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" />
-        <span asp-validation-for="FirstName"></span>
-    </div>
-
-    <div>
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
-    </div>
-
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" />
-        <span asp-validation-for="Password"></span>
-    </div>
-
-    <button type="submit">Kayıt Ol</button>
-</form>
-
-<partial name="_ValidationScriptsPartial" />
- *@

@@ -4,7 +4,60 @@
     ViewBag.Title = "Postlar";
 }
 
-<div class="container mt-5">
+<style>
+    body {
+        background-color: #eab676; /* Krem rengi arka plan */
+        color: #333; /* Metin rengi */
+    }
+
+    .container {
+        background-color: #ebc18f; /* Beyaz arka plan */
+        border-radius: 8px; /* Köşeleri yuvarlak */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        padding: 20px; /* İç boşluk */
+        margin-bottom: 20px; /* Dış boşluk */
+    }
+
+    h2, h5 {
+        color: #21130d /* Koyu yeşil başlık rengi */
+    }
+
+    .form-control {
+        border-radius: 20px; /* Yuvarlak kenarlar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Buton arka plan rengi */
+        border-color: #007bff; /* Buton kenar rengi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Buton hover rengi */
+            border-color: #0056b3; /* Buton hover kenar rengi */
+        }
+
+    .card {
+        background-color: #f5f5dc;
+        border: none; /* Kart kenarını kaldır */
+        border-radius: 8px; /* Yuvarlak köşeler */
+    }
+
+    .card-title {
+        color: #0056b3; /* Kart başlık rengi */
+    }
+
+    .pagination .page-link {
+        color: #007bff; /* Sayfa numarası rengi */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff; /* Aktif sayfa rengi */
+        border-color: #007bff; /* Aktif sayfa kenar rengi */
+    }
+</style>
+
+
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-center">Tüm Postlar</h2>
         @if (ViewBag.Username != null)
@@ -92,11 +145,32 @@
             </ul>
         </nav>
     </div>
+
+
+<div class="container mt-5 py-5" style="background-color: #f5f5dc; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+    <!-- Sitenin Kurucusu Hakkında Bölümü -->
+    <div class="row align-items-center">
+        <div class="col-md-5">
+            <img src="https://localhost:7296/images/istock.jpg" class="img-fluid rounded" alt="Kurucu Resmi" style="object-fit: cover; height: 100%; max-height: 400px; border-radius: 10px;">
+        </div>
+        <div class="col-md-7">
+            <h2 class="text-center mb-4" style="font-weight: bold; font-family: 'Arial', sans-serif;">Sitenin Kurucusu Hakkında</h2>
+            <p style="line-height: 1.6; text-align: justify; font-size: 1.1rem;">
+                Sitemizin kurucusu, teknoloji ve eğitim alanında uzun yıllara dayanan bir deneyime sahiptir. Hem akademik hem de profesyonel kariyeri boyunca, bilgiye ulaşmanın yollarını kolaylaştırmak ve öğrenmeye olan tutkuyu artırmak amacıyla birçok projeye imza atmıştır. Dijital dünyaya olan ilgisi, yaratıcı çözümler üretme konusundaki becerisiyle birleşerek, kullanıcı odaklı platformlar ve eğitim araçları geliştirmesine olanak tanımıştır.
+            </p>
+            <p style="line-height: 1.6; text-align: justify; font-size: 1.1rem;">
+                Kurucumuz, sürekli gelişen teknoloji dünyasında, insanların bilgiye erişimini demokratikleştirmenin önemine inanıyor. Onun vizyonu, sadece teknoloji ile sınırlı kalmayıp, toplumsal farkındalık yaratma ve bireylerin kendilerini geliştirmelerini sağlama yönünde ilerlemektedir. Uzmanlığı, eğitim teknolojileri, yapay zeka ve yazılım geliştirme alanlarında derinlemesine bilgiye dayanıyor.
+            </p>
+            <div class="text-center mt-4">
+                <a href="@Url.Action("AboutUs", "Home")" class="btn btn-primary btn-lg" style="border-radius: 50px; padding: 10px 30px;">Daha Fazla</a>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="container mt-5">
+@* <div class="container mt-5" style="background-color:#f5f5dc;">
     <!-- Sitenin Kurucusu Hakkında Bölümü -->
-    <div class="row mt-5">
+    <div class="row mt-5" >
         <div class="col-md-6">
             <img src="https://localhost:7296/images/istock.jpg" class="img-fluid" alt="Kurucu Resmi" style="object-fit: cover; height: 100%; max-height: 400px;">
         </div>
@@ -109,10 +183,12 @@
         </div>
 
     </div>
-</div>
+</div> *@
+
 
 
 <script>
+    
     var carouselElement = document.getElementById('postCarousel');
     var carousel = new bootstrap.Carousel(carouselElement, {
         interval: false, // Otomatik geçişi kapat
@@ -123,7 +199,7 @@
         var carousel = new bootstrap.Carousel(document.getElementById('postCarousel'));
         carousel.to(slideIndex);
     }
-
+    
 
 
      function searchPosts() {
