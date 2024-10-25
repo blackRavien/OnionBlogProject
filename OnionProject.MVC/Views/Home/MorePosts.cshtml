@@ -1,0 +1,167 @@
+﻿@using OnionProject.Application.Models.VMs
+@model List<GetPostsVm>
+@{
+    ViewBag.Title = "Postlar";
+}
+@{
+    Layout = User.Identity.IsAuthenticated ? "~/Areas/User/Views/Shared/_UserLayout.cshtml" : "_Layout";
+}
+
+<style>
+    body {
+        background-color: #1a1d22; /* Krem rengi arka plan */
+        color: #333; /* Metin rengi */
+        font-family: 'Arial', sans-serif; /* Modern bir font */
+        line-height: 1.6; /* Daha iyi okunabilirlik için satır yüksekliği */
+    }
+
+    .container {
+        background-color: #525d5f; /* Beyaz arka plan */
+        border-radius: 10px; /* Köşeleri yuvarlak */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        padding: 30px; /* İç boşluk */
+        margin-bottom: 30px; /* Dış boşluk */
+    }
+
+    h2, h5 {
+        color: #21130d; /* Koyu yeşil başlık rengi */
+        text-align: center; /* Başlık ortalanır */
+        margin-bottom: 20px; /* Başlık ile içerik arasında boşluk */
+    }
+
+    .form-control {
+        border-radius: 20px; /* Yuvarlak kenarlar */
+        border: 1px solid #ccc; /* Kenar rengi */
+        padding: 10px; /* İç boşluk */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Buton arka plan rengi */
+        border-color: #007bff; /* Buton kenar rengi */
+        padding: 10px 20px; /* İç boşluk */
+        border-radius: 20px; /* Yuvarlak kenarlar */
+        transition: background-color 0.3s; /* Geçiş efekti */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Buton hover rengi */
+            border-color: #0056b3; /* Buton hover kenar rengi */
+        }
+
+    .card {
+        background-color: #333c3d; /* Kart arka plan rengi */
+        border: none; /* Kart kenarını kaldır */
+        border-radius: 8px; /* Yuvarlak köşeler */
+        transition: transform 0.3s; /* Geçiş efekti */
+    }
+
+        .card:hover {
+            transform: translateY(-5px); /* Hover efekti */
+        }
+
+    .card-title {
+        color: #0056b3; /* Kart başlık rengi */
+        font-weight: bold; /* Başlık kalın */
+    }
+
+    .pagination .page-link {
+        color: #007bff; /* Sayfa numarası rengi */
+        padding: 10px 15px; /* İç boşluk */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff; /* Aktif sayfa rengi */
+        border-color: #007bff; /* Aktif sayfa kenar rengi */
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem; /* Alt boşluk */
+    }
+</style>
+
+
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <h2 style="font-weight: bold; color: ghostwhite;">Tüm Postlar</h2>
+    </div>
+
+    <!-- Arama ve Filtreleme -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Post başlığı ile ara..." onkeyup="searchPosts()">
+        </div>
+        <div class="col-md-4">
+            <select id="genreFilter" class="form-control" onchange="filterPosts()">
+                <option value="">Genre Seç</option>
+                @foreach (var genre in ViewBag.Genres)
+                {
+                    <option value="@genre.Name">@genre.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select id="authorFilter" class="form-control" onchange="filterPosts()">
+                <option value="">Yazar Seç</option>
+                @foreach (var author in ViewBag.Authors)
+                {
+                    <option value="@author.AuthorFullName">@author.AuthorFullName</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <!-- Postlar 4 Sütun Düzeni ile Gösteriliyor -->
+    <div class="row" id="postsContainer">
+        @foreach (var post in Model)
+        {
+            <div class="col-lg-3 col-md-6 mb-4" data-genre="@post.GenreName" data-author="@post.AuthorFullName">
+                <div class="card h-100 shadow-sm">
+                    <img src="@post.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@post.Title</h5>
+                    <p class="card-text" style="color: ghostwhite;">Yazar: @post.AuthorFullName | Tür: @post.GenreName</p>
+
+                    
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <!-- Kullanıcı giriş yapmışsa tam URL ile yönlendirme -->
+                        <a href="https://localhost:7225/UserPostApi/Details/@post.Id" class="btn btn-outline-primary btn-block">Detayları Gör</a>
+                    }
+                    else
+                    {
+                        <!-- Kullanıcı giriş yapmamışsa -->
+                        <a href="@Url.Action("Details", "Home", new { id = post.Id })" class="btn btn-outline-primary btn-block">Detayları Gör</a>
+                    }
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+<script>
+    function searchPosts() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const posts = document.querySelectorAll('.card');
+
+        posts.forEach(post => {
+            const title = post.querySelector('.card-title').innerText.toLowerCase();
+            post.closest('.col-lg-3').style.display = title.includes(input) ? "" : "none";
+        });
+    }
+
+    function filterPosts() {
+        const genre = document.getElementById('genreFilter').value.toLowerCase();
+        const author = document.getElementById('authorFilter').value.toLowerCase();
+        const posts = document.querySelectorAll('.card');
+
+        posts.forEach(post => {
+            const postGenre = post.closest('.col-lg-3').getAttribute('data-genre').toLowerCase();
+            const postAuthor = post.closest('.col-lg-3').getAttribute('data-author').toLowerCase();
+            post.closest('.col-lg-3').style.display =
+                (genre === "" || postGenre === genre) && (author === "" || postAuthor === author) ? "" : "none";
+        });
+    }
+</script>

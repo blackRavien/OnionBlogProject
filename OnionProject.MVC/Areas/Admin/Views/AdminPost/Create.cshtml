@@ -2,65 +2,88 @@
 @{
     ViewBag.Title = "Yeni Gönderi Oluştur";
 }
+<style>
+    body {
+        background-color: #1a1d22; /* Gri arka plan */
+        color: #333; /* Metin rengi */
+    }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header text-center bg-primary text-white">
-                    <h2>Yeni Gönderi Oluştur</h2>
-                </div>
-                <div class="card-body">
-                    <form action="https://localhost:7225/Admin/AdminPost/Create" method="post" enctype="multipart/form-data">
-                        <div class="form-group mb-3">
-                            <label for="Title" class="form-label">Başlık</label>
-                            <input asp-for="Title" class="form-control" placeholder="Başlık giriniz" />
-                            <span asp-validation-for="Title" class="text-danger"></span>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="Content" class="form-label">İçerik</label>
-                            <textarea asp-for="Content" class="form-control" placeholder="İçerik giriniz"></textarea>
-                            <span asp-validation-for="Content" class="text-danger"></span>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="UploadPath" class="form-label">Resim Yükle</label>
-                            <input asp-for="UploadPath" type="file" class="form-control" />
-                            <span asp-validation-for="UploadPath" class="text-danger"></span>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="AuthorId" class="form-label">Yazar Seçin</label>
-                            <select asp-for="AuthorId" class="form-control">
-                                <option value="">Yazar Seçiniz</option>
-                                @if (ViewBag.Authors != null)
+    .container {
+        background-color: #525d5f; /* Açık gri arka plan */
+        border-radius: 8px; /* Köşeleri yuvarlak */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        padding: 20px; /* İç boşluk */
+        margin-bottom: 20px; /* Dış boşluk */
+    }
+    label{
+        color: #d6d6d6;
+    }
+</style>
+
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header text-center text-white" style="background-color:#333c3d;">
+                <h2>Yeni Gönderi Oluştur</h2>
+            </div>
+            <div class="card-body" style="background-color:#333c3d;">
+                <form action="https://localhost:7225/Admin/AdminPost/Create" method="post" enctype="multipart/form-data" novalidate>
+                    <div class="form-group mb-3">
+                        <label for="Title" class="form-label">Başlık</label>
+                        <input asp-for="Title" class="form-control" placeholder="Başlık giriniz" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Content" class="form-label">İçerik</label>
+                        <textarea asp-for="Content" class="form-control" placeholder="İçerik giriniz"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="UploadPath" class="form-label">Resim Yükle</label>
+                        <input asp-for="UploadPath" type="file" class="form-control" />
+                        <span asp-validation-for="UploadPath" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="AuthorId" class="form-label">Yazar Seçin</label>
+                        <select asp-for="AuthorId" class="form-control">
+                            <option value="">Yazar Seçiniz</option>
+                            @if (ViewBag.Authors != null)
+                            {
+                                foreach (var author in ViewBag.Authors)
                                 {
-                                    foreach (var author in ViewBag.Authors)
-                                    {
-                                        <option value="@author.Id">@author.FirstName @author.LastName</option>
-                                    }
+                                    <option value="@author.Id">@author.FirstName @author.LastName</option>
                                 }
-                                else
-                                {
-                                    <option disabled>Yazar bulunamadı</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group mb-4">
-                            <label for="GenreId" class="form-label">Tür Seçin</label>
-                            <select asp-for="GenreId" class="form-control">
-                                <option value="">Lütfen bir tür seçin</option>
-                                @foreach (var genre in ViewBag.Genres)
-                                {
-                                    <option value="@genre.Id">@genre.Name</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group d-flex justify-content-between mt-4">
-                            <button type="submit" class="btn btn-primary btn-block">Gönderi Oluştur</button>
-                            <button type="button" class="btn btn-secondary btn-block mt-3" onclick="history.back()">Geri Dön</button>
-                        </div>
-                    </form>
-                </div>
+                            }
+                            else
+                            {
+                                <option disabled>Yazar bulunamadı</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="GenreId" class="form-label">Tür Seçin</label>
+                        <select asp-for="GenreId" class="form-control">
+                            <option value="">Lütfen bir tür seçin</option>
+                            @foreach (var genre in ViewBag.Genres)
+                            {
+                                <option value="@genre.Id">@genre.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="GenreId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-primary btn-block">Gönderi Oluştur</button>
+                        <button type="button" class="btn btn-secondary btn-block mt-3" onclick="history.back()">Geri Dön</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

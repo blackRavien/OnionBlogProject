@@ -1,38 +1,44 @@
-﻿<style>
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<style>
     /* Krem rengi arka plan */
     .navbar {
-        background-color: #f5f5dc; /* Krem rengi */
+        background-color: #838b94; /* Krem rengi */
     }
     /* Nav-link ayarları */
     .nav-link {
         font-weight: bold; /* Yazı kalınlığı */
         font-family: 'Arial', sans-serif; /* Yazı fontu */
         transition: color 0.3s ease; /* Geçiş efekti */
+        text-decoration: none; /* Varsayılan alt çizgiyi kaldırır */
     }
         /* Hover efektleri */
         .nav-link:hover {
             color: #007bff; /* Hoverda renk değişimi */
+            text-decoration: none; /* Hover sırasında da alt çizgi olmasın */
         }
     /* Profil ikonu ve butonun stili */
     .navbar .nav-link img, .navbar button {
         filter: invert(1); /* Siyah renk */
     }
 
-    .card {
-        background-color: #f5f5dc;
-        border: none; /* Kart kenarını kaldır */
-        border-radius: 8px; /* Yuvarlak köşeler */
-    }
+    
 
     .container {
-        background-color: #ebc18f; /* Beyaz arka plan */
+        background-color: #838b94; /* Beyaz arka plan */
         border-radius: 8px; /* Köşeleri yuvarlak */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
         padding: 20px; /* İç boşluk */
         margin-bottom: 20px; /* Dış boşluk */
     }
 
-    <style >
+
     .navbar-brand {
         font-family: 'Georgia', serif;
         font-size: 28px;
@@ -43,21 +49,12 @@
         transition: color 0.3s ease; /* Renk geçişi efekti */
     }
 
-    .navbar-brand:hover {
-        color: #007bff; /* Hover sırasında renk değişimi */
-    }
+        .navbar-brand:hover {
+            color: #7d060e; /* Hover sırasında renk değişimi */
+            text-decoration: none;
+        }
 </style>
 
-</style>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blog</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-</head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg">
@@ -73,6 +70,9 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="MorePosts">All Posts</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
                     </li>
                     <li class="nav-item">
@@ -80,8 +80,8 @@
                     </li>
                     <!-- Sağ Taraf Login ve Register -->
                     <div class="d-flex ms-auto">
-                        <a href="https://localhost:7225/Home/Login" class="btn btn-outline-primary me-2">Giriş Yapın</a>
-                        <a href="https://localhost:7225/Home/Register" class="btn btn-outline-success">Hesap Oluşturun</a>
+                        <a href="https://localhost:7225/Home/Login" class="btn btn-light me-2">Giriş Yapın</a>
+                        <a href="https://localhost:7225/Home/Register" class="btn btn-success">Hesap Oluşturun</a>
                     </div>
                 </ul>
             </div>
@@ -99,7 +99,7 @@
     <br />
     <br />
     <footer class="border-top footer text-muted py-4">
-        <div class="container text-center" style="background-color: #f5f5dc;">
+        <div class="container text-center" style="background-color: #838b94;">
             <p>Bizi sosyal medya hesaplarımızdan takip edin!</p>
             <a href="https://www.instagram.com" target="_blank">
                 <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" style="width: 30px; margin-right: 15px;">

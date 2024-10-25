@@ -66,6 +66,7 @@ namespace OnionProject.MVC.Controllers
             return View(posts);
         }
 
+        
 
         // GET: UserPost/Details/5
         [Authorize]
@@ -258,6 +259,7 @@ namespace OnionProject.MVC.Controllers
             if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Kullanıcı ID'sini al
+               
 
                 // Mevcut kullanıcı bilgilerini al
                 AppUser currentUser;
@@ -283,6 +285,7 @@ namespace OnionProject.MVC.Controllers
                 currentUser.Email = string.IsNullOrEmpty(updateProfileDto.Email) ? currentUser.Email : updateProfileDto.Email;
                 currentUser.PhoneNumber = string.IsNullOrEmpty(updateProfileDto.PhoneNumber) ? currentUser.PhoneNumber : updateProfileDto.PhoneNumber;
 
+
                 // Şifre güncelleme kontrolü
                 if (!string.IsNullOrEmpty(updateProfileDto.Password))
                 {
@@ -302,10 +305,12 @@ namespace OnionProject.MVC.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
+                        TempData["ProfileUpdateMessage"] = "Profiliniz başarıyla güncellendi!";
                         return RedirectToAction("Profile"); // Başarılıysa Profile view'ına yönlendir
                     }
                     else
                     {
+                        TempData["ProfileUpdateMessage"] = "Profil güncelleme işlemi başarısız oldu.";
                         return RedirectToAction("Profile"); // Eğer istek başarısızsa NotFound döndür
                     }
                 }

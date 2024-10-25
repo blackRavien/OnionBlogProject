@@ -4,57 +4,103 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<style>
+    body {
+        background-color: #1a1d22; /* Gri arka plan */
+        color: #333; /* Metin rengi */
+    }
 
-<h4>Author</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form action="https://localhost:7225/Admin/Author/Create" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label> 
-                <input type="file" asp-for="Image" class="form-control" /> 
-                <span asp-validation-for="Image" class="text-danger"></span> 
-            </div>
-            <!-- Yeni Alanlar -->
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Biography" class="control-label"></label>
-                <textarea asp-for="Biography" class="form-control"></textarea>
-                <span asp-validation-for="Biography" class="text-danger"></span>
-            </div>
+    .cover-image {
+        width: 100%; /* Resmin genişliği %100 */
+        height: 400px; /* Resmin yüksekliği */
+        object-fit: cover; /* Resmin içeriği kaplaması için */
+        border-radius: 8px; /* Kenar yuvarlama */
+        height: 550px;
+    }
 
+    .container {
+        background-color: #525d5f; /* Açık gri arka plan */
+        border-radius: 8px; /* Köşeleri yuvarlak */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        padding: 20px; /* İç boşluk */
+        margin-bottom: 20px; /* Dış boşluk */
+    }
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    h1, h4, h2, p, label {
+        color: #d6d6d6;
+    }
+
+    .form-control {
+        border-radius: 20px; /* Yuvarlak kenarlar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Buton arka plan rengi */
+        border-color: #007bff; /* Buton kenar rengi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Buton hover rengi */
+            border-color: #0056b3; /* Buton hover kenar rengi */
+        }
+
+    
+
+</style>
+
+    <h1 class="mb-4">Create Author</h1>
+
+    <h4>Author Information</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form action="https://localhost:7225/Admin/Author/Create" method="post" enctype="multipart/form-data" class="shadow p-4 rounded" style=" background-color: #1a1d22;">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Enter first name" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="form-control" placeholder="Enter last name" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Image" class="form-label"></label>
+                    <input type="file" asp-for="Image" class="form-control" />
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter email address" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="PhoneNumber" class="form-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter phone number" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Biography" class="form-label"></label>
+                    <textarea asp-for="Biography" class="form-control" rows="3" placeholder="Enter biography"></textarea>
+                    <span asp-validation-for="Biography" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <a href="https://localhost:7225/Admin/Author/Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a href="https://localhost:7225/Admin/Author/Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{

@@ -1,5 +1,41 @@
 ﻿@model IEnumerable<OnionProject.Application.Models.VMs.GenreVm>
 
+<style>
+    body {
+        background-color: #1a1d22; /* Koyu gri arka plan rengi */
+        color: #333; /* Metin rengi: koyu gri */
+    }
+
+    .container {
+        background-color: #525d5f; /* Hafif gri arka plan rengi */
+        border-radius: 8px; /* Köşeleri yuvarlak hale getirir */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+        padding: 20px; /* İçerik ile kenarları arasında 20 piksel boşluk bırakır */
+        margin-bottom: 20px; /* Altında 20 piksel boşluk bırakır */
+    }
+
+    h4, h2, p, th, td {
+        color: #d6d6d6; /* Başlıklar, paragraflar ve tablo hücreleri için açık gri metin rengi */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Butonun arka plan rengi: mavi */
+        border-color: #007bff; /* Butonun kenar rengi: mavi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Butonun üzerine gelindiğinde arka plan rengi: koyu mavi */
+            border-color: #0056b3; /* Butonun üzerine gelindiğinde kenar rengi: koyu mavi */
+        }
+
+    .card {
+        background-color: #f5f5dc; /* Kartın arka plan rengi: krem tonu */
+        border: none; /* Kartın kenarını kaldırır */
+        border-radius: 8px; /* Kartın köşelerini yuvarlar */
+    }
+</style>
+
+
 <div class="container">
     <h2>Türler</h2>
     <table class="table">

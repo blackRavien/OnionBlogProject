@@ -2,6 +2,228 @@
 @model List<GetPostsVm>
 @{
     ViewBag.Title = "Postlar";
+
+    // Random sıralama için gönderileri al
+    var randomPosts = Model.OrderBy(x => Guid.NewGuid()).ToList(); // Gönderileri rastgele sırala
+}
+
+<style>
+    body {
+        background-color: #1a1d22; /* Krem rengi arka plan */
+        color: #333; /* Metin rengi */
+    }
+
+    .cover-image {
+        width: 100%; /* Resmin genişliği %100 */
+        height: 400px; /* Resmin yüksekliği */
+        object-fit: cover; /* Resmin içeriği kaplaması için */
+        border-radius: 8px; /* Kenar yuvarlama */
+        height: 550px;
+    }
+
+    .container {
+        background-color: #525d5f; /* Beyaz arka plan */
+        border-radius: 8px; /* Köşeleri yuvarlak */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        padding: 20px; /* İç boşluk */
+        margin-bottom: 20px; /* Dış boşluk */
+        
+    }
+
+    h4, h2, p {
+        color: #d6d6d6;
+    }
+
+    .form-control {
+        border-radius: 20px; /* Yuvarlak kenarlar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Buton arka plan rengi */
+        border-color: #007bff; /* Buton kenar rengi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Buton hover rengi */
+            border-color: #0056b3; /* Buton hover kenar rengi */
+        }
+
+    .card {
+        background-color: #333c3d;
+        border: none; /* Kart kenarını kaldır */
+        border-radius: 8px; /* Yuvarlak köşeler */
+    }
+
+    .card .card-title {
+        color: #0056b3; /* Kart başlık rengi */
+    }
+
+    .pagination .page-link {
+        color: #7d060e; /* Sayfa numarası rengi */
+    }
+
+    
+</style>
+
+
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="text-center">İlginizi Çekebilecek Gönderiler</h2>
+
+        @if (ViewBag.Username != null)
+        {
+            <h5 class="text-right">Hoşgeldin, @ViewBag.Username!</h5>
+        }
+
+    </div>
+    
+    
+    <div id="postCarousel" class="carousel slide" data-bs-ride="false">
+        <div class="carousel-inner">
+            @for (int i = 0; i < randomPosts.Count(); i += 3) // 3'er gönderi grubu
+            {
+                var postsInGroup = randomPosts.Skip(i).Take(3).ToList(); // 3 gönderiyi al
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <div class="row">
+                        @foreach (var post in postsInGroup)
+                        {
+                            <div class="col-lg-4 col-md-6 mb-4" data-genre="@post.GenreName" data-author="@post.AuthorFullName">
+                                <div class="card h-100 shadow-sm">
+                                    <img src="@post.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 200px; object-fit: cover;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary">@post.Title</h5>
+                                        <p class="card-text">Yazar: @post.AuthorFullName | Tür: @post.GenreName</p>
+                                        <a href="@Url.Action("Details", "Home", new { id = post.Id })" class="btn btn-outline-primary btn-block">Detayları Gör</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <!-- Boş Kartlar Ekleyerek Sabit Alan Oluşturma -->
+                        @for (int j = postsInGroup.Count; j < 3; j++)
+                        {
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card h-100" style="visibility: hidden;">
+                                    <!-- Gizli kart -->
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary"></h5>
+                                        <a href="#" class="btn btn-outline-primary btn-block" style="visibility: hidden;">Detayları Gör</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @for (int i = 0; i < Math.Ceiling((double)randomPosts.Count() / 3); i++) // 3'er gönderi grubu
+                {
+                    <li class="page-item @(i == 0 ? "active" : "")">
+                        <a class="page-link" href="#" onclick="goToSlide(@i)" aria-label="Sayfa @(i + 1)">@(i + 1)</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+<div class="container" style="background-color: #111212;">
+    <img src="https://localhost:7296/images/rveenbanner.png" class="cover-image" alt="Kapak Resmi">
+</div>
+
+
+
+<p style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 20px;">
+    Sayfamıza hoş geldin! Burada yazılımdan yalıtıma, ekonomiden gastronomiye her türlü konu ile ilgili blog yazılarını bulabilirsin. Faydalı içerikler ve deneyimli yazarlarımızın derlediği paylaşımlar ile kültürüne yeni bir renk katacaksın! Hazırsan diğer gönderilere bakmak ister misin?
+</p>
+
+<!-- Daha Fazla Butonu -->
+<div class="d-flex justify-content-center mt-4">
+    <a href="https://localhost:7225/Home/MorePosts" class="btn btn-primary">Tüm Gönderileri İncele</a>
+</div>
+
+
+<!-- Kurucu Hakkında Bölümü -->
+<div class="container mt-5 py-5" style="background-color: #333c3d; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+    <div class="row align-items-center">
+        <div class="col-md-5">
+            <img src="https://localhost:7296/images/istock.jpg" class="img-fluid rounded" alt="Kurucu Resmi" style="object-fit: cover; height: 100%; max-height: 400px; border-radius: 10px;">
+        </div>
+        <div class="col-md-7">
+            <h2 class="text-center mb-4" style="font-weight: bold; font-family: 'Arial', sans-serif;">Sitenin Kurucusu Hakkında</h2>
+            <p style="line-height: 1.6; text-align: justify; font-size: 1.1rem;">
+                Sitemizin kurucusu, teknoloji ve eğitim alanında uzun yıllara dayanan bir deneyime sahiptir. Hem akademik hem de profesyonel kariyeri boyunca, bilgiye ulaşmanın yollarını kolaylaştırmak ve öğrenmeye olan tutkuyu artırmak amacıyla birçok projeye imza atmıştır.
+            </p>
+            <div class="text-center mt-4">
+                <a href="@Url.Action("AboutUs", "Home")" class="btn btn-primary btn-lg" style="border-radius: 50px; padding: 10px 30px;">Daha Fazla</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var carouselElement = document.getElementById('postCarousel');
+    var carousel = new bootstrap.Carousel(carouselElement, {
+        interval: false, // Otomatik geçişi kapat
+        wrap: false // Döngü olmadan geçiş
+    });
+
+    function goToSlide(slideIndex) {
+        var carousel = new bootstrap.Carousel(document.getElementById('postCarousel'));
+        carousel.to(slideIndex);
+    }
+
+    function searchPosts() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const posts = document.querySelectorAll('.card'); // Kartları seç
+
+        posts.forEach(post => {
+            const title = post.querySelector('.card-title').innerText.toLowerCase();
+            if (title.includes(input)) {
+                post.closest('.col-lg-4').style.display = ""; // Göster
+            } else {
+                post.closest('.col-lg-4').style.display = "none"; // Gizle
+            }
+        });
+    }
+
+    function filterPosts() {
+        const genre = document.getElementById('genreFilter').value.trim().toLowerCase();
+        const author = document.getElementById('authorFilter').value.trim().toLowerCase();
+        const titleInput = document.getElementById('searchInput').value.toLowerCase();
+        const posts = document.querySelectorAll('.card'); // Kartları seç
+
+        posts.forEach(post => {
+            const title = post.querySelector('.card-title').innerText.toLowerCase();
+            const postGenre = post.closest('.col-lg-4').dataset.genre.toLowerCase();
+            const postAuthor = post.closest('.col-lg-4').dataset.author.toLowerCase();
+
+            if (
+                (title.includes(titleInput) || titleInput === "") &&
+                (postGenre.includes(genre) || genre === "") &&
+                (postAuthor.includes(author) || author === "")
+            ) {
+                post.closest('.col-lg-4').style.display = ""; // Göster
+            } else {
+                post.closest('.col-lg-4').style.display = "none"; // Gizle
+            }
+        });
+    }
+</script>
+
+
+
+
+@* @using OnionProject.Application.Models.VMs
+@model List<GetPostsVm>
+@{
+    ViewBag.Title = "Postlar";
 }
 
 <style>
@@ -132,6 +354,10 @@
             }
         </div>
     </div>
+<!-- Daha Fazla Butonu -->
+<div class="d-flex justify-content-center mt-4">
+    <a href="https://localhost:7225/Home/MorePosts" class="btn btn-primary">Daha Fazla</a>
+</div>
 
     <div class="d-flex justify-content-center mt-3">
         <nav aria-label="Page navigation">
@@ -167,23 +393,6 @@
         </div>
     </div>
 </div>
-
-@* <div class="container mt-5" style="background-color:#f5f5dc;">
-    <!-- Sitenin Kurucusu Hakkında Bölümü -->
-    <div class="row mt-5" >
-        <div class="col-md-6">
-            <img src="https://localhost:7296/images/istock.jpg" class="img-fluid" alt="Kurucu Resmi" style="object-fit: cover; height: 100%; max-height: 400px;">
-        </div>
-        <div class="col-md-6">
-            <h2 class="text-center">Sitenin Kurucusu Hakkında</h2>
-            <p class="text-justify">
-                Sitemizin kurucusu, teknoloji ve eğitim alanında deneyimli bir profesyoneldir. Amacı, bilgi paylaşımını artırmak ve öğrenmeyi teşvik etmektir. Projeler, kullanıcı deneyimini ön planda tutarak hayata geçirilmiştir.
-            </p>
-            <a href="@Url.Action("AboutUs", "Home")" class="btn btn-primary">Daha Fazla</a>
-        </div>
-
-    </div>
-</div> *@
 
 
 
@@ -247,4 +456,4 @@
     
 
 
-</script>
+</script> *@

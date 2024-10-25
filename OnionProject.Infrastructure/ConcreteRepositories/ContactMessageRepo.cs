@@ -20,12 +20,21 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
             _context = context;
         }
 
+        //message ekleme
         public async Task AddAsync(ContactMessage message)
         {
             await _context.ContactMessages.AddAsync(message);
             await _context.SaveChangesAsync();
         }
 
+
+
+
+
+
+
+
+        //temel interface den gelen zorunlu metotlar.
         public Task<bool> Any(Expression<Func<ContactMessage, bool>> expression)
         {
             throw new NotImplementedException();
@@ -66,7 +75,7 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
             throw new NotImplementedException();
         }
 
-        // Diğer işlemler...
+        
     }
 
 }

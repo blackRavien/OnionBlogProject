@@ -8,6 +8,7 @@ namespace OnionProject.MVC.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminMainController : Controller
     {
+        //Genel Sayfa
         public IActionResult Index()
         {
             return View();

@@ -109,8 +109,3 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
 }
 
 
-
-//public Task<bool> Any(Expression<Func<T, bool>> expression)
-//{
-//    return _dbSet.Any(expression) ? new Task<bool> { true } : new Task<bool> { false };
-//}

@@ -73,40 +73,45 @@ namespace OnionProject.MVC.Controllers
 
 
 
+        [HttpGet]
+       public async Task<IActionResult> MorePosts()
+        {
+            var username = User.Identity.Name; // Kullanýcý adýný al
+            ViewBag.Username = username; // ViewBag ile gönder
+            ViewBag.Genres = await _genreService.GetAllGenres();
+            ViewBag.Authors = await _authorService.GetAuthors();
 
-        //[HttpGet]
-        //public async Task<IActionResult> Index()
-        //{
-        //    var username = User.Identity.Name; // Kullanýcý adýný al
-        //    ViewBag.Username = username; // ViewBag ile gönder
+            List<GetPostsVm> posts = new List<GetPostsVm>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync($"https://localhost:7296/api/UserPostApi/Index"))
+                {
+                    if (response.IsSuccessStatusCode) // Baþarýlý bir yanýt alýndý mý?
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
+                    }
+                    else
+                    {
+                        // Hata durumu, isterseniz burada hata mesajýný loglayabilirsiniz
+                        ModelState.AddModelError(string.Empty, "API'den veri alýnamadý.");
+                        return View(new List<GetPostsVm>()); // Boþ bir liste ile geri dön
+                    }
+                }
+            }
 
-        //    List<GetPostsVm> posts = new List<GetPostsVm>();
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        using (var response = await httpClient.GetAsync($"https://localhost:7296/api/UserPostApi/Index"))
-        //        {
-        //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //            posts = JsonConvert.DeserializeObject<List<GetPostsVm>>(apiResponse);
-        //        }
-        //    }
+            // Her post için ImagePath'i kontrol et ve gerekirse düzelt
+            foreach (var post in posts)
+            {
+                if (!string.IsNullOrEmpty(post.ImagePath) && !post.ImagePath.StartsWith("http"))
+                {
+                    // Eðer ImagePath zaten tam bir URL deðilse, tam URL'yi ekleyin
+                    post.ImagePath = $"https://localhost:7296/{post.ImagePath.TrimStart('/')}";
+                }
+            }
 
-        //    // Her post için ImagePath'i kontrol et ve gerekirse düzelt
-        //    foreach (var post in posts)
-        //    {
-        //        if (!string.IsNullOrEmpty(post.ImagePath) && !post.ImagePath.StartsWith("http"))
-        //        {
-        //            // Eðer ImagePath zaten tam bir URL deðilse, tam URL'yi ekleyin
-        //            post.ImagePath = $"https://localhost:7296/{post.ImagePath.TrimStart('/')}";
-        //        }
-        //    }
-
-        //    return View(posts);
-        //}
-
-
-
-
-        // Register (Kayýt Olma)
+            return View(posts);
+        }
 
 
 
@@ -223,7 +228,6 @@ namespace OnionProject.MVC.Controllers
         }
 
 
-        //
         public async Task<IActionResult> Login(LoginDTO model)
         {
             if (ModelState.IsValid)
@@ -248,15 +252,64 @@ namespace OnionProject.MVC.Controllers
                         // Standart kullanýcýysa UserPost sayfasýna yönlendir
                         return RedirectToAction("Index", "UserPost", new { area = "User" });
                     }
+                    else if (result.IsLockedOut)
+                    {
+                        ModelState.AddModelError("", "Hesabýnýz kilitlenmiþtir. Lütfen daha sonra tekrar deneyin.");
+                    }
+                    else if (result.IsNotAllowed)
+                    {
+                        ModelState.AddModelError("", "Bu hesapla giriþ yapýlamýyor.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Kullanýcý adý veya parola yanlýþ.");
+                    }
                 }
-
-                // Giriþ baþarýsýzsa hata mesajý ekle
-                ModelState.AddModelError("", "Geçersiz giriþ denemesi.");
+                else
+                {
+                    ModelState.AddModelError("", "Kullanýcý adý veya parola yanlýþ.");
+                }
             }
 
             // Model hatalýysa ya da kullanýcý bulunamazsa, giriþ sayfasýný tekrar göster
             return View(model);
         }
+
+
+
+        //public async Task<IActionResult> Login(LoginDTO model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Kullanýcýyý email ile bul
+        //        var user = await _userManager.FindByEmailAsync(model.Email);
+
+        //        if (user != null)
+        //        {
+        //            // Giriþ yap
+        //            var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, false, false);
+
+        //            if (result.Succeeded)
+        //            {
+        //                // Kullanýcýnýn rolünü kontrol et
+        //                if (await _userManager.IsInRoleAsync(user, "admin"))
+        //                {
+        //                    // Adminse admin sayfasýna yönlendir
+        //                    return Redirect("/Admin/AdminMain/Index");
+        //                }
+
+        //                // Standart kullanýcýysa UserPost sayfasýna yönlendir
+        //                return RedirectToAction("Index", "UserPost", new { area = "User" });
+        //            }
+        //        }
+
+        //        // Giriþ baþarýsýzsa hata mesajý ekle
+        //        ModelState.AddModelError("", "Geçersiz giriþ denemesi.");
+        //    }
+
+        //    // Model hatalýysa ya da kullanýcý bulunamazsa, giriþ sayfasýný tekrar göster
+        //    return View(model);
+        //}
 
 
         [HttpPost]

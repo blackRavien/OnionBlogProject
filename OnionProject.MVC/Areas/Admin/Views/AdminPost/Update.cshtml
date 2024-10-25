@@ -3,32 +3,85 @@
     ViewBag.Title = "Gönderiyi Düzenle";
 }
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Gönderiyi Düzenle</h2>
-    <form action="https://localhost:7225/Admin/AdminPost/Update" method="post" enctype="multipart/form-data" class="shadow p-4 rounded">
-        <input type="hidden" asp-for="Id" /> <!-- Güncelleme: ID'yi form ile gönderiyoruz -->
+<style>
+    body {
+        background-color: #1a1d22; /*Gri arka plan */
+        color: #333; /* Metin rengi */
+        font-family: 'Arial', sans-serif; /* Yazı tipi */
+    }
+
+    .container {
+        background-color: #525d5f; /* Açık gri arka plan */
+        border-radius: 10px; /* Köşeleri yuvarlak */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Daha belirgin gölge */
+        padding: 30px; /* İç boşluk */
+        margin: 40px auto; /* Merkezleme */
+        max-width: 600px; /* Maksimum genişlik */
+    }
+
+    h2 {
+        margin-bottom: 20px; /* Başlık altı boşluk */
+        font-size: 24px; /* Başlık boyutu */
+        color: #d6d6d6; /* Başlık rengi */
+    }
+
+    .form-group label {
+        font-weight: bold; /* Kalın yazı */
+        color: #d6d6d6; /* Etiket rengi */
+        
+    }
+
+    .form-control, .form-control-file, .form-control select {
+        border: 1px solid #1a1d22; /* Kenar rengi */
+        border-radius: 5px; /* Kenar yuvarlama */
+        
+    }
+
+    .btn {
+        border-radius: 5px; /* Düğme köşe yuvarlama */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Mavi buton rengi */
+        border: none; /* Kenar yok */
+    }
+
+    .btn-secondary {
+        background-color: #6c757d; /* Gri buton rengi */
+        border: none; /* Kenar yok */
+    }
+
+    .d-flex {
+        justify-content: space-between; /* Düğmeleri yatayda yerleştir */
+    }
+</style>
+
+
+    <h2 class="text-center">Gönderiyi Düzenle</h2>
+    <form action="https://localhost:7225/Admin/AdminPost/Update" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="CreatedDate" />
 
         <div class="form-group">
-            <label for="Title" class="font-weight-bold">Başlık</label>
+            <label asp-for="Title">Başlık</label>
             <input asp-for="Title" class="form-control" placeholder="Başlığı güncelle" required />
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label for="Content" class="font-weight-bold">İçerik</label>
+            <label asp-for="Content">İçerik</label>
             <textarea asp-for="Content" class="form-control" placeholder="İçeriği güncelle" rows="5" required></textarea>
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label for="UploadPath" class="font-weight-bold">Resmi Güncelle</label>
+            <label asp-for="UploadPath">Resmi Güncelle</label>
             <input asp-for="UploadPath" type="file" class="form-control-file" />
             <span asp-validation-for="UploadPath" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label for="AuthorId" class="font-weight-bold">Yazar Seçin</label>
+            <label asp-for="AuthorId">Yazar Seçin</label>
             <select asp-for="AuthorId" class="form-control" required>
                 <option value="">Yazar Seçiniz</option>
                 @if (ViewBag.Authors != null)
@@ -46,7 +99,7 @@
         </div>
 
         <div class="form-group">
-            <label for="GenreId" class="font-weight-bold">Kategori Seçin</label>
+            <label asp-for="GenreId">Kategori Seçin</label>
             <select asp-for="GenreId" class="form-control" required>
                 <option value="">Lütfen bir tür seçin</option>
                 @if (ViewBag.Genres != null)
@@ -68,7 +121,7 @@
             <button type="button" class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
         </div>
     </form>
-</div>
+
 
 @section Scripts {
     <script>
@@ -81,77 +134,3 @@
 }
 
 
-
-
-@* @model UpdatePostDTO
-@{
-    ViewBag.Title = "Gönderiyi Düzenle";
-}
-
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Gönderiyi Düzenle</h2>
-    <form action="https://localhost:7225/Admin/AdminPost/Update" method="post" enctype="multipart/form-data">
-         <input type="hidden" asp-for="Id" />  <!--GÜNCELLEME: ID'yi form ile gönderiyoruz -->
-        <!-- Oluşturulma tarihini saklı input alanı olarak ekleyelim -->
-        <input type="hidden" asp-for="CreatedDate" />
-
-        <div class="form-group">
-            <label for="Title">Başlık</label>
-            <input asp-for="Title" class="form-control" placeholder="Başlığı güncelle" />
-            <span asp-validation-for="Title" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="Content">İçerik</label>
-            <textarea asp-for="Content" class="form-control" placeholder="İçeriği güncelle"></textarea>
-            <span asp-validation-for="Content" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="UploadPath">Resmi Güncelle</label>
-            <input asp-for="UploadPath" type="file" class="form-control-file" />
-            <span asp-validation-for="UploadPath" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="AuthorId">Yazar Seçin</label>
-            <select asp-for="AuthorId" class="form-control">
-                <option value="">Yazar Seçiniz</option>
-                @if (ViewBag.Authors != null)
-                {
-                    foreach (var author in ViewBag.Authors)
-                    {
-                        <option value="@author.Id">@author.FirstName @author.LastName</option>
-                    }
-                }
-                else
-                {
-                    <option disabled>Yazar bulunamadı</option>
-                }
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="GenreId">Kategori Seçin</label>
-            <select asp-for="GenreId" class="form-control">
-                <option value="">Lütfen bir tür seçin</option>
-                @if (ViewBag.Genres != null)
-                {
-                    foreach (var genre in ViewBag.Genres)
-                {
-                    <option value="@genre.Id">@genre.Name</option>
-                }
-                }
-                else
-                {
-                    <option disabled>Tür bulunamadı</option>
-                }
-            </select>
-        </div>
-        <br />
-        <button type="submit" class="btn btn-primary btn-block">Gönderiyi Güncelle</button>
-        <br />
-        <button class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
-    </form>
-</div>
- *@

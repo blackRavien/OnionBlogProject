@@ -21,7 +21,7 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
         // Constructor, DbContext ve UserManager'i dependency injection ile alır
         public AppUserRepo(AppDbContext context, UserManager<AppUser> userManager) : base(context)
         {
-            _userManager = userManager;
+            _userManager = userManager; // UserManager'ı sınıf içinde kullanılabilir hale getirir
         }
 
         // Create işlemini override eder ve UserManager kullanarak yeni bir kullanıcı oluşturur
@@ -107,78 +107,47 @@ namespace OnionProject.Infrastructure.ConcreteRepositories
         public async Task<AppUser> GetByUsername(string username)
         {
             return await _context.AppUsers
-                .FirstOrDefaultAsync(u => u.UserName == username);
+                .FirstOrDefaultAsync(u => u.UserName == username); // Kullanıcı adını kullanarak kullanıcıyı getirir
         }
 
         // E-posta ile kullanıcıyı getiren metod
         public async Task<AppUser> GetByEmail(string email)
         {
             return await _context.AppUsers
-                .FirstOrDefaultAsync(u => u.Email == email);
+                .FirstOrDefaultAsync(u => u.Email == email); // E-posta adresini kullanarak kullanıcıyı getirir
         }
 
         public async Task<AppUser> GetById(string userId)
         {
             // Kullanıcı ID'si ile veritabanından kullanıcıyı asenkron olarak getirir.
-            //return await _context.AppUsers
-            //    .FindAsync(userId);
-
             var user = await _context.AppUsers.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {
-                throw new Exception($"Kullanıcı ID'si '{userId}' ile eşleşen bir kullanıcı bulunamadı.");
+                throw new Exception($"Kullanıcı ID'si '{userId}' ile eşleşen bir kullanıcı bulunamadı."); // Kullanıcı bulunamazsa hata fırlatır
             }
 
-            return user;
+            return user; // Kullanıcıyı döndürür
         }
-
 
         public async Task<List<AppUser>> GetAll()
         {
             // Tüm kullanıcıları veritabanından asenkron olarak getirir.
-            return await _context.AppUsers.ToListAsync();
+            return await _context.AppUsers.ToListAsync(); // Tüm kullanıcıları liste olarak döndürür
         }
-
     }
 }
 
 
+
 /*
-        Açıklamalar:
-AppUserRepo Sınıfı:
+Genel Özet:
+Yukarıda verilen kod, AppUser adlı bir kullanıcı entity'si için bir repository sınıfı olan AppUserRepo'yu tanımlar. Bu sınıf, kullanıcı işlemlerini gerçekleştirmek için UserManager<AppUser> sınıfını kullanır. Repository, temel CRUD (Create, Read, Update, Delete) işlemlerini override ederek kullanıcıların oluşturulması, güncellenmesi ve silinmesi gibi işlemleri asenkron olarak gerçekleştirir. Ayrıca, kullanıcıları filtreleme, sıralama ve ilişkili verileri dahil etme işlemleri için çeşitli metotlar sağlar.
 
-BaseRepo<AppUser> sınıfından türemektedir ve IAppUserRepo arayüzünü implement eder.
-UserManager<AppUser> kullanarak ASP.NET Identity ile kullanıcı işlemleri yapar.
-Create Metodu:
-
-UserManager ile kullanıcıyı asenkron olarak oluşturur.
-BaseRepo sınıfının Create metodunu çağırır.
-Update Metodu:
-
-UserManager ile kullanıcıyı asenkron olarak günceller.
-BaseRepo sınıfının Update metodunu çağırır.
-Delete Metodu:
-
-UserManager ile kullanıcıyı asenkron olarak siler.
-BaseRepo sınıfının Delete metodunu çağırır.
-GetDefault Metodu:
-
-Belirli bir koşulu sağlayan ilk AppUser nesnesini getirir.
-GetDefaults Metodu:
-
-Belirli bir koşulu sağlayan AppUser nesnelerinin listesini getirir.
-Any Metodu:
-
-Belirli bir koşulu sağlayan herhangi bir AppUser olup olmadığını kontrol eder.
-GetFilteredFirstOrDefault Metodu:
-
-Filtreleme, sıralama ve ilişkili verileri dahil etme işlemleri ile tek bir AppUser nesnesini getirir.
-GetFilteredList Metodu:
-
-Filtreleme, sıralama ve ilişkili verileri dahil etme işlemleri ile bir liste AppUser nesnesi getirir.
-GetByUsername ve GetByEmail Metotları:
-
-Henüz implementasyonu yapılmamış metotlardır ve NotImplementedException ile işaretlenmiştir.
-Bu sınıf, AppUser entity'si için gerekli olan tüm veri erişim işlemlerini sağlar ve ASP.NET Identity'in sağladığı ek özelliklerden faydalanır.
+Sınıfın Temel İşlevleri:
+Kullanıcı Oluşturma, Güncelleme ve Silme: Create, Update, Delete metotları, kullanıcı işlemlerini UserManager aracılığıyla gerçekleştirir.
+Kullanıcı Bulma: Kullanıcı adı, e-posta ve kullanıcı ID'si gibi farklı kriterlere göre kullanıcıları bulmak için çeşitli metotlar sunar (GetByUsername, GetByEmail, GetById).
+Filtreleme ve Sıralama: Kullanıcıları belirli kriterlere göre filtrelemek ve sıralamak için GetFilteredFirstOrDefault ve GetFilteredList metotlarını kullanır.
+Koşul Kontrolü: Kullanıcıların var olup olmadığını kontrol etmek için Any metodu vardır.
+Bu yapılar, uygulamanın kullanıcı yönetimini ve veritabanı etkileşimlerini düzenli ve verimli bir şekilde yapabilmesini sağlar.
  */

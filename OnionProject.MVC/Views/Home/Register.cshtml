@@ -1,20 +1,20 @@
 ﻿@model OnionProject.Application.Models.DTOs.RegisterAppUserDTO
 <style>
     body {
-        background-color: #eab676; /* Krem rengi arka plan */
+        background-color: #1a1d22; /* Krem rengi arka plan */
         color: #333; /* Metin rengi */
     }
 
     .container {
-        background-color: #ebc18f; /* Beyaz arka plan */
+        background-color: #525d5f; /* Beyaz arka plan */
         border-radius: 8px; /* Köşeleri yuvarlak */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
         padding: 20px; /* İç boşluk */
         margin-bottom: 20px; /* Dış boşluk */
     }
 
-    h2, h5 {
-        color: #21130d /* Koyu yeşil başlık rengi */
+    h4, h2, p {
+        color: #d6d6d6;
     }
 
     .form-control {
@@ -32,7 +32,7 @@
         }
 
     .card {
-        background-color: #f5f5dc;
+        background-color: #333c3d;
         border: none; /* Kart kenarını kaldır */
         border-radius: 8px; /* Yuvarlak köşeler */
     }
@@ -44,7 +44,7 @@
             <img src="https://localhost:7296/images/raven-removebg-preview.png" class="rounded-circle mb-2" alt="Logo" style="width: 150px; height: 150px; object-fit: cover;" />
             <h4>Raven's Blog</h4>
             <h2 class="fw-bold">Kayıt Ol</h2>
-            <p class="text-muted">Lütfen bilgilerinizi girin</p>
+            <p >Lütfen bilgilerinizi girin</p>
         </div>
 
         <form asp-action="Register" method="post">

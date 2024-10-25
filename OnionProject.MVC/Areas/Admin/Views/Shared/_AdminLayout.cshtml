@@ -8,11 +8,68 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OnionProject.MVC.styles.css" asp-append-version="true" />
 </head>
+<style>
+    /* Krem rengi arka plan */
+    .navbar {
+        background-color: #838b94; /* gri renk */
+    }
+    /* Nav-link ayarları */
+    .nav-link {
+        font-weight: bold; /* Yazı kalınlığı */
+        font-family: 'Arial', sans-serif; /* Yazı fontu */
+        transition: color 0.3s ease; /* Geçiş efekti */
+    }
+        /* Hover efektleri */
+        .nav-link:hover {
+            color: #007bff; /* Hoverda renk değişimi */
+        }
+    /* Profil ikonu ve butonun stili */
+    .navbar .nav-link img, .navbar button {
+        filter: invert(1); /* Siyah renk */
+    }
+
+    .card {
+        background-color: #f5f5dc;
+        border: none; /* Kart kenarını kaldır */
+        border-radius: 8px; /* Yuvarlak köşeler */
+    }
+
+    
+    .navbar-brand {
+        font-family: 'Georgia', serif;
+        font-size: 28px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: #333; /* Yazı rengi */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Hafif gölge efekti */
+        transition: color 0.3s ease; /* Renk geçişi efekti */
+    }
+
+    .navbar-brand:hover {
+            color: #7d060e; /* Hover sırasında renk değişimi */
+    }
+    
+</style>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Raven's Blog</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="https://localhost:7225/UserPostApi" class="navbar-brand d-flex align-items-center">
+                        <img src="https://localhost:7296/images/raven-removebg-preview.png" alt="Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                        Raven's Blog
+                    </a>
+                   
+                }
+                else
+                {
+                    <a href="https://localhost:7225" class="navbar-brand d-flex align-items-center">
+                        <img src="https://localhost:7296/images/raven-removebg-preview.png" alt="Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                        Raven's Blog
+                    </a>
+                    @* <a href="https://localhost:7225" class="navbar-brand">Raven's Blog</a> *@
+                }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,6 +87,9 @@
                                 <a class="nav-link text-dark" asp-area="User" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="MorePosts">All Posts</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">About Us</a>
                             </li>
                             <li class="nav-item">
@@ -38,7 +98,6 @@
                             }
 
                         </li>
-
 
                         <!-- Logout Butonu -->
                         <ul class="navbar-nav ms-auto">
@@ -72,8 +131,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - OnionProject.MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container text-center">
+          Raven's Blog  &copy; 2024 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -5,15 +5,20 @@
 <head>
     <style>
         body {
-        background-color: #eab676; /* Krem rengi arka plan */
+        background-color: #1a1d22; /* Krem rengi arka plan */
         color: #333; /* Metin rengi */
     }
+
+        container {
+            background-color: #525d5f;
+        }
         .card-text {
             white-space: pre-line;
-            word-wrap: break-word;
+            word-wrap: break-word;   
         }
 
-        @*sonradan eklendi*@
+       
+        
         .author-image-container {
             width: 100px; /* Yuvarlak kapsayıcının genişliği */
             height: 100px; /* Yuvarlak kapsayıcının yüksekliği */
@@ -28,6 +33,10 @@
                 width: 100%; /* Resmin kapsayıcıya tam oturması için */
                 height: auto; /* Orantıyı korumak için */
             }
+
+        h4, h2, p {
+        color: #d6d6d6;
+    }
     </style>
 </head>
 
@@ -35,31 +44,31 @@
 
     <!-- Post Header -->
     <div class="card mb-4 shadow-sm border-primary">
-    <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 400px; object-fit: cover;">
-    <div class="card-body" style="background-color: #f5f5dc;">
-        <h2 class="card-title text-center text-primary">@Model.PostDetails.Title</h2>
-        <div class="card-text">@Html.Raw(Model.PostDetails.Content)</div>
-        <hr>
+        <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 400px; object-fit: cover;">
+        <div class="card-body" style="background-color: #525d5f;">
+            <h2 class="card-title text-center text-primary">@Model.PostDetails.Title</h2>
+            <div class="card-text" style="color: #d6d6d6;">@Html.Raw(Model.PostDetails.Content)</div>
+            <hr>
 
-        <div class="author-box d-flex align-items-center p-3 border rounded bg-light justify-content-between">
-            <div class="author-image-container me-3">
-                <img src="@Model.PostDetails.AuthorDetailVm.ImagePath" alt="@Model.PostDetails.AuthorDetailVm.FirstName" class="rounded-circle img-fluid" style="width: 90px; height: 90px; object-fit: cover;" />
-            </div>
+            <div class="author-box d-flex align-items-center p-3 border rounded bg-light justify-content-between">
+                <div class="author-image-container me-3">
+                    <img src="@Model.PostDetails.AuthorDetailVm.ImagePath" alt="@Model.PostDetails.AuthorDetailVm.FirstName" class="rounded-circle img-fluid" style="width: 90px; height: 90px; object-fit: cover;" />
+                </div>
 
-            <div class="author-info flex-grow-1">
-                <p class="text-muted mb-0">Yazar: <strong class="text-dark">@Model.PostDetails.AuthorFullName</strong></p>
-                <p class="text-muted mb-0">Tarih: <strong class="text-dark">@Model.PostDetails.CreatedDate.ToString("dd MMM yyyy")</strong></p>
-                <p class="text-muted mb-0">Tür: <strong class="text-dark">@Model.PostDetails.GenreName</strong></p>
-            </div>
+                <div class="author-info flex-grow-1">
+                    <p class="text-muted mb-0">Yazar: <strong class="text-dark">@Model.PostDetails.AuthorFullName</strong></p>
+                    <p class="text-muted mb-0">Tarih: <strong class="text-dark">@Model.PostDetails.CreatedDate.ToString("dd MMM yyyy")</strong></p>
+                    <p class="text-muted mb-0">Tür: <strong class="text-dark">@Model.PostDetails.GenreName</strong></p>
+                </div>
 
-            <div>
-                <a href="https://localhost:7225/Admin/Author/Details/@Model.PostDetails.AuthorDetailVm.Id" class="btn btn-primary">Yazar Detayları</a>
+                <div>
+                    <a href="https://localhost:7225/Admin/Author/Details/@Model.PostDetails.AuthorDetailVm.Id" class="btn btn-primary">Yazar Detayları</a>
+                </div>
             </div>
-        </div>  
+        </div>
     </div>
-</div>
 
-   
+
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-warning">
@@ -69,7 +78,7 @@
 
     <!-- Yorum Ekle -->
     <div class="card mb-4 shadow-sm border-success">
-        <div class="card-body " style="background-color: #f5f5dc;">
+        <div class="card-body " style="background-color: #525d5f;">
             <h4 class="card-title text-success">Yorum Ekle</h4>
             <form asp-action="CreateComment" method="post">
                 @* <input type="hidden" asp-for="PostDetails.Id" /> *@
@@ -85,15 +94,15 @@
 
     <!-- Yorumlar -->
     <div class="card mb-4 shadow-sm border-info">
-        <div class="card-body" style="background-color: #f5f5dc;">
+        <div class="card-body" style="background-color: #525d5f;">
             <h3 class="card-title text-info">Yorumlar</h3>
             @if (Model.Comments != null && Model.Comments.Any())
             {
                 foreach (var comment in Model.Comments)
                 {
                     <div class="border border-info p-3 mb-2">
-                        <p><strong class="text-info">@comment.UserName:</strong> @comment.Content</p>
-                        <p class="text-muted"><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
+                        <p style="color: #d6d6d6;"><strong class="text-info">@comment.UserName:</strong> @comment.Content</p>
+                        <p><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
 
                         @if (comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                         {
@@ -108,12 +117,14 @@
             }
             else
             {
-                <p class="text-muted">Bu post için henüz bir yorum bulunmamaktadır.</p>
+                <p>Bu post için henüz bir yorum bulunmamaktadır.</p>
             }
         </div>
     </div>
 
 
-<button class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
+    <button class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
+
+   
 
 

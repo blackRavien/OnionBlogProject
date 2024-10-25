@@ -1,11 +1,54 @@
-﻿<h1 class="text-center">Hoşgeldin Admin!</h1>
+﻿
 @{
     ViewData["Title"] = "Admin Ana Sayfa";
 }
 
-<h4 class="text-center mt-4">Yönetim Paneli</h4>
+<style>
+    body {
+        background-color: #1a1d22; /* Koyu gri arka plan rengi */
+        color: #333; /* Metin rengi: koyu gri */
+    }
 
-<div class="container mt-5">
+    .container {
+        background-color: #525d5f; /* Hafif gri arka plan rengi */
+        border-radius: 8px; /* Köşeleri yuvarlak hale getirir */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+        padding: 20px; /* İçerik ile kenarları arasında 20 piksel boşluk bırakır */
+        margin-bottom: 20px; /* Altında 20 piksel boşluk bırakır */
+    }
+
+    h2, h5 {
+        color: #21130d; /* Koyu yeşil başlık rengi */
+    }
+
+    h4, h2, h1, p {
+        color: #d6d6d6; /* Başlıklar ve paragraflar için açık gri metin rengi */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Butonun arka plan rengi: mavi */
+        border-color: #007bff; /* Butonun kenar rengi: mavi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Butonun üzerine gelindiğinde arka plan rengi: koyu mavi */
+            border-color: #0056b3; /* Butonun üzerine gelindiğinde kenar rengi: koyu mavi */
+        }
+
+    .card {
+        background-color: #333c3d; /* Kartın arka plan rengi: koyu gri */
+        border: none; /* Kartın kenarını kaldırır */
+        border-radius: 8px; /* Kartın köşelerini yuvarlar */
+    }
+</style>
+
+
+
+
+
+    <h1 class="text-center">Hoşgeldin Admin!</h1>
+    <h4 class="text-center mt-4">Yönetim Paneli</h4>
+    <br />
     <div class="row">
         <!-- Postları Yönet -->
         <div class="col-md-6 mb-4">
@@ -14,7 +57,7 @@
                     <h4>Postları Yönet</h4>
                 </div>
                 <div class="card-body text-center">
-                    <p>Post ekleme, güncelleme, silme ve kullanıcı yorumlarını yönetme işlemleri için buraya tıklayın.</p>
+                    <p>Post ekleme, güncelleme, silme ve yorumları yönetmek için buraya tıklayın.</p>
                     <a href="https://localhost:7225/Admin/AdminPost/Index" class="btn btn-primary">Postları Yönet</a>
                 </div>
             </div>
@@ -59,7 +102,7 @@
             </div>
         </div>
     </div>
-</div>
+
 
 
 

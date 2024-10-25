@@ -1,15 +1,21 @@
 ﻿@model ProfileVm
 
+@if (TempData["ProfileUpdateMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["ProfileUpdateMessage"]
+    </div>
+}
 
 
     <h2>Profilim</h2>
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">
-                <div class="card-header">
+            <div class="card-header" style="background-color: #525d5f;">
                     <h3 class="text-center">Profil Bilgileri</h3>
                 </div>
-                <div class="card-body">
+            <div class="card-body" style="background-color: #525d5f;">
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label"><strong>İsim:</strong></label>
                         <div class="col-sm-8">
@@ -41,7 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer text-center">
+            <div class="card-footer text-center" style="background-color: #525d5f;">
                     <a asp-action="EditProfile" asp-controller="UserPost" class="btn btn-primary">Düzenle</a>
                 </div>
             </div>
@@ -52,17 +58,10 @@
 
 <style>
     body{
-        background-color: #eab676; /* Krem rengi arka plan */
+        background-color: #1a1d22; /* Krem rengi arka plan */
         color: #333; /* Metin rengi */
     }
-    .profile-container {
-        max-width: 600px;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+    
 
     .profile-header {
         text-align: center;
@@ -79,7 +78,9 @@
             vertical-align: top;
         }
 
-    
+    h4, h2, p, label {
+        color: #d6d6d6;
+    }
 
     .button-group {
         margin-top: 20px;

@@ -1,6 +1,52 @@
 ﻿
 @model OnionProject.Application.Models.DTOs.CreateGenreDTO
 
+<style>
+    body {
+        background-color: #1a1d22; /* Koyu gri arka plan rengi */
+        color: #333; /* Metin rengi: koyu gri */
+    }
+
+    .cover-image {
+        width: 100%; /* Resmin genişliği: %100 (bulunduğu alanı tamamen kaplar) */
+        height: 400px; /* Resmin yüksekliği: 400 piksel */
+        object-fit: cover; /* Resmin içeriğini kapsayacak şekilde boyutlandır */
+        border-radius: 8px; /* Resmin kenarlarını yuvarlar */
+        height: 550px; /* Resmin yüksekliği: 550 piksel (önceki yükseklikten daha yüksek) */
+    }
+
+    .container {
+        background-color: #525d5f; /* Koyu gri arka plan rengi */
+        border-radius: 8px; /* Container'ın köşelerini yuvarlar */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge efekti */
+        padding: 20px; /* İç boşluk: 20 piksel */
+        margin-bottom: 20px; /* Alt boşluk: 20 piksel */
+    }
+
+    h4, h2, p {
+        color: #d6d6d6; /* Başlık ve paragrafların rengi: açık gri */
+    }
+
+    .form-control {
+        border-radius: 20px; /* Form elemanlarının kenarlarını yuvarlar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Buton arka plan rengi: mavi */
+        border-color: #007bff; /* Buton kenar rengi: mavi */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Buton hover (üzerine gelindiğinde) rengi: koyu mavi */
+            border-color: #0056b3; /* Buton hover kenar rengi: koyu mavi */
+        }
+
+    
+        
+
+    
+</style>
+
 <div class="container">
     <h2>Yeni Tür Ekle</h2>
     <form action="https://localhost:7225/Admin/AdminGenre/Create" method="post">

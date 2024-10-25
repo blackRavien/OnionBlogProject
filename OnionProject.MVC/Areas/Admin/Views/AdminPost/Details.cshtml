@@ -3,54 +3,93 @@
 
 <head>
     <style>
-        .card-text {
-            white-space: pre-line;
-            word-wrap: break-word;
-        }
+    .card-text {
+        white-space: pre-line; /* Satır sonlarını korur ve boşlukları göz ardı etmez */
+        word-wrap: break-word; /* Uzun kelimeleri kırarak bir sonraki satıra taşır */
+    }
 
-        @*sonradan eklendi*@
-        .author-image-container {
-            width: 100px; /* Yuvarlak kapsayıcının genişliği */
-            height: 100px; /* Yuvarlak kapsayıcının yüksekliği */
-            overflow: hidden; /* Taşmayı önlemek için */
-            border-radius: 50%; /* Dairesel görünüm için */
-            display: flex; /* İçerikleri ortalamak için */
-            justify-content: center; /* İçerikleri yatayda ortalamak için */
-            align-items: center; /* İçerikleri dikeyde ortalamak için */
-        }
+   
+    .author-image-container {
+        width: 100px; /* Yazar resmi kapsayıcısının genişliği: 100 piksel */
+        height: 100px; /* Yazar resmi kapsayıcısının yüksekliği: 100 piksel */
+        overflow: hidden; /* Taşan içeriği gizle (resmin dışarı taşmasını önle) */
+        border-radius: 50%; /* Dairesel görünüm oluşturmak için kenarları yuvarla */
+        display: flex; /* İçerikleri esnek kutu modeline göre yerleştir */
+        justify-content: center; /* İçerikleri yatayda ortalar */
+        align-items: center; /* İçerikleri dikeyde ortalar */
+    }
 
-            .author-image-container img {
-                width: 100%; /* Resmin kapsayıcıya tam oturması için */
-                height: auto; /* Orantıyı korumak için */
-            }
+    .author-image-container img {
+        width: 100%; /* Resmin kapsayıcıya tam oturmasını sağlar */
+        height: auto; /* Resmin orantısını korur */
+    }
 
-    </style>
+    body {
+        background-color: #1a1d22; /* Koyu gri arka plan rengi */
+        /* Metin rengi: varsayılan olarak burada tanımlanmış değil */
+    }
+
+    h4, h2, p, strong {
+        color: #d6d6d6; /* Başlıklar ve paragraflar için açık gri metin rengi */
+    }
+
+    .form-control {
+        border-radius: 20px; /* Form elemanlarının köşelerini yuvarlar */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Butonun arka plan rengi: mavi */
+        border-color: #007bff; /* Buton kenar rengi: mavi */
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Buton hover (üzerine gelindiğinde) rengi: koyu mavi */
+        border-color: #0056b3; /* Buton hover kenar rengi: koyu mavi */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #21130d; /* Aktif sayfanın arka plan rengi */
+        border-color: #21130d; /* Aktif sayfanın kenar rengi */
+    }
+
+    .container {
+        background-color: #525d5f; /* Hafif gri arka plan rengi */
+        border-radius: 10px; /* Container'ın köşelerini yuvarlar */
+        padding: 20px; /* İç boşluk: 20 piksel */
+    }
+
+    /* İçindeki kartın kenar renklerini özelleştir */
+    .card {
+        border-color: #21130d; /* Kartın kenar rengi */
+    }
+</style>
+
 </head>
 
 
-<div class="container my-5">
+
 
     <!-- Post Header -->
     <div class="card mb-4 shadow-sm border-primary">
         <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 600px; object-fit: cover;">
-        <div class="card-body bg-light">
+        <div class="card-body" style="background-color: #333c3d;">
             <h2 class="card-title text-center text-primary">@Model.PostDetails.Title</h2>
-            <div class="card-text">@Html.Raw(Model.PostDetails.Content)</div>
+            <div class="card-text"  style="color: #d6d6d6;">@Html.Raw(Model.PostDetails.Content)</div>
             <hr>
-            <p class="text-muted">Yazar: <strong class="text-dark">@Model.PostDetails.AuthorFullName</strong></p>
+            <p class="text-muted">Yazar: <strong >@Model.PostDetails.AuthorFullName</strong></p>
 
             <div class="author-image-container text-center mb-3">
                 <img src="@Model.PostDetails.AuthorDetailVm.ImagePath" alt="@Model.PostDetails.AuthorDetailVm.FirstName" class="rounded-circle img-fluid" />
             </div>
 
-            <p class="text-muted">Tarih: <strong class="text-dark">@Model.PostDetails.CreatedDate.ToString("dd MMM yyyy")</strong></p>
-            <p class="text-muted">Tür: <strong class="text-dark">@Model.PostDetails.GenreName</strong></p>
+            <p class="text-muted">Tarih: <strong >@Model.PostDetails.CreatedDate.ToString("dd MMM yyyy")</strong></p>
+            <p class="text-muted">Tür: <strong >@Model.PostDetails.GenreName</strong></p>
         </div>
     </div>
 
     <!-- Yorum Ekle -->
-    <div class="card mb-4 shadow-sm border-success">
-        <div class="card-body bg-light">
+    <div class="card mb-4 shadow-sm border-success" style="background-color:#333c3d;">
+        <div class="card-body" >
             <h4 class="card-title text-success">Yorum Ekle</h4>
             <form action="https://localhost:7225/Admin/AdminPost/CreateComment" method="post">
                 <input type="hidden" name="PostDetails.Id" value="@Model.PostDetails.Id" />
@@ -63,8 +102,8 @@
     </div>
 
     <!-- Yorumlar -->
-    <div class="card mb-4 shadow-sm border-info">
-        <div class="card-body bg-light">
+    <div class="card mb-4 shadow-sm border-info" style="background-color:#333c3d;" >
+        <div class="card-body">
             <h3 class="card-title text-info">Yorumlar</h3>
             @if (Model.Comments != null && Model.Comments.Any())
             {
@@ -91,7 +130,6 @@
             }
         </div>
     </div>
-</div>
 <button class="btn btn-secondary" onclick="history.back()">Geri Dön</button>
 
 

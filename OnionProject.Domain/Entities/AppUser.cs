@@ -39,6 +39,7 @@ namespace OnionProject.Domain.Entities
 
         // Kullanıcının durumu (Aktif, Pasif, Silindi vb. için Status enum'ı)
         public Status Status { get; set; }
+        
     }
 }
 

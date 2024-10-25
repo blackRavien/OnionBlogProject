@@ -13,11 +13,11 @@ namespace OnionProject.Infrastructure.EntityTypeConfig
     {
         public void Configure(EntityTypeBuilder<ContactMessage> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.Id); //id fk
             builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.Email).IsRequired();
             builder.Property(x => x.Message).IsRequired();
-            builder.Property(x => x.SubmittedDate).IsRequired();
+            builder.Property(x => x.SubmittedDate).IsRequired(); //ilk 4ü required yani gerekli
         }
     }
 

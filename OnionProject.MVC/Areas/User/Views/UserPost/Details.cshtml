@@ -27,13 +27,13 @@
 
 
         body {
-        background-color: #eab676; /* Krem rengi arka plan */
+        background-color: #1a1d22; /* Krem rengi arka plan */
         color: #333; /* Metin rengi */
     }
     
 
-    h2, h5 {
-        color: #006400; /* Koyu yeşil başlık rengi */
+    h4, h2, p {
+        color: #d6d6d6;
     }
 
     .form-control {
@@ -56,7 +56,7 @@
         border-color: #21130d; /* Aktif sayfa kenar rengi */
     }
         .container {
-        background-color: #ebc18f; /* Hafif gri arka plan */
+        background-color: #525d5f; /* Hafif gri arka plan */
         
         border-radius: 10px; /* Yuvarlatılmış köşeler */
         padding: 20px; /* İç boşluk */
@@ -74,9 +74,9 @@
     <!-- Post Header -->
     <div class="card mb-4 shadow-sm border-primary">
     <img src="@Model.PostDetails.ImagePath" class="card-img-top img-fluid" alt="Post Image" style="max-height: 400px; object-fit: cover;">
-    <div  class="card-body"  style="background-color: #f5f5dc;">
+    <div  class="card-body"  style="background-color: #333c3d;">
         <h2 class="card-title text-center text-primary">@Model.PostDetails.Title</h2>
-        <div class="card-text" >@Html.Raw(Model.PostDetails.Content)</div>
+        <div class="card-text" style="color: #d6d6d6;">@Html.Raw(Model.PostDetails.Content)</div>
         <hr>
 
         <div class="author-box d-flex align-items-center p-3 border rounded bg-light justify-content-between" >
@@ -98,7 +98,7 @@
 </div>
 
     <!-- Yorum Ekle -->
-    <div class="card mb-4 shadow-sm border-success" style="background-color: #f5f5dc;">
+    <div class="card mb-4 shadow-sm border-success" style="background-color: #333c3d;">
         <div class="card-body ">
             <h4 class="card-title text-success">Yorum Ekle</h4>
             <form asp-action="CreateComment" method="post">
@@ -112,7 +112,7 @@
     </div>
 
     <!-- Yorumlar -->
-    <div class="card mb-4 shadow-sm border-info"  style="background-color: #f5f5dc;">
+    <div class="card mb-4 shadow-sm border-info"  style="background-color: #333c3d;">
         <div class="card-body">
             <h3 class="card-title text-info">Yorumlar</h3>
             @if (Model.Comments != null && Model.Comments.Any())
@@ -121,7 +121,7 @@
                 {
                     <div class="border border-info p-3 mb-2">
                         <p><strong class="text-info">@comment.UserName:</strong> @comment.Content</p>
-                        <p class="text-muted"><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
+                        <p ><small>@comment.CreatedAt.ToString("dd MMM yyyy HH:mm")</small></p>
 
                         @if (comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                         {
